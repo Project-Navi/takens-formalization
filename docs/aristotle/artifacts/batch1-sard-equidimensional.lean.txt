@@ -1,0 +1,28 @@
+/-
+Aristotle Batch 1A — Sard helper only
+The full sard_equidimensional is NOT a leaf lemma — it requires
+assembling the area formula. Only the det helper is submittable.
+-/
+import Mathlib
+
+open MeasureTheory Set Function
+
+noncomputable section
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
+
+/-
+PROBLEM
+At a critical point of f : E → E, det(Df) = 0.
+
+PROVIDED SOLUTION
+By contrapositive: if L.det ≠ 0, then L is surjective. Use `by_contra h_det` to assume `L.det ≠ 0`, then use `LinearMap.equivOfDetNeZero` on the underlying linear map to get a linear equivalence, which is surjective. Alternatively use `ContinuousLinearMap.toContinuousLinearEquivOfDetNeZero`.
+-/
+omit [MeasurableSpace E] [BorelSpace E] in
+lemma det_fderiv_eq_zero_of_not_surjective (L : E →L[ℝ] E)
+    (h : ¬Surjective L) : L.det = 0 := by
+  contrapose! h with hL_det_ne_zero;
+  convert LinearMap.surjective_of_injective _;
+  · infer_instance;
+  · exact LinearEquiv.injective ( L.toLinearMap.equivOfDetNeZero hL_det_ne_zero )

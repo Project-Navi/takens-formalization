@@ -1,0 +1,90 @@
+/-
+Aristotle Batch 1G — Ordinal pattern deeper lemmas
+Target: reverse, restriction, extension properties
+-/
+import Mathlib
+
+open Function Equiv
+
+noncomputable section
+
+variable {d : ℕ}
+
+def IsOrdPat (σ : Perm (Fin d)) (f : Fin d → ℝ) : Prop :=
+  StrictMono (f ∘ σ)
+
+/-
+PROBLEM
+Ordinal pattern of a strictly monotone function is the identity.
+
+PROVIDED SOLUTION
+f ∘ Equiv.refl = f, so this reduces to hf. Unfold IsOrdPat and simp.
+-/
+theorem ordPat_of_strictMono (f : Fin d → ℝ) (hf : StrictMono f) :
+    IsOrdPat (Equiv.refl (Fin d)) f := by
+  exact?
+
+/-
+PROBLEM
+Ordinal pattern of a strictly antitone function is the reverse.
+
+PROVIDED SOLUTION
+Define σ as the reversal permutation: σ i = ⟨d - 1 - i.val, by omega⟩ with inverse being itself (it's an involution). Use Equiv.mk or construct the Perm directly. Then show f ∘ σ is strictly monotone: if i < j then d-1-i > d-1-j so σ i > σ j, so f(σ i) < f(σ j) by strict antitonicity.
+-/
+theorem ordPat_of_strictAnti (f : Fin d → ℝ) (hf : StrictAnti f)
+    (hd : 0 < d) :
+    ∃ σ : Perm (Fin d), IsOrdPat σ f ∧
+      ∀ i : Fin d, σ i = ⟨d - 1 - i.val, by omega⟩ := by
+  refine' ⟨ Equiv.ofBijective ( fun i => ⟨ d - 1 - i, _ ⟩ ) ⟨ _, _ ⟩, _, _ ⟩;
+  any_goals intro i j; simp +decide [ Fin.ext_iff ];
+  any_goals intro i; rfl;
+  any_goals omega;
+  · intro x; use ⟨ d - 1 - x, by omega ⟩ ; simp +decide [ tsub_tsub_cancel_of_le ( Nat.le_sub_one_of_lt x.2 ) ] ;
+  · intro hij;
+    exact hf ( by rw [ Fin.lt_def ] at *; norm_num at *; omega )
+
+/-
+PROBLEM
+Two injective functions have the same ordinal pattern iff they
+    induce the same ordering on indices.
+
+PROVIDED SOLUTION
+Backward direction (←): If ∀ i j, f i < f j ↔ g i < g j, then for any σ, StrictMono(f∘σ) ↔ StrictMono(g∘σ) follows directly since (f∘σ) i < (f∘σ) j ↔ f(σ i) < f(σ j) ↔ g(σ i) < g(σ j) ↔ (g∘σ) i < (g∘σ) j.
+
+Forward direction (→): Given ∀ σ, IsOrdPat σ f ↔ IsOrdPat σ g, show ∀ i j, f i < f j ↔ g i < g j. Take the identity permutation: since f is injective, there exists a sorting permutation σ₀ with StrictMono(f∘σ₀). Then StrictMono(g∘σ₀) too. For any i j, we can relate f i < f j to the ordering of σ₀⁻¹ i and σ₀⁻¹ j. Actually, more directly: fix i j, and consider any permutation that sends 0 to i and 1 to j (extended arbitrarily). But this gets complicated.
+
+Simpler approach for (→): Suppose f i < f j. We need g i < g j. Since f is injective, we can sort: there exists σ with f(σ 0) < f(σ 1) < ... < f(σ(d-1)), i.e. StrictMono(f∘σ). By hypothesis, StrictMono(g∘σ). Now f i < f j means σ⁻¹ i < σ⁻¹ j (since f∘σ is strictly monotone). And since g∘σ is also strictly monotone, σ⁻¹ i < σ⁻¹ j implies g(σ(σ⁻¹ i)) < g(σ(σ⁻¹ j)), i.e. g i < g j.
+
+But wait, we need to first show that such a sorting permutation σ exists. For the forward direction, we actually need: there exists σ with IsOrdPat σ f (i.e., some permutation makes f∘σ strictly monotone). This is guaranteed because f is injective on a finite type Fin d, so we can sort the values. This existence itself needs proof. Let the subagent figure it out - the key insight is to use the sorting permutation of f.
+-/
+theorem ordPat_eq_iff_order_eq (f g : Fin d → ℝ)
+    (hf : Injective f) (hg : Injective g) :
+    (∀ σ : Perm (Fin d), IsOrdPat σ f ↔ IsOrdPat σ g) ↔
+    (∀ i j : Fin d, f i < f j ↔ g i < g j) := by
+  constructor <;> intro h;
+  · intro i j;
+    -- By hypothesis, there exists a permutation σ such that f ∘ σ is strictly monotone.
+    obtain ⟨σ, hσ⟩ : ∃ σ : Fin d ≃ Fin d, StrictMono (f ∘ σ) := by
+      -- Since $f$ is injective, we can order the elements of $f$.
+      have h_order : ∃ σ : Fin d → Fin d, StrictMono (fun i => f (σ i)) := by
+        have h_order : ∃ σ : Fin d → ℝ, StrictMono σ ∧ ∀ i, σ i ∈ Set.range f := by
+          have h_order : ∃ σ : Fin d → ℝ, StrictMono σ ∧ ∀ i, σ i ∈ Finset.image f Finset.univ := by
+            exact ⟨ fun i => Finset.orderEmbOfFin ( Finset.image f Finset.univ ) ( by simpa [ Finset.card_image_of_injective _ hf ] ) i, by simp +decide [ StrictMono ], fun i => Finset.orderEmbOfFin_mem _ _ _ ⟩;
+          grind +locals;
+        obtain ⟨ σ, hσ₁, hσ₂ ⟩ := h_order; choose σ' hσ' using hσ₂; use σ'; aesop;
+      obtain ⟨σ, hσ⟩ := h_order
+      have h_inj : Function.Injective σ := by
+        exact fun i j hij => hσ.injective <| by simp +decide [ hij ] ;
+      have h_perm : ∃ σ' : Fin d ≃ Fin d, σ = σ' := by
+        exact ⟨ Equiv.ofBijective σ ⟨ h_inj, Finite.injective_iff_surjective.mp h_inj ⟩, rfl ⟩
+      obtain ⟨σ', hσ'⟩ := h_perm
+      use σ';
+      aesop;
+    -- Since $f \circ \sigma$ is strictly monotone, we have $f(\sigma(i)) < f(\sigma(j))$ if and only if $g(\sigma(i)) < g(\sigma(j))$.
+    have h_order : ∀ i j : Fin d, f (σ i) < f (σ j) ↔ g (σ i) < g (σ j) := by
+      have h_order : StrictMono (g ∘ σ) := by
+        exact h σ |>.1 hσ;
+      exact fun i j => ⟨ fun hij => h_order.lt_iff_lt.2 ( hσ.lt_iff_lt.1 hij ), fun hij => hσ.lt_iff_lt.2 ( h_order.lt_iff_lt.1 hij ) ⟩;
+    simpa [ hf.eq_iff, hg.eq_iff ] using h_order ( σ.symm i ) ( σ.symm j );
+  · unfold IsOrdPat;
+    simp +decide [ StrictMono, h ]
