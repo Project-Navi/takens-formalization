@@ -8,6 +8,9 @@
 # Superpowers specs/plans (internal, not committed)
 /docs/superpowers
 
+# Aristotle submissions and artifacts (internal strategy)
+/docs/aristotle
+
 # Claude session metadata
 /.claude
 
