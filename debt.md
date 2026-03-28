@@ -2,12 +2,23 @@
 
 ## Open
 
-### Route A — Smooth Takens (proved under SardInfra axiom)
-- [ ] **Sard's theorem** — Not in Mathlib. WhitneyEmbedding.lean has explicit TODO.
-      Unblocks: tight Whitney 2m+1 bound AND Takens genericity argument.
-- [ ] **Parametric transversality** — Blocked on Sard + parametric transversality theorem.
+### Route A — Smooth Takens (genericity blocked on SardInfra)
+- [ ] **Sard equidimensional case** — NEXT HEADLINE TARGET. Provable from
+      Mathlib area formula (`addHaar_image_le_lintegral_abs_det_fderiv`).
+      Aristotle artifact exists at `docs/aristotle/artifacts/batch1-sard-low-dim.lean.txt`
+      but needs import work. `det_fderiv_eq_zero_of_not_surjective` already proved.
+- [ ] **Sard low-dim integration** — Aristotle proved `addHaar_image_eq_zero_of_finrank_lt`
+      via Hausdorff dimension. Needs granular import work to compile on 4.28.0.
+- [ ] **SardInfra typeclass body** — Gate 3. Axiomize only `sard_of_finrank_gt`.
+      Equidimensional and low-dim cases will be proved, not axiomized.
+- [ ] **Parametric transversality** — Blocked on Sard + transversality theorem.
 - [ ] **Sauer-Yorke-Casdagli (fractal extension)** — Requires prevalence theory +
       box-counting dimension, neither in Mathlib.
+
+### Route B — Future depth
+- [ ] **SmoothTakens additional lemmas** — `smoothDelayMap_shift`,
+      `smoothDelayMap_injective_iff`, `smoothDelayMap_injective_of_le` planned
+      in gate 3 spec but not yet implemented.
 
 ### Upstream candidates
 - [ ] **ordinalPattern → Mathlib** — Bandt-Pompe ordinal pattern extractor.
@@ -30,3 +41,15 @@
 - [x] **GitHub Actions CI** — `.github/workflows/lean_action_ci.yml` stood up.
       Sorry-free invariant now enforced on push/PR. SHA-pinned actions,
       Mathlib cache, concurrency group.
+
+### Route B
+- [x] **OrdinalPattern** — property-first design, 8 theorems proved
+- [x] **DelayWindow headline** — `delayEmbedding_injective_iff_separatesOrbits` +
+      `coincidenceLength` + `exists_separatingWindow_iff`
+- [x] **IteratePeriod bridge** — 4 theorems connecting to Mathlib PeriodicPts API
+- [x] **OrdinalTakens compression** — `ordinalDelayMap` + observedPatterns bounds
+
+### Route A
+- [x] **SmoothTakens embedding chain** — continuity → closed embedding →
+      homeomorphism, axiom-free
+- [x] **SardInfra det helper** — `det_fderiv_eq_zero_of_not_surjective`

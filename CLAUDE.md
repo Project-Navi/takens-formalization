@@ -4,11 +4,14 @@
 
 Lean 4 (v4.28.0) + Mathlib (v4.28.0) formalization of the Takens delay embedding theorem.
 
-- **Route B (discrete):** `delayEmbedding_injective_iff_separatesOrbits` — characterization
-  of when delay embedding is injective via orbit separation. Ordinal compression theory
-  via `ordinalDelayMap`. Zero sorry, zero axioms.
-- **Route A (smooth):** `smoothTakens` — classical smooth Takens on compact manifolds,
-  proved under `SardInfra` axiom typeclass.
+- **Route B (discrete):** `delayEmbedding_injective_iff_separatesOrbits` — injectivity
+  iff orbit separation. `exists_separatingWindow_iff` — non-injective observation works
+  iff orbits eventually differ (via `coincidenceLength`). Ordinal compression via
+  `ordinalDelayMap` with pattern-count bounds (`le_factorial`, `le_period`).
+  Zero sorry, zero axioms.
+- **Route A (smooth):** `smoothDelayMap` embedding chain — compact + injective → closed
+  embedding + homeomorphism onto image. Axiom-free (does NOT import `SardInfra`).
+  Genericity deferred pending `SardInfra` typeclass + parametric transversality.
 
 Route A and Route B are independent proof trees with no shared definitions.
 `delayEmbedding` (Route B, `DelayWindow.lean`) and `smoothDelayMap` (Route A,
@@ -181,14 +184,14 @@ copyright headers on all `.lean` files, gitleaks.
 
 | File | Role | Route | Status |
 |------|------|-------|--------|
-| `OrdinalPattern.lean` | Bandt-Pompe ordinal pattern map (upstream candidate) | B | Skeleton |
-| `DelayWindow.lean` | Delay embedding + SeparatesOrbits + characterization (upstream candidate) | B | Skeleton |
-| `IteratePeriod.lean` | Period, orbit, bounds | B | Skeleton |
+| `OrdinalPattern.lean` | Bandt-Pompe ordinal pattern map (upstream candidate) | B | Proved |
+| `DelayWindow.lean` | Delay embedding + SeparatesOrbits + coincidenceLength (upstream candidate) | B | Proved |
+| `IteratePeriod.lean` | Period bridge lemmas | B | Proved |
 | `TakensDiscrete.lean` | Future finite-horizon corollaries (skeleton, not frozen) | B | Skeleton |
-| `OrdinalTakens.lean` | Ordinal delay compression/quotient theory | B | Skeleton |
-| `SardInfra.lean` | Sard axiom typeclass (reference for upstream discussion, not PR-ready) | A | Skeleton |
-| `SmoothTakens.lean` | Classical theorem from axiom | A | Skeleton |
-| `Verify.lean` | Axiom dashboard (diagnostic, NOT in root aggregator) | Both | Skeleton |
+| `OrdinalTakens.lean` | Ordinal delay compression + observedPatterns bounds | B | Proved |
+| `SardInfra.lean` | Sard det helper proved; typeclass deferred to gate 3 | A | Partial |
+| `SmoothTakens.lean` | Embedding chain: continuity, closed embedding, homeomorphism | A | Proved |
+| `Verify.lean` | Axiom dashboard (diagnostic, NOT in root aggregator) | Both | Active |
 
 Lean options (`relaxedAutoImplicit`, `autoImplicit`) are set globally in `lakefile.toml`,
 not per-file. This is a deliberate divergence from fd/cd (which used redundant per-file
@@ -199,14 +202,15 @@ Project-local files use no namespace wrapper — deliberate for a terminal resea
 
 ## Axiom boundary (SardInfra)
 
-`SardInfra` axiomizes only `sard_of_finrank_gt` — the high-dimensional case of Sard's
-theorem requiring implicit function theorem + Taylor remainder. The equidimensional
-case (`sard_of_finrank_eq`, area formula) and low-dimensional case (`sard_of_finrank_lt`,
-Hausdorff dimension) are proved from existing Mathlib infrastructure.
+`SardInfra.lean` currently contains `det_fderiv_eq_zero_of_not_surjective` (proved:
+determinant vanishes at critical points). The `SardInfra` typeclass (axiomizing only
+`sard_of_finrank_gt`) is deferred to gate 3. The equidimensional and low-dimensional
+Sard cases are provable from Mathlib (area formula, Hausdorff dimension) — Aristotle
+artifacts exist at `docs/aristotle/artifacts/batch1-sard-low-dim.lean.txt` but need
+import work. **Sard equidimensional is the next headline proof target.**
 
-Not meant to be instantiated in this repo — exists to let Route A proofs proceed
-under an explicit, auditable axiom boundary. `SmoothTakens.lean` does NOT import
-`SardInfra` — its content (embedding chain) is fully axiom-free.
+`SmoothTakens.lean` does NOT import `SardInfra` — its embedding chain is fully
+axiom-free. Only the future genericity theorem would depend on `SardInfra`.
 
 Enforcement levels match the Project section above. Modeled on cd-formalization's
 `PDEInfra` pattern.

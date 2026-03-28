@@ -1,20 +1,91 @@
-# TakensFormal
+[![CI](https://github.com/Project-Navi/takens-formalization/actions/workflows/lean_action_ci.yml/badge.svg)](https://github.com/Project-Navi/takens-formalization/actions/workflows/lean_action_ci.yml)
+![Lean v4.28.0](https://img.shields.io/badge/Lean-v4.28.0-blue)
+![Mathlib](https://img.shields.io/badge/Mathlib-dep-blue)
+![sorry-free](https://img.shields.io/badge/sorry--free-%E2%9C%93-brightgreen)
+![30 verified declarations](https://img.shields.io/badge/verified-30%20declarations-brightgreen)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-orange)](LICENSE)
 
-Lean 4 + Mathlib formalization of the Takens delay embedding theorem.
+# Delay Embedding Theory — Lean 4 Formalization
 
-## Routes
+Formal verification of delay embedding characterization, ordinal pattern
+compression, and the topological embedding chain for compact dynamical systems.
 
-**Route B (discrete):** Characterization of delay embedding injectivity
-via orbit separation (`delayEmbedding_injective_iff_separatesOrbits`).
-Ordinal compression theory via `ordinalDelayMap`. Zero sorry, zero axioms.
+## What is verified
 
-**Route A (smooth):** Classical smooth Takens embedding theorem on compact
-manifolds. Skeleton — embedding chain and `SardInfra` axiom typeclass
-planned. Genericity deferred — tracked in `debt.md`.
+**Route B (discrete, 25 declarations):** The delay coordinate map
+`x ↦ (α(x), α(f(x)), …, α(f^[k-1](x)))` is injective if and only if
+the observation `α` separates all pairs of states whose first `k` iterates
+under `f` coincide (`SeparatesOrbits`). For non-injective observations on
+finite types, a separating window exists iff orbits eventually differ under
+`α` — the minimum window equals the maximum coincidence length over all
+distinct pairs. The ordinal pattern of the delay window is invariant under
+strictly monotone transformations, and the number of observed patterns along
+an orbit is bounded by `min(d!, N, period)`.
 
-Route A and Route B are independent proof trees with no shared definitions.
+**Route A (smooth, 5 declarations):** For a compact topological space,
+a continuous injective map to a Hausdorff space is a closed embedding, and
+the range factorization is a homeomorphism. Applied to the delay coordinate
+map with continuous dynamics and observation. Axiom-free — does not import
+`SardInfra`. Genericity deferred (tracked in `debt.md`).
 
-## Build & verify
+### Proof spine
+
+| Step | Declaration | File |
+|------|-------------|------|
+| Ordinal pattern predicate | `IsOrdinalPatternOf` | `OrdinalPattern` |
+| Sorting permutation | `ordinalPattern` | `OrdinalPattern` |
+| Existence + uniqueness | `ordinalPattern_exists_unique` | `OrdinalPattern` |
+| Monotone invariance | `isOrdinalPatternOf_comp_strictMono` | `OrdinalPattern` |
+| Every perm realizable | `ordinalPattern_surjective` | `OrdinalPattern` |
+| Delay coordinate map | `delayEmbedding` | `DelayWindow` |
+| Orbit separation | `SeparatesOrbits` | `DelayWindow` |
+| **Headline iff** | **`delayEmbedding_injective_iff_separatesOrbits`** | **`DelayWindow`** |
+| First-disagreement | `coincidenceLength` | `DelayWindow` |
+| Finite existence | `exists_separatingWindow_iff` | `DelayWindow` |
+| Continuity | `delayEmbedding_continuous` | `DelayWindow` |
+| Image card bounds | `delayEmbedding_image_card_le/of_injective` | `DelayWindow` |
+| Trivial separation | `separatesOrbits_of_injective` | `IteratePeriod` |
+| Tie-free windows | `windowDistinct_of_injective_of_le_minimalPeriod` | `IteratePeriod` |
+| Collision → periodicity | `isPeriodicPt_of_injective_iterate_eq` | `IteratePeriod` |
+| Orbit distinctness | `windowDistinct_of_injective_orbit` | `IteratePeriod` |
+| Ordinal delay map | `ordinalDelayMap` | `OrdinalTakens` |
+| PE robustness | `ordinalDelayMap_monotone_invariant` | `OrdinalTakens` |
+| Order characterization | `ordinalDelayMap_eq_of_order_eq` | `OrdinalTakens` |
+| Observed patterns | `observedPatterns` | `OrdinalTakens` |
+| Bound ≤ d! | `card_observedPatterns_le_factorial` | `OrdinalTakens` |
+| Bound ≤ N | `card_observedPatterns_le_length` | `OrdinalTakens` |
+| Bound ≤ period | `card_observedPatterns_le_period` | `OrdinalTakens` |
+| Det vanishes at critical | `det_fderiv_eq_zero_of_not_surjective` | `SardInfra` |
+| Smooth delay map | `smoothDelayMap` | `SmoothTakens` |
+| Continuity | `smoothDelayMap_continuous` | `SmoothTakens` |
+| **Closed embedding** | **`smoothDelayMap_isClosedEmbedding`** | **`SmoothTakens`** |
+| Embedding | `smoothDelayMap_isEmbedding` | `SmoothTakens` |
+| Homeomorphism | `smoothDelayMap_rangeHomeomorph` | `SmoothTakens` |
+
+## Axiom boundary
+
+**Zero custom axioms.** All 30 declarations depend only on
+`[propext, Classical.choice, Quot.sound]` with no `sorryAx`.
+The `#print axioms` dashboard in `Verify.lean` confirms this.
+
+`SardInfra.lean` contains a proved helper (`det_fderiv_eq_zero_of_not_surjective`);
+the `SardInfra` typeclass (axiomizing `sard_of_finrank_gt`) is deferred to gate 3.
+`SmoothTakens.lean` does not import `SardInfra` — its content is axiom-free.
+
+## File structure
+
+| File | Role | Status |
+|------|------|--------|
+| `OrdinalPattern.lean` | Bandt-Pompe ordinal pattern map (upstream candidate) | Proved |
+| `DelayWindow.lean` | Delay embedding + SeparatesOrbits + coincidenceLength | Proved |
+| `IteratePeriod.lean` | Period bridge lemmas | Proved |
+| `TakensDiscrete.lean` | Future finite-horizon corollaries | Skeleton |
+| `OrdinalTakens.lean` | Ordinal delay compression + observedPatterns | Proved |
+| `SardInfra.lean` | Sard det helper; typeclass deferred | Partial |
+| `SmoothTakens.lean` | Embedding chain: continuity → homeomorphism | Proved |
+| `Verify.lean` | Axiom dashboard (diagnostic) | Active |
+
+## Building
 
 ```bash
 lake build --wfail                     # primary — warnings are errors
@@ -23,30 +94,31 @@ lake build TakensFormal.Verify         # axiom dashboard (compilation check)
 lake env lean TakensFormal/Verify.lean # display axiom output
 ```
 
-## File structure
+Requires Lean 4.28.0 (via `lean-toolchain`) and Mathlib v4.28.0 (via `lakefile.toml`).
 
-| File | Role | Route |
-|------|------|-------|
-| `OrdinalPattern.lean` | Bandt-Pompe ordinal pattern map | B |
-| `DelayWindow.lean` | Delay embedding + SeparatesOrbits + characterization | B |
-| `IteratePeriod.lean` | Period bridge lemmas | B |
-| `TakensDiscrete.lean` | Future finite-horizon corollaries (skeleton) | B |
-| `OrdinalTakens.lean` | Ordinal delay compression theory | B |
-| `SardInfra.lean` | Sard axiom typeclass (skeleton) | A |
-| `SmoothTakens.lean` | Smooth delay map (skeleton) | A |
-| `Verify.lean` | Axiom dashboard (diagnostic) | Both |
+## Development process
 
-## Axiom boundary
+**What the author did**: The formalization architecture — the dual-route
+design, the rescope from trivial injective-α injectivity to honest orbit
+separation characterization, the property-first ordinal pattern design,
+the coincidence length theory for non-injective observations, and the
+compression/quotient framing for ordinal delay maps — is the core
+contribution. The underlying mathematics is from Takens (1981) and
+Bandt-Pompe (2002).
 
-`TakensFormal.Verify` should report only `[propext, Classical.choice,
-Quot.sound]` plus the axioms exposed via `SardInfra` (no hidden `sorryAx`).
+**What AI tools did**: Claude Opus assisted with Lean 4 syntax, Mathlib API
+navigation, and proof term synthesis. Aristotle (Harmonic) independently
+proved leaf lemmas (existence/uniqueness, monotone invariance, period bounds,
+embedding chain, Sard helpers) and provided API reconnaissance that shaped
+definition design. These roles are analogous to `omega`, `aesop`, and other
+proof automation — the strategy is human, the term-level search is
+machine-assisted.
 
-Route B theorems carry no custom axioms. Route A theorems will depend on
-`SardInfra`, which axiomizes `sard_of_finrank_gt` (not yet in Mathlib;
-see `Mathlib.Geometry.Manifold.WhitneyEmbedding` TODO).
+**Verification**: The final arbiter is the Lean compiler:
+```bash
+lake build --wfail   # type-checks or it doesn't
+```
 
-## AI disclosure
+## License
 
-Parts of this formalization were developed with Claude (Anthropic) and
-Aristotle (theorem prover). All code has been manually reviewed and
-understood.
+Copyright 2026 Nelson Spence. Licensed under [Apache 2.0](LICENSE).
