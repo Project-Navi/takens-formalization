@@ -1,0 +1,163 @@
+/-
+  Ordinal Pattern Entropy Bounds for Finite Dynamical Systems
+
+  Given a map f : X → X on a finite type X and an observation function α : X → ℝ,
+  we define ordinal patterns via the ranking permutation of delay-coordinate windows,
+  and prove sharp bounds on the number of distinct patterns observed along orbits.
+-/
+import Mathlib
+
+open Finset Function Fintype Nat Classical
+
+noncomputable section
+
+variable {X : Type*} [Fintype X] [DecidableEq X]
+
+/-! ## Ranking Permutation
+
+We define the ordinal pattern of a finite sequence `v : Fin d → ℝ` as the
+ranking permutation: the element at position `i` receives rank equal to the
+number of positions `j` with `(v j, j) <_lex (v i, i)`.
+-/
+
+section RankingPermutation
+
+variable {d : ℕ}
+
+/-- Strict lexicographic order on (value, index) pairs, used for tie-breaking in rankings. -/
+def lexLt (v : Fin d → ℝ) (i j : Fin d) : Prop :=
+  v i < v j ∨ (v i = v j ∧ i.val < j.val)
+
+instance lexLt.decidable (v : Fin d → ℝ) (i j : Fin d) : Decidable (lexLt v i j) :=
+  inferInstanceAs (Decidable (_ ∨ _))
+
+lemma lexLt_irrefl (v : Fin d → ℝ) (i : Fin d) : ¬lexLt v i i := by
+  unfold lexLt; norm_num
+
+lemma lexLt_trans (v : Fin d → ℝ) {i j k : Fin d} :
+    lexLt v i j → lexLt v j k → lexLt v i k := by
+  grind +locals
+
+lemma lexLt_trichotomy (v : Fin d → ℝ) {i j : Fin d} (h : i ≠ j) :
+    lexLt v i j ∨ lexLt v j i := by
+  unfold lexLt; cases lt_trichotomy (v i) (v j) <;> aesop
+
+/-- The rank of element `i`: number of elements strictly less in the lex order. -/
+def rankFn (v : Fin d → ℝ) (i : Fin d) : ℕ :=
+  (Finset.univ.filter (fun j : Fin d => lexLt v j i)).card
+
+lemma rankFn_lt (v : Fin d → ℝ) (i : Fin d) : rankFn v i < d := by
+  refine' lt_of_lt_of_le (Finset.card_lt_card (Finset.filter_ssubset.mpr _)) _
+  · exact ⟨i, Finset.mem_univ _, by simp +decide [lexLt_irrefl]⟩
+  · norm_num
+
+/-- The rank function as a map to `Fin d`. -/
+def rankFinFn (v : Fin d → ℝ) (i : Fin d) : Fin d :=
+  ⟨rankFn v i, rankFn_lt v i⟩
+
+lemma rankFinFn_injective (v : Fin d → ℝ) : Function.Injective (rankFinFn v) := by
+  intros i j hij
+  by_contra h
+  wlog hij_wlog : lexLt v i j generalizing i j
+  · exact this hij.symm (Ne.symm h)
+      (by simpa [h] using lexLt_trichotomy v h |> Or.resolve_left <| by tauto)
+  · have h_subset : Finset.filter (fun k => lexLt v k i) Finset.univ ⊂
+        Finset.filter (fun k => lexLt v k j) Finset.univ := by
+      constructor <;> simp_all +decide [Finset.ssubset_def, Finset.subset_iff]
+      · exact fun x hx => lexLt_trans v hx hij_wlog
+      · exact ⟨i, hij_wlog, by unfold lexLt; aesop⟩
+    have := Finset.card_lt_card h_subset
+    simp_all +decide [rankFinFn]
+    exact this.ne (by simpa [rankFn] using hij)
+
+/-- The ordinal pattern of a finite real-valued sequence, as a permutation of `Fin d`. -/
+def ordinalPattern (v : Fin d → ℝ) : Equiv.Perm (Fin d) :=
+  Equiv.ofBijective (rankFinFn v)
+    ⟨rankFinFn_injective v, Finite.injective_iff_surjective.mp (rankFinFn_injective v)⟩
+
+end RankingPermutation
+
+/-! ## Orbit Patterns and Bounds -/
+
+section OrbitPatterns
+
+variable (f : X → X) (α : X → ℝ) (d : ℕ) (x : X)
+
+/-- The delay-coordinate observation window at step `n`:
+    `(α(f^n x), α(f^{n+1} x), …, α(f^{n+d−1} x))`. -/
+def delayWindow (n : ℕ) : Fin d → ℝ :=
+  fun i => α (f^[n + i.val] x)
+
+/-- The ordinal pattern observed at step `n` of the orbit. -/
+def orbPattern (n : ℕ) : Equiv.Perm (Fin d) :=
+  ordinalPattern (delayWindow f α d x n)
+
+/-- The set of distinct ordinal patterns along an orbit of length `N`. -/
+def patternSet (N : ℕ) : Finset (Equiv.Perm (Fin d)) :=
+  (Finset.range N).image (orbPattern f α d x)
+
+/-- The observation window at step `n` equals the window at `f^[n] x` starting from 0. -/
+lemma delayWindow_eq_of_state (n : ℕ) :
+    delayWindow f α d x n = fun i => α (f^[i.val] (f^[n] x)) := by
+  exact funext fun i => by rw [← Function.iterate_add_apply, add_comm]; rfl
+
+/-- **Bound 1.** The number of distinct ordinal patterns is at most `N`. -/
+theorem card_patternSet_le_N (N : ℕ) :
+    (patternSet f α d x N).card ≤ N := by
+  exact le_trans Finset.card_image_le (by simpa)
+
+/-- **Bound 2.** The number of distinct ordinal patterns is at most `d!`. -/
+theorem card_patternSet_le_factorial (N : ℕ) :
+    (patternSet f α d x N).card ≤ d.factorial := by
+  exact le_trans (Finset.card_le_univ _) (by simp +decide [Fintype.card_perm])
+
+/-- The state-pattern map: the ordinal pattern is determined by the current state. -/
+def statePattern (y : X) : Equiv.Perm (Fin d) :=
+  ordinalPattern (fun i => α (f^[i.val] y))
+
+/-- The pattern at orbit step `n` equals the state-pattern at `f^[n] x`. -/
+lemma orbPattern_eq_statePattern (n : ℕ) :
+    orbPattern f α d x n = statePattern f α d (f^[n] x) := by
+  unfold orbPattern statePattern delayWindow
+  simp +decide only [← iterate_add_apply, add_comm]
+
+/-- **Bound 3.** The number of distinct ordinal patterns is at most `card X`. -/
+theorem card_patternSet_le_card (N : ℕ) :
+    (patternSet f α d x N).card ≤ Fintype.card X := by
+  have h_orbit : patternSet f α d x N ⊆ Finset.image (statePattern f α d) Finset.univ := by
+    simp +decide [patternSet, Finset.subset_iff]
+    exact fun n _ => ⟨_, (orbPattern_eq_statePattern _ _ _ _ _) |> Eq.symm⟩
+  exact le_trans (Finset.card_le_card h_orbit) (Finset.card_image_le.trans (by simp +decide))
+
+/-- **Combined bound.** The number of distinct ordinal patterns is at most
+    `min(N, d!, card X)`. -/
+theorem card_patternSet_le_min (N : ℕ) :
+    (patternSet f α d x N).card ≤ min N (min d.factorial (Fintype.card X)) := by
+  exact le_min (card_patternSet_le_N f α d x N)
+    (le_min (card_patternSet_le_factorial f α d x N) (card_patternSet_le_card f α d x N))
+
+/-- On a periodic orbit, the ordinal pattern repeats with the same period. -/
+lemma orbPattern_periodic (p : ℕ) (_hp : 0 < p) (hper : f^[p] x = x) (n : ℕ) :
+    orbPattern f α d x (n + p) = orbPattern f α d x n := by
+  unfold orbPattern ordinalPattern delayWindow
+  simp +decide [add_comm, add_left_comm, Function.iterate_add_apply]
+  simp +decide [← Function.iterate_add_apply]
+  simp +decide [add_comm p, Function.iterate_add_apply, hper]
+
+/-- **Periodic orbit bound.** On a periodic orbit of period `p`, the number of
+    distinct ordinal patterns is at most `p`. -/
+theorem card_patternSet_le_period (N p : ℕ) (hp : 0 < p) (hper : f^[p] x = x) :
+    (patternSet f α d x N).card ≤ p := by
+  refine' le_trans (Finset.card_le_card _) _
+  exact Finset.image (fun n => orbPattern f α d x n) (Finset.range p)
+  · intro y hy
+    obtain ⟨n, _, rfl⟩ := Finset.mem_image.mp hy
+    refine' Finset.mem_image.mpr ⟨n % p, _, _⟩ <;> simp_all +decide
+    · exact Nat.mod_lt _ hp
+    · conv_rhs => rw [← Nat.mod_add_div n p]
+      induction n / p <;> simp_all +decide [Nat.mul_succ, ← add_assoc, orbPattern_periodic]
+  · exact Finset.card_image_le.trans (by simp)
+
+end OrbitPatterns
+
+end
