@@ -2,13 +2,28 @@
 ![Lean v4.28.0](https://img.shields.io/badge/Lean-v4.28.0-blue)
 ![Mathlib](https://img.shields.io/badge/Mathlib-dep-blue)
 ![sorry-free](https://img.shields.io/badge/sorry--free-%E2%9C%93-brightgreen)
-![30 verified declarations](https://img.shields.io/badge/verified-30%20declarations-brightgreen)
+![no custom axioms](https://img.shields.io/badge/custom%20axioms-0-brightgreen)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-orange)](LICENSE)
 
 # Delay Embedding Theory — Lean 4 Formalization
 
 Formal verification of delay embedding characterization, ordinal pattern
 compression, and the topological embedding chain for compact dynamical systems.
+
+## Mathematical background
+
+The Takens delay embedding theorem (1981) states that for a generic observation
+function on a compact manifold, the delay coordinate map
+`x ↦ (α(x), α(f(x)), …, α(f^{2d}(x)))` is a topological embedding into
+`ℝ^{2d+1}`. This is the theoretical foundation for reconstructing dynamical
+system attractors from scalar time series data.
+
+Route B formalizes the combinatorial core: for finite dynamical systems, the
+delay embedding is injective if and only if the observation separates orbit
+pairs within the observation window (`SeparatesOrbits`). Route A addresses
+the classical smooth setting, where the embedding chain (compact + injective →
+closed embedding) is proved axiom-free, and genericity requires Sard's theorem
+(not yet in Mathlib).
 
 ## What is verified
 
@@ -84,6 +99,13 @@ the `SardInfra` typeclass (axiomizing `sard_of_finrank_gt`) is deferred to gate 
 | `SardInfra.lean` | Sard det helper; typeclass deferred | Partial |
 | `SmoothTakens.lean` | Embedding chain: continuity → homeomorphism | Proved |
 | `Verify.lean` | Axiom dashboard (diagnostic) | Active |
+
+### Upstream candidates
+
+| Declaration | File | Mathlib status |
+|-------------|------|----------------|
+| `ordinalPattern` + API | `OrdinalPattern` | No ordinal pattern map in Mathlib |
+| `delayEmbedding` + characterization | `DelayWindow` | No `Dynamics.delayEmbedding` in Mathlib |
 
 ## Building
 
