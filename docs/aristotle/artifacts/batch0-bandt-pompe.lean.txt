@@ -1,0 +1,124 @@
+import Mathlib
+
+/-!
+# Bandt-Pompe Ordinal Patterns
+
+This file formalizes the theory of ordinal patterns as introduced by
+Bandt and Pompe (2002) for the analysis of time series data.
+
+## Main definitions
+
+* `IsOrdinalPatternOf σ f`: a permutation `σ` is an ordinal pattern of `f` if `f ∘ σ` is
+  strictly monotone (i.e., `σ` sorts the values of `f` in increasing order).
+* `ordinalPatternOf f hf`: the unique ordinal pattern of an injective function `f`.
+
+## Main results
+
+* `exists_unique_ordinalPattern`: for any injective function `f : Fin d → ℝ`, there exists
+  a unique permutation `σ` such that `f ∘ σ` is strictly monotone.
+* `ordinalPattern_surjective`: every permutation arises as the ordinal pattern of some
+  injective function.
+* `ordinalPattern_monotone_invariant`: the ordinal pattern is invariant under composition
+  with a strictly monotone function (a key property for applications).
+* `card_ordinalPatterns`: the number of ordinal patterns of order `d` equals `d!`.
+-/
+
+noncomputable section
+
+open Equiv Function Finset
+
+/-- A permutation `σ` is the ordinal pattern of `f` if `f ∘ σ` is strictly monotone,
+    i.e., `σ` sorts the values of `f` in increasing order. -/
+def IsOrdinalPatternOf {d : ℕ} (σ : Equiv.Perm (Fin d)) (f : Fin d → ℝ) : Prop :=
+  StrictMono (f ∘ σ)
+
+/-- For any injective function `f : Fin d → ℝ`, there exists a unique ordinal pattern:
+    a unique permutation `σ` such that `f ∘ σ` is strictly monotone.
+    This is the fundamental existence and uniqueness theorem for Bandt-Pompe ordinal patterns. -/
+theorem exists_unique_ordinalPattern {d : ℕ} (f : Fin d → ℝ) (hf : Injective f) :
+    ∃! σ : Equiv.Perm (Fin d), IsOrdinalPatternOf σ f := by
+  obtain ⟨σ, hσ⟩ : ∃ σ : Equiv.Perm (Fin d), IsOrdinalPatternOf σ f := by
+    have h_order : ∃ g : Fin d → ℝ, StrictMono g ∧ ∀ i, g i ∈ Set.range f := by
+      have h_card : Finset.card (Finset.image f Finset.univ) = d := by
+        rw [Finset.card_image_of_injective _ hf, Finset.card_fin]
+      exact ⟨fun i => Finset.orderEmbOfFin _ (by aesop) i, by aesop_cat,
+        fun i => by
+          have := Finset.mem_image.mp
+            (Finset.orderEmbOfFin_mem (Finset.image f Finset.univ) (by aesop) i)
+          aesop⟩
+    obtain ⟨g, hg₁, hg₂⟩ := h_order
+    choose σ hσ using hg₂
+    use Equiv.ofBijective σ (by
+      exact ⟨fun i j hij => hg₁.injective <| by have := hσ i; aesop,
+        Finite.injective_iff_surjective.mp <|
+          fun i j hij => hg₁.injective <| by have := hσ i; aesop⟩)
+    generalize_proofs at *
+    exact fun i j hij => by simpa [hσ] using hg₁ hij
+  refine ⟨σ, hσ, fun τ hτ => ?_⟩
+  have h_eq : f ∘ σ = f ∘ τ := by
+    have h_range : Set.range (f ∘ σ) = Set.range (f ∘ τ) := by
+      simp +decide
+    exact (StrictMono.range_inj hσ hτ).mp h_range
+  exact Equiv.Perm.ext fun x => hf <| by simpa using congr_fun h_eq.symm x
+
+/-- The ordinal pattern of an injective function `f : Fin d → ℝ`,
+    defined as the unique permutation that sorts `f`. -/
+noncomputable def ordinalPatternOf {d : ℕ} (f : Fin d → ℝ) (hf : Injective f) :
+    Equiv.Perm (Fin d) :=
+  (exists_unique_ordinalPattern f hf).choose
+
+/-- The ordinal pattern of `f` indeed makes `f ∘ σ` strictly monotone. -/
+theorem ordinalPatternOf_strictMono {d : ℕ} (f : Fin d → ℝ) (hf : Injective f) :
+    StrictMono (f ∘ ordinalPatternOf f hf) :=
+  (exists_unique_ordinalPattern f hf).choose_spec.1
+
+/-- Every permutation is realizable as the ordinal pattern of some injective function.
+    This shows that all `d!` patterns can actually occur. -/
+theorem ordinalPattern_surjective {d : ℕ} :
+    ∀ σ : Equiv.Perm (Fin d),
+      ∃ (f : Fin d → ℝ), Injective f ∧ IsOrdinalPatternOf σ f := by
+  intro σ
+  use fun i => (σ⁻¹ i : ℝ)
+  constructor
+  · exact fun i j h => σ⁻¹.injective <| Fin.ext <| Nat.cast_injective h
+  · intro i j hij; aesop
+
+/-- The ordinal pattern is invariant under composition with a strictly monotone function.
+    This is a key property: ordinal patterns capture only the *relative ordering* of values,
+    not their magnitudes. -/
+theorem ordinalPattern_monotone_invariant {d : ℕ} {σ : Equiv.Perm (Fin d)}
+    {f : Fin d → ℝ} {g : ℝ → ℝ} (hσ : IsOrdinalPatternOf σ f) (hg : StrictMono g) :
+    IsOrdinalPatternOf σ (g ∘ f) :=
+  hg.comp hσ
+
+/-- The number of ordinal patterns of order `d` equals `d!`. -/
+theorem card_ordinalPatterns (d : ℕ) :
+    Fintype.card (Equiv.Perm (Fin d)) = d.factorial := by
+  rw [Fintype.card_perm]; aesop
+
+/-- For a time series `x : ℕ → ℝ` and embedding dimension `d`, the ordinal pattern
+    at time `t` is the pattern of the window `(x(t), x(t+1), ..., x(t+d-1))`. -/
+def timeSeriesWindow (x : ℕ → ℝ) (d : ℕ) (t : ℕ) : Fin d → ℝ :=
+  fun i => x (t + i)
+
+/-- If the time series has distinct values in every window of size `d`,
+    then the ordinal pattern at each time step is well-defined. -/
+theorem timeSeriesPattern_wellDefined {x : ℕ → ℝ} {d : ℕ} {t : ℕ}
+    (hx : Injective (timeSeriesWindow x d t)) :
+    ∃! σ : Equiv.Perm (Fin d), IsOrdinalPatternOf σ (timeSeriesWindow x d t) :=
+  exists_unique_ordinalPattern _ hx
+
+/-- Ordinal patterns of the identity permutation correspond to already-sorted sequences. -/
+theorem ordinalPattern_id_iff {d : ℕ} (f : Fin d → ℝ) :
+    IsOrdinalPatternOf (Equiv.refl (Fin d)) f ↔ StrictMono f := by
+  aesop
+
+/-- The ordinal pattern of an injective function is unique:
+    if two permutations both sort `f`, they must be equal. -/
+theorem ordinalPattern_unique {d : ℕ} {σ τ : Equiv.Perm (Fin d)}
+    {f : Fin d → ℝ} (hσ : IsOrdinalPatternOf σ f) (hτ : IsOrdinalPatternOf τ f) :
+    σ = τ := by
+  apply (exists_unique_ordinalPattern f (by
+    exact fun x y hxy => σ.injective <| by have := hσ.injective; aesop)).unique hσ hτ
+
+end

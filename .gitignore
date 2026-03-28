@@ -1,0 +1,15 @@
+/.lake
+/lake-packages
+
+/build
+/archive
+/docs/internal
+
+# Superpowers specs/plans (internal, not committed)
+/docs/superpowers
+
+# Claude session metadata
+/.claude
+
+# Zensical build output
+/site

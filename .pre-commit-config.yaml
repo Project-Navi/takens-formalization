@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+  - repo: local
+    hooks:
+      - id: check-copyright
+        name: Mathlib copyright header (Lean files)
+        entry: scripts/check-copyright.sh
+        language: script
+        files: \.lean$
+        exclude: \.lake/
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: 5494c3ed33bff63904f7e323281686480dc4eb98  # v8.22.1
+    hooks:
+      - id: gitleaks

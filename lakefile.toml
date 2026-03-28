@@ -1,0 +1,25 @@
+name = "TakensFormal"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["TakensFormal"]
+lintDriver = "batteries/runLinter"
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+autoImplicit = false
+maxHeartbeats = 200000
+weak.linter.mathlibStandardSet = true
+weak.linter.style.longLine = true
+weak.linter.style.lambdaSyntax = true
+weak.linter.style.dollarSyntax = true
+weak.linter.style.cdot = true
+weak.linter.style.missingEnd = true
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.28.0"
+
+[[lean_lib]]
+name = "TakensFormal"

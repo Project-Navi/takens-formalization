@@ -1,0 +1,218 @@
+/-
+Aristotle Batch 0 — Exploratory API Reconnaissance
+====================================================
+Probing Mathlib API surface before freezing definitions.
+These are NOT project theorems — they test what API patterns exist
+for period semantics, iterate arithmetic, finite orbit bounds,
+and tuple sorting on Aristotle's Lean 4.24.0.
+
+Goal: learn where the hard API boundaries are, not prove route theorems.
+
+Submission: prove_file with wait=False
+Target: Aristotle (Lean 4.24.0 — syntax may differ from our 4.28.0)
+-/
+
+import Mathlib
+
+set_option maxHeartbeats 200000
+
+open Function Fintype
+
+/-! ### Group 1: Minimal-period semantics
+
+Probing how Mathlib's `minimalPeriod` behaves, especially on nonperiodic
+points. In a finite type, every orbit is *eventually* periodic, but NOT
+necessarily periodic from time 0 (counterexample: f(0)=1, f(1)=1 — then
+0 is not periodic). `minimalPeriod f x = 0` for nonperiodic x in Mathlib. -/
+
+/-
+PROBLEM
+For a bijective map on a finite type, every point IS periodic
+    (bijectivity prevents the "tail" of eventual periodicity).
+
+PROVIDED SOLUTION
+A bijective map on a finite type has every point periodic. Use `isPeriodicPt_minimalPeriod` which already exists in Mathlib for periodic points, but we need to establish periodicity. For bijective f on finite type, f is a permutation, so every point is periodic. Use `Function.IsPeriodicPt.minimalPeriod`.
+-/
+theorem isPeriodicPt_of_bijective {α : Type*} [Fintype α] [DecidableEq α]
+    (f : α → α) (hf : Bijective f) (x : α) :
+    IsPeriodicPt f (minimalPeriod f x) x := by
+  exact isPeriodicPt_minimalPeriod f x
+
+/-
+PROBLEM
+For a bijective map on a finite type, minimalPeriod is positive.
+
+PROVIDED SOLUTION
+For bijective f on a nonempty finite type, every point is periodic, so minimalPeriod is positive. Use `minimalPeriod_pos_of_isPeriodicPt` or similar after establishing periodicity.
+-/
+theorem minimalPeriod_pos_of_bijective {α : Type*} [Fintype α] [DecidableEq α]
+    [Nonempty α] (f : α → α) (hf : Bijective f) (x : α) :
+    0 < minimalPeriod f x := by
+  -- Applying the lemma that states that the minimal period of a periodic function is positive.
+  apply Nat.pos_of_ne_zero; intro h_zero
+  have h_not_periodic : ¬∃ n, 0 < n ∧ f^[n] x = x := by
+    simp_all +decide [ minimalPeriod ];
+    exact fun n hn h => h_zero ⟨ n, hn, h ⟩;
+  -- Since the function $f$ is bijective and $x$ is not periodic, the sequence $f^n(x)$ must be injective.
+  have h_injective : Function.Injective (fun n => f^[n] x) := by
+    intros m n hmn
+    by_contra h_neq;
+    -- Without loss of generality, assume $m < n$.
+    wlog hmn_lt : m < n generalizing m n;
+    · exact this hmn.symm ( Ne.symm h_neq ) ( lt_of_le_of_ne ( le_of_not_gt hmn_lt ) ( Ne.symm h_neq ) );
+    · -- Since $f$ is bijective, we have $f^{n-m}(x) = x$.
+      have h_periodic : f^[n-m] x = x := by
+        have h_periodic : f^[n] x = f^[m] (f^[n-m] x) := by
+          rw [ ← Function.iterate_add_apply, Nat.add_sub_of_le hmn_lt.le ];
+        exact hf.injective.iterate m ( by aesop );
+      exact h_not_periodic ⟨ n - m, Nat.sub_pos_of_lt hmn_lt, h_periodic ⟩;
+  exact absurd ( Set.infinite_range_of_injective h_injective ) ( Set.not_infinite.mpr <| Set.toFinite _ )
+
+/-
+PROBLEM
+Under explicit periodicity, iteration is periodic with the minimal period.
+
+PROVIDED SOLUTION
+This follows directly from the definition of IsPeriodicPt. `hx : IsPeriodicPt f (minimalPeriod f x) x` means `f^[minimalPeriod f x] x = x` by definition.
+-/
+theorem iterate_minimalPeriod_eq {α : Type*} [DecidableEq α]
+    (f : α → α) (x : α) (hx : IsPeriodicPt f (minimalPeriod f x) x) :
+    f^[minimalPeriod f x] x = x := by
+  exact hx
+
+/-
+PROBLEM
+Under periodicity, iterate by n mod period equals iterate by n.
+
+PROVIDED SOLUTION
+Use `Function.iterate_mod_minimalPeriod` or `Function.IsPeriodicPt.iterate_mod_minimalPeriod`. The hypothesis that minimalPeriod is positive is needed. This should be a direct Mathlib lemma about iterate_mod.
+-/
+theorem iterate_mod_minimalPeriod {α : Type*} [DecidableEq α]
+    (f : α → α) (x : α) (n : ℕ)
+    (hx : 0 < minimalPeriod f x) :
+    f^[n % minimalPeriod f x] x = f^[n] x := by
+  induction n / minimalPeriod f x <;> simp_all +decide [ Nat.mul_succ, ← add_assoc, Function.iterate_add_apply ]
+
+/-! ### Group 2: Iterate arithmetic
+
+Probing what iterate composition/decomposition lemmas exist in Mathlib.
+These inform how delay embedding shift proofs will work. -/
+
+/-
+PROBLEM
+Iterate addition decomposes as sequential iteration.
+
+PROVIDED SOLUTION
+This is `Function.iterate_add_apply` from Mathlib. Direct application.
+-/
+theorem iterate_add_apply {α : Type*} (f : α → α) (m n : ℕ) (x : α) :
+    f^[m + n] x = f^[m] (f^[n] x) := by
+  rw [ Function.iterate_add_apply ]
+
+/-
+PROBLEM
+Injectivity is preserved through iteration.
+
+PROVIDED SOLUTION
+Induction on n. Base: f^[0] = id is injective. Step: f^[n+1] = f ∘ f^[n], composition of injectives is injective. Or use `Function.Injective.iterate` from Mathlib.
+-/
+theorem injective_iterate {α : Type*}
+    (f : α → α) (hf : Injective f) (n : ℕ) :
+    Injective (f^[n]) := by
+  exact hf.iterate n
+
+/-
+PROBLEM
+If f is bijective on a finite type and f^[i] x = f^[i] y for all
+    i in range k where k ≥ minimalPeriod, then f^[0] x = f^[0] y.
+    (Probes whether period-cycling + range coverage closes.)
+
+PROVIDED SOLUTION
+From h with i=0 and 0 < k (since minimalPeriod f x ≤ k and minimalPeriod is positive for bijective f on finite type by pigeonhole), we get f^[0] x = f^[0] y, i.e., x = y. Actually we need 0 < k. Since f is bijective on a finite type, minimalPeriod f x ≥ 1 (every point is periodic), so k ≥ 1, so 0 < k, so h 0 (by omega) gives x = y.
+-/
+theorem iterate_zero_eq_of_all_eq_of_bijective {α : Type*} [Fintype α] [DecidableEq α]
+    (f : α → α) (hf : Bijective f) (x y : α) (k : ℕ)
+    (hk : minimalPeriod f x ≤ k)
+    (h : ∀ i, i < k → f^[i] x = f^[i] y) :
+    x = y := by
+  by_cases hk_zero : k = 0;
+  · have h_contra : 0 < minimalPeriod f x := by
+      apply_rules [ minimalPeriod_pos_of_bijective ];
+      exact ⟨ x ⟩;
+    linarith;
+  · exact h 0 ( Nat.pos_of_ne_zero hk_zero )
+
+/-! ### Group 3: Finite orbit bounding
+
+Probing bounded-orbit constructions over explicit finite index sets.
+NOT using `Finset.univ` over ℕ (ill-typed). -/
+
+/-
+PROBLEM
+The image of a bounded range under iteration has card ≤ type card.
+
+PROVIDED SOLUTION
+The image is a Finset of elements of α which is a Fintype. Use Finset.card_le_univ or Finset.card_le_card with Finset.subset_univ.
+-/
+theorem iterate_range_image_card_le {α : Type*} [Fintype α] [DecidableEq α]
+    (f : α → α) (x : α) (m : ℕ) :
+    ((Finset.range m).image (fun i => f^[i] x)).card ≤ Fintype.card α := by
+  convert Finset.card_le_univ ( Finset.image ( fun i => f^[i] x ) ( Finset.range m ) ) using 1
+
+/-
+PROBLEM
+For a bijective f, minimalPeriod is bounded by card.
+
+PROVIDED SOLUTION
+For bijective f on a finite type, every point is periodic, so minimalPeriod f x divides some n ≤ card. Actually, use `Function.IsPeriodicPt.minimalPeriod_le` or the fact that the orbit has at most card elements. There should be a Mathlib lemma like `minimalPeriod_le_card` or we can use that the orbit is a subset of Fintype.elems.
+-/
+theorem minimalPeriod_le_card_of_bijective {α : Type*} [Fintype α] [DecidableEq α]
+    (f : α → α) (hf : Bijective f) (x : α) :
+    minimalPeriod f x ≤ Fintype.card α := by
+  exact minimalPeriod_le_card
+
+/-
+PROBLEM
+For any f on a finite type, the orbit length (number of distinct
+    iterates in range n) is at most card. Probes Finset.card_image_le.
+
+PROVIDED SOLUTION
+Same as iterate_range_image_card_le. The image is a finset subset of the universe, so its card is ≤ Fintype.card α.
+-/
+theorem iterate_image_card_le_card {α : Type*} [Fintype α] [DecidableEq α]
+    (f : α → α) (x : α) (n : ℕ) :
+    ((Finset.range n).image (fun i => f^[i] x)).card ≤ Fintype.card α := by
+  exact iterate_range_image_card_le f x n
+
+/-! ### Group 4: Tuple.sort reconnaissance
+
+Probing what `Tuple.sort` exposes on 4.24.0. Highest risk of
+version incompatibility. Deliberately low ambition — testing
+what elaborates, not proving deep facts. -/
+
+/-
+PROBLEM
+`Tuple.sort v` is an `Equiv.Perm (Fin n)`, not a sorted tuple.
+    The sorted tuple is `v ∘ Tuple.sort v`, which is monotone.
+    (Original statement was ill-typed; corrected to use composition.)
+
+PROVIDED SOLUTION
+Use `Tuple.monotone_sort v` from Mathlib which states exactly this.
+-/
+theorem tuple_sort_monotone (n : ℕ) [NeZero n]
+    (v : Fin n → ℝ) :
+    Monotone (v ∘ Tuple.sort v) := by
+  exact Tuple.monotone_sort v
+
+/-
+PROBLEM
+`Tuple.sort v` already IS the permutation σ such that
+    `v ∘ σ` is sorted. The witness is just `Tuple.sort v` itself.
+
+PROVIDED SOLUTION
+The witness is `Tuple.sort v` itself. For all i, `(v ∘ Tuple.sort v) i = v (Tuple.sort v i)` by definition of composition. Use `⟨Tuple.sort v, fun i => rfl⟩`.
+-/
+theorem tuple_sort_perm (n : ℕ)
+    (v : Fin n → ℝ) :
+    ∃ σ : Equiv.Perm (Fin n), ∀ i, (v ∘ Tuple.sort v) i = v (σ i) := by
+  exact ⟨ _, fun i => rfl ⟩
