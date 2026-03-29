@@ -138,7 +138,7 @@ copyright headers on all `.lean` files, gitleaks.
 
 - Keep the statement, keep discovered dependencies
 - **Rewrite proof into clean human-owned form** — Aristotle output is draft, not scripture
-- Artifacts go to `docs/aristotle/artifacts/*.lean.txt` (outside build tree)
+- Artifacts go to `docs/aristotle/*.lean` (gitignored, outside build tree)
 
 ### Known limitations
 
