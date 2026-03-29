@@ -11,6 +11,7 @@ Lean 4 (v4.28.0) + Mathlib (v4.28.0) formalization of the Takens delay embedding
   Zero sorry, zero axioms.
 - **Route A (smooth):** `smoothDelayMap` embedding chain — compact + injective → closed
   embedding + homeomorphism onto image. Axiom-free (does NOT import `SardInfra`).
+  `SardInfra` now proves Sard equidimensional + low-dimensional (zero sorry).
   Genericity deferred pending `SardInfra` typeclass + parametric transversality.
 
 Route A and Route B are independent proof trees with no shared definitions.
@@ -137,11 +138,15 @@ copyright headers on all `.lean` files, gitleaks.
 
 - Keep the statement, keep discovered dependencies
 - **Rewrite proof into clean human-owned form** — Aristotle output is draft, not scripture
-- Artifacts go to `docs/aristotle/artifacts/*.lean.txt` (outside build tree)
+- Artifacts go to `docs/aristotle/*.lean` (gitignored, outside build tree)
 
 ### Known limitations
 
-- Aristotle runs Lean 4.24.0 — outputs may not compile on our 4.28.0
+- Aristotle now runs Lean 4.28.0 (matches our toolchain)
+- `import Mathlib` in Aristotle output is expected — rewrite to granular imports
+- `ContDiff` at `n = ⊤` reduces to an existential — dot notation (`.comp`)
+  fails; use `ContDiff.comp hg hf` as a function call instead
+- `ContDiff.continuous_fderiv` takes `(hn : n ≠ 0)`, not `1 ≤ n` — use `(by decide)`
 - Sometimes generates `exact?` (interactive-only tactic) — rewrite manually
 - Do NOT use `axiom` to provide upstream lemmas — shadows function definitions
 
@@ -169,6 +174,16 @@ copyright headers on all `.lean` files, gitleaks.
 - `Function.IsPeriodicPt` — `f^[n] x = x`
 - Uses `Dynamics.PeriodicPts.Defs`, NOT `GroupTheory.OrderOfElement`
 
+### Sard / measure theory
+
+- `MeasureTheory.addHaar_image_le_lintegral_abs_det_fderiv` — the area formula
+  (Jacobian), in `Mathlib.MeasureTheory.Function.Jacobian`
+- `dimH`, `ContDiffOn.dimH_image_le`, `hausdorffMeasure_of_dimH_lt` — all in
+  `Mathlib.Topology.MetricSpace.HausdorffDimension`
+- `absolutelyContinuous_isAddHaarMeasure` — in `Mathlib.MeasureTheory.Measure.Haar.Unique`
+- `LinearMap.isUnit_iff_ker_eq_bot` — needs `LinearMap.` prefix (in that namespace)
+- No standalone `continuous_det` lemma — `grind +suggestions` can derive it
+
 ### ℕ arithmetic
 
 - `ring` does NOT close `a * a^n = a^(n+1)` on ℕ — use `rw [pow_succ, mul_comm]`
@@ -189,7 +204,7 @@ copyright headers on all `.lean` files, gitleaks.
 | `IteratePeriod.lean` | Period bridge lemmas | B | Proved |
 | `TakensDiscrete.lean` | Future finite-horizon corollaries (skeleton, not frozen) | B | Skeleton |
 | `OrdinalTakens.lean` | Ordinal delay compression + observedPatterns bounds | B | Proved |
-| `SardInfra.lean` | Sard det helper proved; typeclass deferred to gate 3 | A | Partial |
+| `SardInfra.lean` | criticalSet/Values defs, Sard equidim + low-dim proved; high-dim typeclass deferred to gate 3 | A | Proved (equidim + low-dim) |
 | `SmoothTakens.lean` | Embedding chain: continuity, closed embedding, homeomorphism | A | Proved |
 | `Verify.lean` | Axiom dashboard (diagnostic, NOT in root aggregator) | Both | Active |
 
@@ -202,12 +217,17 @@ Project-local files use no namespace wrapper — deliberate for a terminal resea
 
 ## Axiom boundary (SardInfra)
 
-`SardInfra.lean` currently contains `det_fderiv_eq_zero_of_not_surjective` (proved:
-determinant vanishes at critical points). The `SardInfra` typeclass (axiomizing only
-`sard_of_finrank_gt`) is deferred to gate 3. The equidimensional and low-dimensional
-Sard cases are provable from Mathlib (area formula, Hausdorff dimension) — Aristotle
-artifacts exist at `docs/aristotle/artifacts/batch1-sard-low-dim.lean.txt` but need
-import work. **Sard equidimensional is the next headline proof target.**
+`SardInfra.lean` contains:
+- `criticalSet` / `criticalValues` — definitions of critical set and critical values
+- `surjective_iff_det_ne_zero` — surjectivity ↔ nonzero determinant (iff)
+- `det_fderiv_eq_zero_of_not_surjective` — determinant vanishes at critical points
+- `criticalSet_eq_det_zero`, `isClosed_criticalSet_of_contDiff` — structural lemmas
+- `sard_equidim` — equidimensional Sard via Jacobian area formula (proved)
+- `sard_low_dim` — low-dimensional Sard via Hausdorff dimension (proved)
+- `sard_equidim_general` — general equidimensional via `ContinuousLinearEquiv` (proved)
+
+The `SardInfra` typeclass (axiomizing only `sard_of_finrank_gt`, the high-dimensional
+Morse–Sard induction) is deferred to gate 3.
 
 `SmoothTakens.lean` does NOT import `SardInfra` — its embedding chain is fully
 axiom-free. Only the future genericity theorem would depend on `SardInfra`.

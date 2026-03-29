@@ -27,7 +27,7 @@ closed embedding) is proved axiom-free, and genericity requires Sard's theorem
 
 ## What is verified
 
-**Route B (discrete, 25 declarations):** The delay coordinate map
+**Route B (discrete, 24 declarations):** The delay coordinate map
 `x ↦ (α(x), α(f(x)), …, α(f^[k-1](x)))` is injective if and only if
 the observation `α` separates all pairs of states whose first `k` iterates
 under `f` coincide (`SeparatesOrbits`). For non-injective observations on
@@ -37,11 +37,14 @@ distinct pairs. The ordinal pattern of the delay window is invariant under
 strictly monotone transformations, and the number of observed patterns along
 an orbit is bounded by `min(d!, N, period)`.
 
-**Route A (smooth, 5 declarations):** For a compact topological space,
+**Route A (smooth, 18 declarations):** For a compact topological space,
 a continuous injective map to a Hausdorff space is a closed embedding, and
 the range factorization is a homeomorphism. Applied to the delay coordinate
-map with continuous dynamics and observation. Axiom-free — does not import
-`SardInfra`. Genericity deferred (tracked in `debt.md`).
+map with continuous dynamics and observation. `SmoothTakens` is axiom-free
+(does not import `SardInfra`). `SardInfra` proves Sard's theorem for the
+equidimensional case (via the Jacobian area formula) and the low-dimensional
+case (via Hausdorff dimension bounds). The high-dimensional Morse–Sard case
+is deferred to a typeclass at gate 3.
 
 ### Proof spine
 
@@ -70,7 +73,14 @@ map with continuous dynamics and observation. Axiom-free — does not import
 | Bound ≤ d! | `card_observedPatterns_le_factorial` | `OrdinalTakens` |
 | Bound ≤ N | `card_observedPatterns_le_length` | `OrdinalTakens` |
 | Bound ≤ period | `card_observedPatterns_le_period` | `OrdinalTakens` |
+| Critical set | `criticalSet` / `criticalValues` | `SardInfra` |
+| Surjective ↔ det ≠ 0 | `ContinuousLinearMap.surjective_iff_det_ne_zero` | `SardInfra` |
 | Det vanishes at critical | `det_fderiv_eq_zero_of_not_surjective` | `SardInfra` |
+| Critical = det-zero | `criticalSet_eq_det_zero` | `SardInfra` |
+| Critical set closed | `isClosed_criticalSet_of_contDiff` | `SardInfra` |
+| **Sard equidim** | **`sard_equidim`** | **`SardInfra`** |
+| **Sard low-dim** | **`sard_low_dim`** | **`SardInfra`** |
+| **Sard equidim general** | **`sard_equidim_general`** | **`SardInfra`** |
 | Smooth delay map | `smoothDelayMap` | `SmoothTakens` |
 | Continuity | `smoothDelayMap_continuous` | `SmoothTakens` |
 | **Closed embedding** | **`smoothDelayMap_isClosedEmbedding`** | **`SmoothTakens`** |
@@ -79,13 +89,15 @@ map with continuous dynamics and observation. Axiom-free — does not import
 
 ## Axiom boundary
 
-**Zero custom axioms.** All 30 declarations depend only on
+**Zero custom axioms.** All 42 declarations depend only on
 `[propext, Classical.choice, Quot.sound]` with no `sorryAx`.
 The `#print axioms` dashboard in `Verify.lean` confirms this.
 
-`SardInfra.lean` contains a proved helper (`det_fderiv_eq_zero_of_not_surjective`);
-the `SardInfra` typeclass (axiomizing `sard_of_finrank_gt`) is deferred to gate 3.
-`SmoothTakens.lean` does not import `SardInfra` — its content is axiom-free.
+`SardInfra.lean` proves Sard's theorem for the equidimensional and
+low-dimensional cases. The `SardInfra` typeclass (axiomizing
+`sard_of_finrank_gt` for the high-dimensional Morse–Sard case) is deferred
+to gate 3. `SmoothTakens.lean` does not import `SardInfra` — its
+embedding chain is axiom-free.
 
 ## File structure
 
@@ -96,7 +108,7 @@ the `SardInfra` typeclass (axiomizing `sard_of_finrank_gt`) is deferred to gate 
 | `IteratePeriod.lean` | Period bridge lemmas | Proved |
 | `TakensDiscrete.lean` | Future finite-horizon corollaries | Skeleton |
 | `OrdinalTakens.lean` | Ordinal delay compression + observedPatterns | Proved |
-| `SardInfra.lean` | Sard det helper; typeclass deferred | Partial |
+| `SardInfra.lean` | Sard equidim + low-dim; high-dim typeclass deferred | Proved (2 of 3 cases) |
 | `SmoothTakens.lean` | Embedding chain: continuity → homeomorphism | Proved |
 | `Verify.lean` | Axiom dashboard (diagnostic) | Active |
 
@@ -131,7 +143,7 @@ Bandt-Pompe (2002).
 **What AI tools did**: Claude Opus assisted with Lean 4 syntax, Mathlib API
 navigation, and proof term synthesis. Aristotle (Harmonic) independently
 proved leaf lemmas (existence/uniqueness, monotone invariance, period bounds,
-embedding chain, Sard helpers) and provided API reconnaissance that shaped
+embedding chain, Sard equidim/low-dim) and provided API reconnaissance that shaped
 definition design. These roles are analogous to `omega`, `aesop`, and other
 proof automation — the strategy is human, the term-level search is
 machine-assisted.
