@@ -280,3 +280,52 @@ body {
 .md-footer-meta {
   color: #8a867f;
 }
+
+/* ── Confidence badges (theorem status) ── */
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.badge--novel,
+.badge--axiom-free,
+.badge--proved { background: rgba(126, 184, 168, 0.15); color: #7eb8a8; }
+
+.badge--axiom-boundary,
+.badge--skeleton { background: rgba(212, 165, 116, 0.15); color: #d4a574; }
+
+.badge--deferred { background: rgba(196, 122, 122, 0.15); color: #c47a7a; }
+
+/* ── Theorem block ── */
+.theorem-block {
+  margin: 1.25rem 0;
+  padding: 1rem 1.25rem;
+  background: rgba(126, 184, 168, 0.06);
+  border-left: 3px solid #7eb8a8;
+  border-radius: 0 8px 8px 0;
+}
+
+.theorem-name {
+  font-size: 0.85rem;
+  color: #9a958e;
+  margin-left: 0.5rem;
+}
+
+/* ── Cross-link row ── */
+.cross-links {
+  font-size: 0.82rem;
+  color: #9a958e;
+  margin-top: 0.5rem;
+}
+
+.cross-links a {
+  color: #7eb8a8;
+  text-decoration: none;
+  border-bottom: 1px dotted #7eb8a8;
+}
