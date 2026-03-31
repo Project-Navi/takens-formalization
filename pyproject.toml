@@ -1,0 +1,8 @@
+[project]
+name = "takens-formalization"
+version = "0.1.0"
+description = "Documentation for the Takens delay embedding formalization"
+requires-python = ">=3.12"
+
+[dependency-groups]
+docs = ["zensical>=0.0.24"]

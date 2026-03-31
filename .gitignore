@@ -14,5 +14,11 @@
 # Claude session metadata
 /.claude
 
+# Visual brainstorming artifacts
+/.superpowers
+
+# Python virtual environment
+/.venv
+
 # Zensical build output
 /site
