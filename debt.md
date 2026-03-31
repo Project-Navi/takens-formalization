@@ -30,6 +30,16 @@
       Not a PR; value is as a precise Lean 4 statement shared on Zulip to inform
       upstream Sard work.
 
+### Documentation — future expansion
+- [ ] **Bandt-Keller-Pompe 2002 (Nonlinearity)** — "Entropy of interval maps via
+      permutations." DOI: `10.1088/0951-7715/15/5/312`. Rigorous proof that
+      permutation entropy equals topological entropy for piecewise monotone maps.
+      Add to references.bib + ordinal compression page when Research section expands.
+- [ ] **Huke 2006** — "Embedding Nonlinear Dynamical Systems: A Guide to Takens'
+      Theorem." University of Manchester technical report. Canonical pedagogical
+      bridge text between Takens theory and practitioners. Add to references.bib +
+      proof architecture page when expanding for broader audience.
+
 ### Infrastructure
 - [ ] **Axiom allowlist enforcement** — Upgrade `scripts/check-axioms.sh` from
       `sorryAx` check to full allowlist after SardInfra typeclass is designed (gate 3).
