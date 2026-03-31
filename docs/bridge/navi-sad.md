@@ -98,6 +98,10 @@ genuine embedding of the attractor, not merely an injective function. Compactnes
 + injectivity + continuity is enough; no smoothness beyond continuity is needed
 for the embedding conclusion.
 
+Note: the compactness and continuity hypotheses of this theorem are not verified
+for the LLM residual stream setting. This result provides theoretical motivation
+rather than a direct operational guarantee for navi-SAD's pipeline.
+
 **What this guarantees.** The topology of the attractor is preserved by the delay
 embedding. Neighborhoods map to neighborhoods; connected components are preserved;
 the reconstructed attractor is homeomorphic to the original.

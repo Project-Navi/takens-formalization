@@ -27,8 +27,8 @@ no definitions.
 |--------|-----------|------|
 | Coincidence length | For finite dynamical systems, a (possibly non-injective) observation separates orbits at window \(k\) iff every coincidence between distinct orbits has length \(< k\). | `DelayWindow.lean` |
 
-This extends Takens' 1981 theorem, which establishes generic injectivity but says
-nothing about *when* non-injective observations still suffice.
+This fills a gap left by Takens' 1981 theorem, which establishes generic
+injectivity but says nothing about *when* non-injective observations still suffice.
 
 ### Route B --- Discrete (24 declarations)
 
