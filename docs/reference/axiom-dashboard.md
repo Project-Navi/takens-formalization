@@ -13,9 +13,7 @@ nontrivial Lean proof uses.
 
 ### `propext` -- Propositional extensionality
 
-$$
-(P \leftrightarrow Q) \;\Longrightarrow\; P = Q
-$$
+$$(P \leftrightarrow Q) \;\Longrightarrow\; P = Q$$
 
 Two propositions that are logically equivalent are equal as terms.
 This is the principle that lets Lean treat "if and only if" as

@@ -2,9 +2,7 @@
 
 In his landmark 1981 paper, Takens proved that for a compact manifold \(M\) of dimension \(m\), the delay coordinate map
 
-\[
-\Phi_{(\varphi, y)}(x) = \bigl(y(x),\; y(\varphi(x)),\; \ldots,\; y(\varphi^{2m}(x))\bigr)
-\]
+$$\Phi_{(\varphi, y)}(x) = \bigl(y(x),\; y(\varphi(x)),\; \ldots,\; y(\varphi^{2m}(x))\bigr)$$
 
 is an embedding for **generic** pairs \((\varphi, y)\) in the \(C^2\) topology --- that is, for a residual set (in the sense of Baire category) of diffeomorphisms \(\varphi : M \to M\) and observations \(y : M \to \mathbb{R}\).
 
@@ -22,9 +20,7 @@ Given a dynamical system \(f : X \to X\) and an observation \(\alpha : X \to \ma
 
 **Definition.** Let \(f : X \to X\) and \(\alpha : X \to \mathbb{R}\). The *coincidence length* of two states \(x, y \in X\) is
 
-\[
-\mathrm{coinc}(x, y) \;=\; \begin{cases} \min\bigl\{\, i \in \mathbb{N} \;\big|\; \alpha(f^i(x)) \neq \alpha(f^i(y)) \,\bigr\} & \text{if such } i \text{ exists,} \\[4pt] \infty & \text{otherwise.} \end{cases}
-\]
+$$\mathrm{coinc}(x, y) \;=\; \begin{cases} \min\bigl\{\, i \in \mathbb{N} \;\big|\; \alpha(f^i(x)) \neq \alpha(f^i(y)) \,\bigr\} & \text{if such } i \text{ exists,} \\[4pt] \infty & \text{otherwise.} \end{cases}$$
 
 The coincidence length takes values in \(\mathbb{N}_\infty = \mathbb{N} \cup \{\infty\}\). It is finite for a pair \((x, y)\) precisely when the observation \(\alpha\) eventually distinguishes the orbits of \(x\) and \(y\).
 </div>
@@ -51,9 +47,7 @@ The coincidence length leads directly to a sharp characterization of when a non-
 
 Recall that the delay embedding of window length \(k\) is defined as
 
-\[
-\Phi_k(x) = \bigl(\alpha(x),\; \alpha(f(x)),\; \ldots,\; \alpha(f^{k-1}(x))\bigr) \in \mathbb{R}^k,
-\]
+$$\Phi_k(x) = \bigl(\alpha(x),\; \alpha(f(x)),\; \ldots,\; \alpha(f^{k-1}(x))\bigr) \in \mathbb{R}^k,$$
 
 and we say \(\alpha\) **separates \(f\)-orbits of length \(k\)** if \(\Phi_k\) is injective: whenever \(\alpha(f^i(x)) = \alpha(f^i(y))\) for all \(0 \leq i < k\), then \(x = y\).
 
@@ -68,15 +62,11 @@ and we say \(\alpha\) **separates \(f\)-orbits of length \(k\)** if \(\Phi_k\) i
 
 Equivalently, in terms of the coincidence length:
 
-\[
-\bigl(\exists\, k.\; \Phi_k \text{ is injective}\bigr) \;\iff\; \bigl(\forall\, x \neq y.\; \mathrm{coinc}(x, y) < \infty\bigr).
-\]
+$$\bigl(\exists\, k.\; \Phi_k \text{ is injective}\bigr) \;\iff\; \bigl(\forall\, x \neq y.\; \mathrm{coinc}(x, y) < \infty\bigr).$$
 
 Moreover, when these conditions hold, the witness \(k\) is constructed explicitly as
 
-\[
-k \;=\; 1 + \max_{x, y \in X}\, \mathrm{coinc}(x, y),
-\]
+$$k \;=\; 1 + \max_{x, y \in X}\, \mathrm{coinc}(x, y),$$
 
 the supremum of all pairwise coincidence lengths, plus one.
 </div>
@@ -105,9 +95,7 @@ The proof of the reverse direction (2 implies 1) uses finiteness of \(X\) in an 
 
 **Connection to the main injectivity theorem.** The separating window theorem sits naturally alongside `delayEmbedding_injective_iff_separatesOrbits`, which establishes
 
-\[
-\Phi_k \text{ is injective} \;\iff\; \operatorname{SeparatesOrbits}(f, \alpha, k).
-\]
+$$\Phi_k \text{ is injective} \;\iff\; \operatorname{SeparatesOrbits}(f, \alpha, k).$$
 
 Together, these two theorems give a complete picture: the injectivity--separation equivalence characterizes *what it means* for a given window to work, while the separating window theorem characterizes *whether any window can work at all* and how large it must be.
 

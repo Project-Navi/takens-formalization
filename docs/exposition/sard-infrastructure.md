@@ -18,9 +18,8 @@ This file builds the infrastructure for Sard's theorem in the setting of finite-
 
 **Definition.** The *critical set* of \(f : E \to F\) is
 
-\[
-\operatorname{Crit}(f) \;=\; \bigl\{\, x \in E \;\big|\; Df(x) : E \to F \text{ is not surjective}\,\bigr\}.
-\]
+$$\operatorname{Crit}(f) \;=\; \bigl\{\, x \in E \;\big|\; Df(x) : E \to F \text{ is not surjective}\,\bigr\}.$$
+
 </div>
 
 <details>
@@ -72,9 +71,8 @@ lemma det_fderiv_eq_zero_of_not_surjective (L : E →L[ℝ] E)
 
 **Theorem.** A continuous linear endomorphism \(L : E \to_L E\) on a finite-dimensional space is surjective iff \(\det L \ne 0\):
 
-\[
-L \text{ surjective} \;\iff\; \det L \ne 0.
-\]
+$$L \text{ surjective} \;\iff\; \det L \ne 0.$$
+
 </div>
 
 <details>

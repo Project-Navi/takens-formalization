@@ -6,9 +6,7 @@ Given an injective function \(f : \{0, \dots, d-1\} \to \mathbb{R}\), its ordina
 pattern is the unique permutation \(\sigma \in S_d\) such that
 \(f \circ \sigma\) is strictly increasing:
 
-\[
-f(\sigma(0)) < f(\sigma(1)) < \cdots < f(\sigma(d-1)).
-\]
+$$f(\sigma(0)) < f(\sigma(1)) < \cdots < f(\sigma(d-1)).$$
 
 This construction, due to Bandt and Pompe (2002), is the basis of permutation
 entropy and a wide family of complexity measures for time series. Composing
@@ -23,9 +21,9 @@ observation transforms and whose codomain has size at most \(d!\).
 <span class="theorem-name">(IsOrdinalPatternOf)</span>
 
 **Definition.** A permutation \(\sigma \in S_d\) is the *ordinal pattern of* \(f : \{0,\dots,d-1\} \to \mathbb{R}\) if \(f \circ \sigma\) is strictly monotone:
-\[
-\operatorname{IsOrdinalPatternOf}(\sigma, f) \;\iff\; f(\sigma(i)) < f(\sigma(j)) \text{ for all } i < j.
-\]
+
+$$\operatorname{IsOrdinalPatternOf}(\sigma, f) \;\iff\; f(\sigma(i)) < f(\sigma(j)) \text{ for all } i < j.$$
+
 </div>
 
 <details>
@@ -59,9 +57,9 @@ noncomputable def ordinalPattern (f : Fin d → ℝ) (hf : Injective f) :
 <span class="theorem-name">(ordinalPattern_exists_unique)</span>
 
 **Theorem.** For any injective \(f : \{0,\dots,d-1\} \to \mathbb{R}\), there exists a unique permutation \(\sigma \in S_d\) such that \(f \circ \sigma\) is strictly monotone:
-\[
-\exists!\, \sigma \in S_d, \quad \operatorname{IsOrdinalPatternOf}(\sigma, f).
-\]
+
+$$\exists!\, \sigma \in S_d, \quad \operatorname{IsOrdinalPatternOf}(\sigma, f).$$
+
 </div>
 
 <details>
@@ -82,9 +80,9 @@ input.
 <span class="theorem-name">(isOrdinalPatternOf_comp_strictMono)</span>
 
 **Theorem (Monotone invariance).** If \(\sigma\) is the ordinal pattern of \(f\) and \(g : \mathbb{R} \to \mathbb{R}\) is strictly monotone, then \(\sigma\) is also the ordinal pattern of \(g \circ f\):
-\[
-\operatorname{IsOrdinalPatternOf}(\sigma, f) \;\wedge\; g \text{ strictly monotone} \;\Longrightarrow\; \operatorname{IsOrdinalPatternOf}(\sigma, g \circ f).
-\]
+
+$$\operatorname{IsOrdinalPatternOf}(\sigma, f) \;\wedge\; g \text{ strictly monotone} \;\Longrightarrow\; \operatorname{IsOrdinalPatternOf}(\sigma, g \circ f).$$
+
 Ordinal patterns depend only on relative ordering, not on the scale or shape of the observation function.
 </div>
 
@@ -104,9 +102,9 @@ theorem isOrdinalPatternOf_comp_strictMono {σ : Equiv.Perm (Fin d)}
 <span class="theorem-name">(ordinalPattern_surjective)</span>
 
 **Theorem (Surjectivity).** Every permutation \(\sigma \in S_d\) is realizable as the ordinal pattern of some injective function:
-\[
-\forall\, \sigma \in S_d, \quad \exists\, f : \{0,\dots,d-1\} \hookrightarrow \mathbb{R}, \quad \pi(f) = \sigma.
-\]
+
+$$\forall\, \sigma \in S_d, \quad \exists\, f : \{0,\dots,d-1\} \hookrightarrow \mathbb{R}, \quad \pi(f) = \sigma.$$
+
 </div>
 
 <details>
@@ -131,9 +129,9 @@ injectivity of the input function.
 <span class="theorem-name">(ordinalDelayMap)</span>
 
 **Definition.** The *ordinal delay map* of window length \(k\) sends each state \(x\) (with tie-free window) to the ordinal pattern of its delay vector:
-\[
-\Pi_{f,\alpha,k} : \{x \in X \mid \operatorname{WindowDistinct}(f,\alpha,k,x)\} \;\to\; S_k, \qquad \Pi_{f,\alpha,k}(x) = \pi\bigl(\Phi_{f,\alpha,k}(x)\bigr).
-\]
+
+$$\Pi_{f,\alpha,k} : \{x \in X \mid \operatorname{WindowDistinct}(f,\alpha,k,x)\} \;\to\; S_k, \qquad \Pi_{f,\alpha,k}(x) = \pi\bigl(\Phi_{f,\alpha,k}(x)\bigr).$$
+
 </div>
 
 <details>
@@ -151,9 +149,9 @@ noncomputable def ordinalDelayMap (f : X → X) (α : X → ℝ) (k : ℕ)
 <span class="theorem-name">(ordinalDelayMap_monotone_invariant)</span>
 
 **Theorem (Monotone invariance of the ordinal delay map).** If \(g : \mathbb{R} \to \mathbb{R}\) is strictly monotone, then replacing \(\alpha\) by \(g \circ \alpha\) does not change the ordinal delay map:
-\[
-g \text{ strictly monotone} \;\Longrightarrow\; \Pi_{f,\, g \circ \alpha,\, k}(x) \;=\; \Pi_{f,\alpha,k}(x).
-\]
+
+$$g \text{ strictly monotone} \;\Longrightarrow\; \Pi_{f,\, g \circ \alpha,\, k}(x) \;=\; \Pi_{f,\alpha,k}(x).$$
+
 This is the formal justification for the robustness of permutation entropy to monotone signal transformations.
 </div>
 
@@ -201,9 +199,9 @@ upper bounds constrain the size of this set.
 <span class="theorem-name">(observedPatterns)</span>
 
 **Definition.** The *observed patterns* along an orbit of length \(N\) with window size \(d\):
-\[
-\operatorname{ObsPatterns}(f, \alpha, d, x, N) \;=\; \bigl\{\pi\bigl(\alpha(f^{t}(x)),\, \dots,\, \alpha(f^{t+d-1}(x))\bigr) : 0 \le t < N \bigr\} \;\subseteq\; S_d.
-\]
+
+$$\operatorname{ObsPatterns}(f, \alpha, d, x, N) \;=\; \bigl\{\pi\bigl(\alpha(f^{t}(x)),\, \dots,\, \alpha(f^{t+d-1}(x))\bigr) : 0 \le t < N \bigr\} \;\subseteq\; S_d.$$
+
 </div>
 
 <details>
@@ -257,9 +255,9 @@ theorem card_observedPatterns_le_length
 <span class="theorem-name">(card_observedPatterns_le_period)</span>
 
 **Theorem (Period bound).** On a periodic orbit, the number of distinct ordinal patterns is at most the minimal period:
-\[
-x \in \operatorname{PeriodicPts}(f) \;\Longrightarrow\; \bigl|\operatorname{ObsPatterns}(f, \alpha, d, x, N)\bigr| \;\le\; \operatorname{minPeriod}_f(x).
-\]
+
+$$x \in \operatorname{PeriodicPts}(f) \;\Longrightarrow\; \bigl|\operatorname{ObsPatterns}(f, \alpha, d, x, N)\bigr| \;\le\; \operatorname{minPeriod}_f(x).$$
+
 </div>
 
 <details>
@@ -285,9 +283,7 @@ ordinal dynamics:
 | \(\le p(x)\) | Periodicity | Low-period attractors |
 
 The *permutation entropy* of Bandt and Pompe (2002) is defined as
-\[
-H_d(f, \alpha, x) \;=\; -\sum_{\sigma \in S_d} p_\sigma \log p_\sigma,
-\]
+$$H_d(f, \alpha, x) \;=\; -\sum_{\sigma \in S_d} p_\sigma \log p_\sigma,$$
 where \(p_\sigma\) is the relative frequency of pattern \(\sigma\) along the orbit.
 The factorial bound gives the maximum entropy \(\log(d!)\); the period bound
 shows that periodic orbits have entropy at most \(\log(p(x))\), independent
