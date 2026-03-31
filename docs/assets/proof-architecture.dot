@@ -1,0 +1,64 @@
+digraph proof_architecture {
+  rankdir=TB
+  bgcolor="transparent"
+  node [fontname="DM Sans" fontsize=11 style=filled fillcolor="#1a1a1a"
+        fontcolor="#e8e4de" color="#2a2a2a" shape=box margin="0.15,0.08"
+        penwidth=1.5]
+  edge [color="#7eb8a8" arrowsize=0.6 penwidth=1.2]
+
+  subgraph cluster_routeB {
+    label="Route B: Discrete"
+    labeljust=l
+    fontname="Fraunces"
+    fontsize=14
+    fontcolor="#7eb8a8"
+    color="#2a2a2a"
+    style=dashed
+    margin=16
+
+    OrdinalPattern [label="OrdinalPattern.lean\n5 declarations"]
+    DelayWindow [label="DelayWindow.lean\n8 declarations\n(includes coincidenceLength)"
+                 color="#7eb8a8"]
+    IteratePeriod [label="IteratePeriod.lean\n4 declarations"]
+    OrdinalTakens [label="OrdinalTakens.lean\n7 declarations"]
+    TakensDiscrete [label="TakensDiscrete.lean\n(skeleton — 0 declarations)"
+                    style="filled,dashed" fillcolor="#1a1a1a"
+                    fontcolor="#d4a574" color="#d4a574"]
+  }
+
+  subgraph cluster_routeA {
+    label="Route A: Smooth"
+    labeljust=l
+    fontname="Fraunces"
+    fontsize=14
+    fontcolor="#7eb8a8"
+    color="#2a2a2a"
+    style=dashed
+    margin=16
+
+    SmoothTakens [label="SmoothTakens.lean\n5 declarations\n(axiom-free — no SardInfra import)"]
+    SardInfra [label="SardInfra.lean\n13 declarations\n(axiom boundary)"
+               color="#d4a574"]
+  }
+
+  subgraph cluster_diag {
+    label="Diagnostic"
+    labeljust=l
+    fontname="Fraunces"
+    fontsize=14
+    fontcolor="#9a958e"
+    color="#2a2a2a"
+    style=dotted
+    margin=16
+
+    Verify [label="Verify.lean\n(diagnostic only — not in library)"
+            style="filled,dotted" fillcolor="#1a1a1a"
+            fontcolor="#9a958e" color="#9a958e"]
+  }
+
+  // Route B imports
+  DelayWindow -> IteratePeriod [label="imports"]
+  DelayWindow -> OrdinalTakens [label="imports"]
+  OrdinalPattern -> OrdinalTakens [label="imports"]
+  IteratePeriod -> TakensDiscrete [label="imports"]
+}

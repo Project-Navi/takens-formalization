@@ -1,0 +1,82 @@
+# ──────────────────────────────────────────────
+# Edit these lines for your project
+# ──────────────────────────────────────────────
+[project]
+name = "takens-formalization"
+site_name = "Takens Formalization"
+description = "Lean 4 + Mathlib formalization of delay embedding theory"
+site_url = "https://project-navi.github.io/takens-formalization"
+repo_url = "https://github.com/Project-Navi/takens-formalization"
+repo_name = "Project-Navi/takens-formalization"
+copyright = "Copyright 2026 Nelson Spence"
+extra_css = ["stylesheets/navi.css"]
+extra_javascript = [
+    "javascripts/mathjax.js",
+    "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
+]
+
+# ──────────────────────────────────────────────
+# Navigation
+# ──────────────────────────────────────────────
+nav = [
+  {"Home" = "index.md"},
+  {"Getting Started" = [
+    {"Quickstart" = "getting-started/quickstart.md"},
+  ]},
+  {"Exposition" = [
+    {"Proof Architecture" = "exposition/proof-architecture.md"},
+    {"Beyond Takens: Coincidence Length" = "exposition/coincidence-length.md"},
+    {"Delay Embedding & Orbit Separation" = "exposition/delay-embedding.md"},
+    {"Ordinal Compression" = "exposition/ordinal-compression.md"},
+    {"Smooth Embedding Chain" = "exposition/smooth-embedding.md"},
+    {"Sard Infrastructure" = "exposition/sard-infrastructure.md"},
+  ]},
+  {"Research" = [
+    {"Open Problems" = "research/open-problems.md"},
+    {"Roadmap" = "research/roadmap.md"},
+  ]},
+  {"Reference" = [
+    {"Theorem Catalog" = "reference/theorems.md"},
+    {"Axiom Dashboard" = "reference/axiom-dashboard.md"},
+    {"Glossary" = "reference/glossary.md"},
+    {"Changelog" = "reference/changelog.md"},
+  ]},
+  {"Bridge" = [
+    {"Formal Backing for navi-SAD" = "bridge/navi-sad.md"},
+  ]},
+]
+
+# ──────────────────────────────────────────────
+# Everything below is shared brand config
+# You should not need to change these
+# ──────────────────────────────────────────────
+[project.theme]
+logo = "assets/logo.png"
+favicon = "assets/favicon.png"
+
+[project.theme.palette]
+scheme = "slate"
+
+[project.theme.features]
+navigation_sections = true
+navigation_expand = true
+navigation_top = true
+content_code_copy = true
+toc_integrate = true
+
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.tables]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.toc]
+permalink = true
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.superfences]
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+[project.plugins.search]
