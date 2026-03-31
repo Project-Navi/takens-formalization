@@ -18,7 +18,7 @@ observation transforms and whose codomain has size at most \(d!\).
 
 ## Ordinal pattern: definitions and properties
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(IsOrdinalPatternOf)</span>
 
@@ -37,7 +37,7 @@ def IsOrdinalPatternOf (σ : Equiv.Perm (Fin d)) (f : Fin d → ℝ) : Prop :=
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(ordinalPattern)</span>
 
@@ -54,7 +54,7 @@ noncomputable def ordinalPattern (f : Fin d → ℝ) (hf : Injective f) :
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(ordinalPattern_exists_unique)</span>
 
@@ -77,7 +77,7 @@ Existence is witnessed by `Tuple.sort` from Mathlib; uniqueness follows because
 two permutations that both sort the same injective function must agree on every
 input.
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(isOrdinalPatternOf_comp_strictMono)</span>
 
@@ -99,7 +99,7 @@ theorem isOrdinalPatternOf_comp_strictMono {σ : Equiv.Perm (Fin d)}
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(ordinalPattern_surjective)</span>
 
@@ -126,7 +126,7 @@ It is defined on the subtype of states with tie-free windows
 (\(\operatorname{WindowDistinct}\)), since ordinal pattern extraction requires
 injectivity of the input function.
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(ordinalDelayMap)</span>
 
@@ -146,7 +146,7 @@ noncomputable def ordinalDelayMap (f : X → X) (α : X → ℝ) (k : ℕ)
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(ordinalDelayMap_monotone_invariant)</span>
 
@@ -170,7 +170,7 @@ theorem ordinalDelayMap_monotone_invariant {f : X → X} {α : X → ℝ}
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(ordinalDelayMap_eq_of_order_eq)</span>
 
@@ -196,7 +196,7 @@ Given an orbit of length \(N\) and a window size \(d\), the *observed patterns*
 are the ordinal patterns encountered along the orbit. Three independent
 upper bounds constrain the size of this set.
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(observedPatterns)</span>
 
@@ -218,7 +218,7 @@ noncomputable def observedPatterns
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(card_observedPatterns_le_factorial)</span>
 
@@ -235,7 +235,7 @@ theorem card_observedPatterns_le_factorial
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(card_observedPatterns_le_length)</span>
 
@@ -252,7 +252,7 @@ theorem card_observedPatterns_le_length
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(card_observedPatterns_le_period)</span>
 

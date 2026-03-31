@@ -12,7 +12,7 @@ The most notable structural feature of this file is that **it is entirely axiom-
 
 ## Definition
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--axiom-free">Axiom-free</span>
 <span class="theorem-name">(smoothDelayMap)</span>
 
@@ -34,7 +34,7 @@ def smoothDelayMap (T : X → X) (h : X → ℝ) (n : ℕ) : X → (Fin n → �
 
 ## Continuity
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--axiom-free">Axiom-free</span>
 <span class="theorem-name">(smoothDelayMap_continuous)</span>
 
@@ -56,7 +56,7 @@ theorem smoothDelayMap_continuous
 
 ## Closed embedding
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--axiom-free">Axiom-free</span>
 <span class="theorem-name">(smoothDelayMap_isClosedEmbedding)</span>
 
@@ -78,7 +78,7 @@ theorem smoothDelayMap_isClosedEmbedding [CompactSpace X]
 
 ## Embedding
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--axiom-free">Axiom-free</span>
 <span class="theorem-name">(smoothDelayMap_isEmbedding)</span>
 
@@ -100,7 +100,7 @@ theorem smoothDelayMap_isEmbedding [CompactSpace X]
 
 ## Homeomorphism onto image
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--axiom-free">Axiom-free</span>
 <span class="theorem-name">(smoothDelayMap_rangeHomeomorph)</span>
 

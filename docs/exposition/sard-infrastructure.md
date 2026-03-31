@@ -12,7 +12,7 @@ This file builds the infrastructure for Sard's theorem in the setting of finite-
 
 ## Definitions
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(criticalSet)</span>
 
@@ -32,7 +32,7 @@ def criticalSet (f : E → F) : Set E :=
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(criticalValues)</span>
 
@@ -50,7 +50,7 @@ def criticalValues (f : E → F) : Set F :=
 
 ## Structural lemmas
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(det_fderiv_eq_zero_of_not_surjective)</span>
 
@@ -66,7 +66,7 @@ lemma det_fderiv_eq_zero_of_not_surjective (L : E →L[ℝ] E)
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(ContinuousLinearMap.surjective_iff_det_ne_zero)</span>
 
@@ -86,7 +86,7 @@ theorem ContinuousLinearMap.surjective_iff_det_ne_zero
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(criticalSet_eq_det_zero)</span>
 
@@ -103,7 +103,7 @@ theorem criticalSet_eq_det_zero (f : E → E) :
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(isClosed_criticalSet_of_contDiff)</span>
 
@@ -121,7 +121,7 @@ theorem isClosed_criticalSet_of_contDiff (f : E → E)
 
 ## Equidimensional Sard
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(sard_equidim)</span>
 
@@ -142,7 +142,7 @@ theorem sard_equidim (f : E → E) (hf : ContDiff ℝ ⊤ f)
 
 ## Low-dimensional Sard
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(sard_low_dim)</span>
 
@@ -166,7 +166,7 @@ theorem sard_low_dim (f : E → F) (hf : ContDiff ℝ ⊤ f)
 
 To handle \(f : E \to F\) with \(\dim E = \dim F\) (not just endomorphisms), we transport through a continuous linear equivalence.
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(exists_continuousLinearEquiv_of_finrank_eq)</span>
 
@@ -182,7 +182,7 @@ theorem exists_continuousLinearEquiv_of_finrank_eq
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(criticalSet_comp_equiv)</span>
 
@@ -198,7 +198,7 @@ theorem criticalSet_comp_equiv (f : E → F) (e : F ≃L[ℝ] E) :
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(ContinuousLinearEquiv.symm_preimage_eq_image)</span>
 
@@ -215,7 +215,7 @@ theorem ContinuousLinearEquiv.symm_preimage_eq_image
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(map_continuousLinearEquiv_isAddHaarMeasure)</span>
 
@@ -232,7 +232,7 @@ instance map_continuousLinearEquiv_isAddHaarMeasure
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(sard_equidim_general)</span>
 
@@ -254,7 +254,7 @@ theorem sard_equidim_general (f : E → F) (hf : ContDiff ℝ ⊤ f)
 
 ## The axiom boundary
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--deferred">Deferred</span>
 <span class="theorem-name">(sard_of_finrank_gt --- gate 3)</span>
 
