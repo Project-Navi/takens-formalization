@@ -16,7 +16,7 @@ is the foundation on which the rest of Route B is built.
 
 ## Core definitions
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(delayEmbedding)</span>
 
@@ -35,7 +35,7 @@ def delayEmbedding (f : X → X) (α : X → ℝ) (k : ℕ) (x : X) : Fin k → 
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(SeparatesOrbits)</span>
 
@@ -55,7 +55,7 @@ def SeparatesOrbits (f : X → X) (α : X → ℝ) (k : ℕ) : Prop :=
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(WindowDistinct)</span>
 
@@ -73,7 +73,7 @@ def WindowDistinct (f : X → X) (α : X → ℝ) (k : ℕ) (x : X) : Prop :=
 
 ## Headline theorem
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(delayEmbedding_injective_iff_separatesOrbits)</span>
 
@@ -99,7 +99,7 @@ reverse direction unfolds the definition and applies orbit separation pointwise.
 
 ## Continuity and cardinality
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(delayEmbedding_continuous)</span>
 
@@ -117,7 +117,7 @@ theorem delayEmbedding_continuous [TopologicalSpace X]
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(delayEmbedding_image_card_le)</span>
 
@@ -137,7 +137,7 @@ theorem delayEmbedding_image_card_le [Fintype X]
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(delayEmbedding_image_card_of_injective)</span>
 
@@ -164,7 +164,7 @@ The following results from `IteratePeriod.lean` connect the orbit separation
 framework to Mathlib's `Function.minimalPeriod` API, bridging the generic delay
 embedding characterization to concrete period bounds on finite types.
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(separatesOrbits_of_injective)</span>
 
@@ -181,7 +181,7 @@ theorem separatesOrbits_of_injective {f : X → X} {α : X → ℝ}
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(windowDistinct_of_injective_of_le_minimalPeriod)</span>
 
@@ -204,7 +204,7 @@ theorem windowDistinct_of_injective_of_le_minimalPeriod
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(isPeriodicPt_of_injective_iterate_eq)</span>
 
@@ -222,7 +222,7 @@ theorem isPeriodicPt_of_injective_iterate_eq
 ```
 </details>
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(windowDistinct_of_injective_orbit)</span>
 

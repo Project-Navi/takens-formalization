@@ -16,7 +16,7 @@ Takens' theorem is silent on this question. The coincidence length fills the gap
 
 Given a dynamical system \(f : X \to X\) and an observation \(\alpha : X \to \mathbb{R}\), two distinct states \(x \neq y\) may produce identical observations for several iterates before finally disagreeing. The **coincidence length** measures exactly how long two orbits look identical through the lens of \(\alpha\).
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--novel">Novel</span>
 <span class="theorem-name">(coincidenceLength)</span>
 
@@ -57,7 +57,7 @@ Recall that the delay embedding of window length \(k\) is defined as
 
 and we say \(\alpha\) **separates \(f\)-orbits of length \(k\)** if \(\Phi_k\) is injective: whenever \(\alpha(f^i(x)) = \alpha(f^i(y))\) for all \(0 \leq i < k\), then \(x = y\).
 
-<div class="theorem-block">
+<div class="theorem-block" markdown>
 <span class="badge badge--novel">Novel</span>
 <span class="theorem-name">(exists_separatingWindow_iff)</span>
 
