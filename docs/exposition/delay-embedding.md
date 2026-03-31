@@ -5,9 +5,7 @@ dynamical system \(f : X \to X\) and a scalar observation \(\alpha : X \to \math
 the delay embedding of window length \(k\) maps each state \(x\) to the vector
 of consecutive observations along its orbit,
 
-\[
-\Phi_{f,\alpha,k}(x) \;=\; \bigl(\alpha(x),\; \alpha(f(x)),\; \dots,\; \alpha(f^{k-1}(x))\bigr) \;\in\; \mathbb{R}^k.
-\]
+$$\Phi_{f,\alpha,k}(x) \;=\; \bigl(\alpha(x),\; \alpha(f(x)),\; \dots,\; \alpha(f^{k-1}(x))\bigr) \;\in\; \mathbb{R}^k.$$
 
 The headline result of this module is an exact characterization: the delay
 embedding is injective if and only if the observation function separates
@@ -21,9 +19,9 @@ is the foundation on which the rest of Route B is built.
 <span class="theorem-name">(delayEmbedding)</span>
 
 **Definition.** The *delay embedding* of window length \(k\) for dynamics \(f : X \to X\) and observation \(\alpha : X \to \mathbb{R}\) is the map
-\[
-\Phi_{f,\alpha,k} : X \to \mathbb{R}^k, \qquad \Phi_{f,\alpha,k}(x)(i) = \alpha(f^i(x)), \quad 0 \le i < k.
-\]
+
+$$\Phi_{f,\alpha,k} : X \to \mathbb{R}^k, \qquad \Phi_{f,\alpha,k}(x)(i) = \alpha(f^i(x)), \quad 0 \le i < k.$$
+
 </div>
 
 <details>
@@ -40,9 +38,9 @@ def delayEmbedding (f : X → X) (α : X → ℝ) (k : ℕ) (x : X) : Fin k → 
 <span class="theorem-name">(SeparatesOrbits)</span>
 
 **Definition.** An observation \(\alpha\) *separates \(f\)-orbits of length \(k\)* if, for all \(x, y \in X\),
-\[
-\bigl(\forall\, 0 \le i < k,\; \alpha(f^i(x)) = \alpha(f^i(y))\bigr) \;\Longrightarrow\; x = y.
-\]
+
+$$\bigl(\forall\, 0 \le i < k,\; \alpha(f^i(x)) = \alpha(f^i(y))\bigr) \;\Longrightarrow\; x = y.$$
+
 </div>
 
 <details>
@@ -78,9 +76,9 @@ def WindowDistinct (f : X → X) (α : X → ℝ) (k : ℕ) (x : X) : Prop :=
 <span class="theorem-name">(delayEmbedding_injective_iff_separatesOrbits)</span>
 
 **Theorem.** The delay embedding \(\Phi_{f,\alpha,k}\) is injective if and only if \(\alpha\) separates \(f\)-orbits of length \(k\):
-\[
-\Phi_{f,\alpha,k} \text{ injective} \;\iff\; \operatorname{SeparatesOrbits}(f, \alpha, k).
-\]
+
+$$\Phi_{f,\alpha,k} \text{ injective} \;\iff\; \operatorname{SeparatesOrbits}(f, \alpha, k).$$
+
 </div>
 
 <details>
@@ -122,9 +120,9 @@ theorem delayEmbedding_continuous [TopologicalSpace X]
 <span class="theorem-name">(delayEmbedding_image_card_le)</span>
 
 **Theorem.** On a finite type \(X\), the number of distinct delay windows is at most \(|X|\):
-\[
-\bigl|\{\Phi_{f,\alpha,k}(x) : x \in X\}\bigr| \;\le\; |X|.
-\]
+
+$$\bigl|\{\Phi_{f,\alpha,k}(x) : x \in X\}\bigr| \;\le\; |X|.$$
+
 </div>
 
 <details>
@@ -142,9 +140,9 @@ theorem delayEmbedding_image_card_le [Fintype X]
 <span class="theorem-name">(delayEmbedding_image_card_of_injective)</span>
 
 **Theorem.** If \(\Phi_{f,\alpha,k}\) is injective on a finite type, the image has exactly \(|X|\) elements:
-\[
-\Phi_{f,\alpha,k} \text{ injective} \;\Longrightarrow\; \bigl|\{\Phi_{f,\alpha,k}(x) : x \in X\}\bigr| = |X|.
-\]
+
+$$\Phi_{f,\alpha,k} \text{ injective} \;\Longrightarrow\; \bigl|\{\Phi_{f,\alpha,k}(x) : x \in X\}\bigr| = |X|.$$
+
 </div>
 
 <details>
@@ -186,9 +184,9 @@ theorem separatesOrbits_of_injective {f : X → X} {α : X → ℝ}
 <span class="theorem-name">(windowDistinct_of_injective_of_le_minimalPeriod)</span>
 
 **Theorem.** If \(\alpha\) is injective and \(k \le p(x)\), where \(p(x)\) is the minimal period of \(x\) under \(f\), then the delay window at \(x\) is tie-free:
-\[
-\alpha \text{ injective},\; k \le \operatorname{minPeriod}_f(x) \;\Longrightarrow\; \operatorname{WindowDistinct}(f, \alpha, k, x).
-\]
+
+$$\alpha \text{ injective},\; k \le \operatorname{minPeriod}_f(x) \;\Longrightarrow\; \operatorname{WindowDistinct}(f, \alpha, k, x).$$
+
 This is the key precondition for ordinal pattern extraction.
 </div>
 

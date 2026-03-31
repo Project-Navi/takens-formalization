@@ -2,9 +2,7 @@
 
 Route A of the formalization addresses the *smooth* side of Takens' delay embedding theorem (Takens, 1981): given a dynamical system \(T : X \to X\) and an observation function \(h : X \to \mathbb{R}\), the delay coordinate map
 
-\[
-\Phi_{T,h,n} : X \longrightarrow \mathbb{R}^n, \qquad x \longmapsto \bigl(h(x),\, h(Tx),\, \dots,\, h(T^{n-1}x)\bigr)
-\]
+$$\Phi_{T,h,n} : X \longrightarrow \mathbb{R}^n, \qquad x \longmapsto \bigl(h(x),\, h(Tx),\, \dots,\, h(T^{n-1}x)\bigr)$$
 
 is a topological embedding under appropriate hypotheses. This page documents the **embedding chain**: the sequence of results that, starting from the bare definition, establishes continuity, then promotes injectivity on a compact space to a closed embedding, and finally constructs a homeomorphism onto the image.
 
@@ -18,9 +16,8 @@ The most notable structural feature of this file is that **it is entirely axiom-
 
 **Definition.** Let \(X\) be a topological space, \(T : X \to X\) a self-map, \(h : X \to \mathbb{R}\) an observation function, and \(n \in \mathbb{N}\). The *smooth delay map* is
 
-\[
-\operatorname{smoothDelayMap}(T, h, n)(x) \;=\; \bigl(i \mapsto h(T^i(x))\bigr) \;\in\; \mathbb{R}^n.
-\]
+$$\operatorname{smoothDelayMap}(T, h, n)(x) \;=\; \bigl(i \mapsto h(T^i(x))\bigr) \;\in\; \mathbb{R}^n.$$
+
 </div>
 
 <details>
@@ -106,9 +103,8 @@ theorem smoothDelayMap_isEmbedding [CompactSpace X]
 
 **Definition.** Under the same hypotheses, the range factorization of the smooth delay map is a homeomorphism
 
-\[
-X \;\cong_{\mathrm{top}}\; \operatorname{range}\bigl(\operatorname{smoothDelayMap}(T, h, n)\bigr).
-\]
+$$X \;\cong_{\mathrm{top}}\; \operatorname{range}\bigl(\operatorname{smoothDelayMap}(T, h, n)\bigr).$$
+
 </div>
 
 This is the terminal result of the embedding chain. The construction uses `Equiv.ofInjective` to build a bijection onto the range, then lifts it to a homeomorphism via the inducing property of the closed embedding. The result is a concrete `Homeomorph` (`\cong_\top`), not merely an abstract existence statement.
