@@ -22,3 +22,9 @@
 
 # Zensical build output
 /site
+
+# Playwright MCP browser cache (transient screenshots and console logs)
+/.playwright-mcp
+
+# Root-level browser-check screenshots (docs/assets/ remains tracked)
+/*.png
