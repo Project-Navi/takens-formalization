@@ -20,7 +20,7 @@ make build              # every tracked module, warnings are errors
 
 ```bash
 make lint               # Mathlib's environment linters
-make audit              # source hygiene: no sorry, axiom or assumption class
+make audit              # source hygiene: no sorry, axiom or `...Infra` class
 make verify             # axiom records, documented names, fresh kernel replay
 make test-checkers      # negative tests of the checkers
 lake env lean -DwarningAsError=true TakensFormal/Examples.lean   # worked examples

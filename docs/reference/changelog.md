@@ -12,7 +12,8 @@ commits.
   \(2d + 1\) coordinates is a \(C^2\) embedding are open and dense in
   \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
   (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`). The new ingredient is
-  Kupka--Smale density of the periodic-point conditions (`dense_setOf_goodUpTo`), by
+  density of bounded-period nondegeneracy and observability, a Kupka--Smale-type lemma
+  (`dense_setOf_goodUpTo`), by
   induction on the period with bump perturbations in chart patches and a Fubini argument
   for almost every perturbation (`ae_forall_goodMat_perturb_comp`).
 - **Good pairs are open.** The \(C^n\) topology on \(C^n\) diffeomorphisms through chart
@@ -49,8 +50,8 @@ commits.
 - **Smooth delay maps.** Regularity, the differential and the immersion criterion; compact
   injective immersions are embeddings; the identity never immerses in dimension \(\ge 2\);
   the quarter turn of the circle as a worked example.
-- **Finite state spaces.** The exact separating horizon, the sharp bound \(N-1\) with the
-  countdown chain attaining it, a sound and complete decision procedure, and reconstruction
+- **Finite state spaces.** The exact separating horizon, the sharp bound \(N-1\) on \(N \ge 1\)
+  states when some window separates, with the countdown chain attaining it, a sound and complete decision procedure, and reconstruction
   of the dynamics on the delay image.
 - **Ordinal codes.** Behavior under strictly decreasing transformations, empirical pattern
   entropy and its bounds, and the quotient describing what an ordinal code retains.

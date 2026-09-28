@@ -28,7 +28,7 @@ strict order (`ordinalPattern_eq_iff`).
 (`ordinalPattern_comp_strictMono`). A *strictly decreasing* \(g\) reverses the order, and
 the pattern becomes \(\sigma \circ \mathrm{rev}\), where \(\mathrm{rev}(i) = d - 1 - i\)
 (`ordinalPattern_comp_strictAnti`). A transformation that is only monotone can create ties,
-and then no pattern is defined.
+and then the vector leaves the domain of the tie-free pattern.
 
 ## The ordinal delay map
 
@@ -40,17 +40,20 @@ unchanged by strictly increasing transformations of the observation
 states have the same code iff their windows induce the same strict order
 (`ordinalDelayMap_eq_iff`).
 
-Along an orbit, `observedPatterns` collects the patterns of \(N\) consecutive windows (ties
-included, via the stable sort). Their number is at most \(d!\), at most \(N\), and on a
+Along an orbit, `observedPatterns` collects the codes of \(N\) consecutive windows. This is a
+different, total interface: every window gets a code, its stable sort (`Tuple.sort`), which on
+tie-free windows is the ordinal pattern and on windows with ties breaks them by position. A
+non-strict transformation can change these codes, and no general invariance is claimed for it. Their number is at most \(d!\), at most \(N\), and on a
 periodic orbit at most the minimal period (`card_observedPatterns_le_factorial`,
 `card_observedPatterns_le_length`, `card_observedPatterns_le_period`).
 
 ## Pattern entropy
 
 `patternEntropy` is the Shannon entropy of the empirical distribution of patterns along
-\(N\) windows. It is nonnegative and at most \(\log \min(d!, N)\), and at most the log of the
-minimal period on a periodic orbit (`patternEntropy_le_log_min`,
-`patternEntropy_le_log_min_period`). It is invariant under strictly increasing
+\(N\) windows. For \(N > 0\) it is nonnegative and at most \(\log \min(d!, N)\), and at most
+the log of the minimal period on a periodic orbit (`patternEntropy_le_log_min`,
+`patternEntropy_le_log_min_period`); with no windows (\(N = 0\)) all frequencies and the
+entropy are zero by convention. It is invariant under strictly increasing
 transformations of the observation (`patternEntropy_comp_strictMono`) and, on tie-free
 orbit segments, under strictly decreasing ones, which only relabel the patterns
 (`patternEntropy_comp_strictAnti`).

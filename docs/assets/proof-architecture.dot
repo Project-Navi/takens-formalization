@@ -41,7 +41,7 @@ digraph proof_architecture {
     SardInfra [label="SardInfra\ncritical values; C¹ equal-\nand low-dimensional cases"]
     SardMoreira [label="ForMathlib/SardMoreira\nMoreira's theorem\n(ported, 19 files)"
                  color="#d4a574" fontcolor="#d4a574"]
-    Sard [label="Sard\nall dimensions, C^r,\nr ≥ dim E - dim F + 1"
+    Sard [label="Sard\nall dimensions, C^r,\nr ≥ max{1, dim E - dim F + 1}"
           color="#7eb8a8"]
   }
 
@@ -87,7 +87,7 @@ digraph proof_architecture {
     PeriodicNull [label="ForMathlib/PeriodicNull\nlocal null lemma (Fubini)"]
     ChartPerturbation [label="ChartPerturbation\nbump perturbations\nin a chart"]
     PatchStability [label="NearStability, PatchStability\nC⁰ margins, persistence"]
-    KupkaSmale [label="PatchPerturbation, KupkaSmale\nKupka–Smale density"]
+    KupkaSmale [label="PatchPerturbation, KupkaSmale\nbounded-period nondegeneracy\nand observability density"]
     GenericPairTakens [label="GenericPairTakens\nTakens' theorem\nfor generic pairs"
                        color="#7eb8a8"]
   }

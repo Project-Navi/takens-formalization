@@ -59,7 +59,7 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 | `isLeast_separatingHorizon` | A finite horizon is the least separating window |
 | `separatingHorizon_eq_zero_iff` | The horizon is \(0\) iff there are no two distinct states |
 | `separatingHorizon_eq_top_of_forall` | A never-distinguished pair forces an infinite horizon |
-| `exists_separatingHorizon_eq` | On a finite space the horizon is attained by a pair |
+| `exists_separatingHorizon_eq` | On a finite space with at least two states the horizon is attained by a distinct pair |
 | `separatingHorizon_eq_top_iff` | On a finite space the horizon is infinite iff some pair is never distinguished |
 | `exists_separatingWindow_iff` | On a finite space some window separates iff every distinct pair is eventually distinguished |
 | `delayEmbedding_image_card_le` | At most \(\lvert X\rvert\) distinct windows |
@@ -202,7 +202,7 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 | `criticalSet_eq_empty_of_finrank_eq_zero` | Maps into a zero-dimensional space have no critical points |
 | `addHaar_image_inter_criticalSet_eq_zero` | Local form: \(C^r\) at every point of \(s\) gives Haar-null critical values on \(s\) |
 | `addHaar_image_inter_criticalSet_eq_zero_of_contDiffOn` | Open-set form |
-| `sard` | **Sard's theorem:** \(C^r\) with \(r \ge \dim E - \dim F + 1\) gives Haar-null critical values |
+| `sard` | **Sard's theorem:** \(C^r\) with \(r \ge \max\{1, \dim E - \dim F + 1\}\) gives Haar-null critical values |
 
 ---
 
@@ -389,7 +389,7 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 |---|---|
 | `isOpen_setOf_isContMDiffEmbedding_delayEmbedding_pair` | **Good pairs are open:** the pairs \((T, h)\) whose delay map with \(k\) coordinates is a \(C^2\) embedding form an open set of \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\) |
 
-## Kupka--Smale density and generic pairs
+## Bounded-period density and generic pairs
 
 ### PeriodicGood
 
@@ -432,7 +432,7 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 |---|---|
 | `exists_patch` | Near a point of minimal period \(P\), a patch on which small perturbations make every fixed point of \(T^P\) good |
 | `exists_goodUpTo_mem_nhds_of_goodUpTo_pred` | The inductive step from period \(P - 1\) to \(P\) |
-| `dense_setOf_goodUpTo` | **Kupka--Smale density:** diffeomorphisms good up to period \(4d\) are dense |
+| `dense_setOf_goodUpTo` | **Bounded-period nondegeneracy and observability density** (Kupka--Smale-type): diffeomorphisms good up to period \(4d\) are dense |
 
 ### GenericPairTakens
 

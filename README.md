@@ -16,18 +16,21 @@ A Lean 4 and Mathlib formalization of delay-coordinate reconstruction
   (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`). Each factor carries
   the `C²` topology defined through chart derivatives on compact windows, which on a compact
   manifold is the Whitney topology.
-- **Kupka–Smale density.** The `C²` diffeomorphisms whose points of period at most `4d` are
-  nondegenerate, with observable differentials, are dense (`dense_setOf_goodUpTo`).
+- **Bounded-period nondegeneracy and observability density** (a Kupka–Smale-type density
+  lemma). The `C²` diffeomorphisms `T` such that at every point of minimal period
+  `0 < p ≤ 4d` the differential `A = D(T^p)` has `A^m - 1` invertible for `1 ≤ m ≤ 4d` and
+  is observable are dense (`dense_setOf_goodUpTo`).
 - **Takens' theorem for a fixed map.** For an injective `C²` map with injective
   differentials, countably many points of period at most `4d` and an observability condition
   at points of period at most `2d`, the good observations are open and dense
   (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`), and Lebesgue-almost every
   member of one finite family of perturbations is good.
 - **Sard's theorem at finite regularity.** For `f : E → F` of class `C^r` with
-  `r ≥ dim E - dim F + 1`, the critical values are Haar-null (`sard`), via a port of
+  `r ≥ max{1, dim E - dim F + 1}`, the critical values are Haar-null (`sard`), via a port of
   Moreira's theorem.
 - **Finite state spaces and ordinal codes.** The exact separating horizon, the sharp bound
-  `N - 1` (attained), a sound and complete decision procedure, reconstruction of the dynamics
+  `N - 1` on `N ≥ 1` states whenever some window separates (attained), a sound and complete
+  decision procedure, reconstruction of the dynamics
   on the image; ordinal patterns, their invariances, pattern-count and entropy bounds.
 
 The Sauer–Yorke–Casdagli extension to fractal sets and prevalence is not formalized here.
@@ -35,7 +38,7 @@ The Sauer–Yorke–Casdagli extension to fractal sets and prevalence is not for
 ## Verification
 
 Every selected declaration depends only on `propext`, `Classical.choice` and `Quot.sound`;
-there are no `sorry`s, no custom axioms and no assumption classes. CI builds every module
+there are no `sorry`s, no custom axioms and no unproved infrastructure assumptions. CI builds every module
 with warnings as errors and runs the linter, the axiom records, a documented-name check and
 a fresh kernel replay (see `AGENTS.md`).
 

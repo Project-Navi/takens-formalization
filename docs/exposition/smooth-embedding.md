@@ -193,13 +193,15 @@ almost every such perturbation is good
 ## Generic pairs
 
 The conditions on \(T\) above are those of Takens' generic diffeomorphisms. Write
-\(\mathrm{GoodUpTo}(T, P)\) when at every point of minimal period \(p \le P\) the
-differential \(A = D(T^p)\) is *good*: \(A^m - 1\) is invertible for \(m \le 4d\) and
+\(\mathrm{GoodUpTo}(T, P)\) when at every point of minimal period \(0 < p \le P\) the
+differential \(A = D(T^p)\) is *good*: \(A^m - 1\) is invertible for \(1 \le m \le 4d\) and
 \(A\) is observable (`GoodMat`). Goodness up to period \(4d\) gives both conditions
 (`GoodUpTo.countable_periodic`, `GoodUpTo.observable`): a nondegenerate fixed point is
 isolated, and on a compact manifold isolated fixed points are finitely many.
 
-**Kupka--Smale density** (`dense_setOf_goodUpTo`) is proved by induction on the period.
+**Bounded-period nondegeneracy and observability density** (`dense_setOf_goodUpTo`), a
+Kupka--Smale-type lemma rather than the full Kupka--Smale theorem (no hyperbolicity or
+transversality of invariant manifolds), is proved by induction on the period.
 Let \(T\) be good up to \(P - 1\). Its points of smaller period are finitely many and
 isolated among the fixed points of \(T^P\); every perturbation is supported off a
 neighbourhood \(O\) of them, so it keeps their orbits, periods and differentials, and a

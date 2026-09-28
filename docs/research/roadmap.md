@@ -7,11 +7,12 @@ Where the formalization stands and what comes next.
 ## Current state
 
 - **Finite state spaces and ordinal codes.** Complete for the questions posed: injectivity
-  and orbit separation, the exact separating horizon with the sharp bound \(N-1\), a sound
+  and orbit separation, the exact separating horizon with the sharp bound \(N-1\) on \(N \ge 1\) states when
+  some window separates, a sound
   and complete decision procedure, reconstruction on the delay image, and the ordinal code
   with its counts, entropy and quotient.
 - **Sard's theorem.** Proved in all dimensions at the sharp finite regularity
-  \(r \ge \dim E - \dim F + 1\), with local and open-set versions (`sard`).
+  \(r \ge \max\{1, \dim E - \dim F + 1\}\), with local and open-set versions (`sard`).
 - **Smooth delay maps.** Regularity, the differential, the immersion criterion, and the
   embedding criterion on compact manifolds.
 - **Genericity for a fixed map.** Generic immersion and separation in finite families;
@@ -21,7 +22,8 @@ Where the formalization stands and what comes next.
   dense set of observations in the \(C^2\) topology
   (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`).
 - **Takens' theorem for generic pairs.** The \(C^2\) topology on \(\mathrm{Diff}^2(M)\),
-  Kupka--Smale density of the periodic-point conditions (`dense_setOf_goodUpTo`), and the
+  density of bounded-period nondegeneracy and observability, a Kupka--Smale-type lemma
+  (`dense_setOf_goodUpTo`), and the
   good pairs open and dense in \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
   (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`).
 

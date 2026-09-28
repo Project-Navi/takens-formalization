@@ -9,10 +9,11 @@ measure on \(F\).
 |------|-----------|--------|-------------|
 | \(n = m\) | \(C^1\) | Jacobian area formula | `sard_equidim_general_of_contDiff` |
 | \(n < m\) | \(C^1\) | Hausdorff dimension | `sard_low_dim_of_contDiff` |
-| all \(n\), \(m\) | \(C^r\), \(r \ge n - m + 1\) | Moreira's theorem | `sard` |
+| all \(n\), \(m\) | \(C^r\), \(r \ge \max\{1, n - m + 1\}\) | Moreira's theorem | `sard` |
 
-In the last row \(n - m\) is truncated subtraction, so for \(n \le m\) the condition is
-\(r \ge 1\). The threshold cannot be lowered in general: [Whitney1935] gives a \(C^1\)
+For \(n \le m\) the last row asks only \(r \ge 1\); the Lean statement writes the threshold
+as `finrank ℝ E - finrank ℝ F + 1 ≤ r` with truncated subtraction, which is the same
+condition. The threshold cannot be lowered in general: [Whitney1935] gives a \(C^1\)
 function on \(\mathbb{R}^2\) that is not constant on a connected set of critical points.
 
 ## Critical points
@@ -53,7 +54,7 @@ corollaries.
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(sard)</span>
 
-**Sard's theorem.** If \(f : E \to F\) is \(C^r\) with \(r \ge \dim E - \dim F + 1\), then
+**Sard's theorem.** If \(f : E \to F\) is \(C^r\) with \(r \ge \max\{1, \dim E - \dim F + 1\}\), then
 \(\mu(\operatorname{CritVal}(f)) = 0\) for every additive Haar measure \(\mu\) on \(F\).
 </div>
 

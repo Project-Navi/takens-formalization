@@ -24,8 +24,9 @@ imported by the library.
 On a finite state space the delay map is injective exactly when the observation separates
 orbits (`delayEmbedding_injective_iff_separatesOrbits`). The coincidence length of two
 states, the first time their observations differ, determines the least window that
-separates all orbits, the separating horizon. On \(N\) states a finite horizon is at most
-\(N-1\), and the countdown chain shows that this bound is attained. A decision procedure
+separates all orbits, the separating horizon. When some window separates, the horizon on
+\(N \ge 1\) states is at most \(N-1\), and the countdown chain shows that this bound is
+attained. A decision procedure
 returns either the exact horizon or a pair of states that no window distinguishes, and is
 proved sound and complete. When the delay map is injective, the dynamics transported to its
 image is an explicit shift, conjugate to the original map. See
@@ -78,7 +79,8 @@ injective immersion is a \(C^r\) embedding. The genericity argument is organized
    diffeomorphisms uses charts on both source and target (`WeakTopology`); closeness is
    preserved by composition and iteration (`WeakComposition`), so the delay map is stable
    under perturbations of the pair and the good pairs are open (`GenericPair`).
-8. **Kupka--Smale density.** By induction on the period, diffeomorphisms whose periodic
+8. **Bounded-period nondegeneracy and observability density** (Kupka--Smale-type). By
+   induction on the period, diffeomorphisms whose periodic
    points of period at most \(4d\) are nondegenerate with observable differentials are dense
    (`KupkaSmale`): old periodic orbits are protected by supporting perturbations away from
    them (`NearStability`), and new ones are made good in chart patches by bump perturbations
@@ -89,7 +91,7 @@ Together these prove Takens' theorem for a fixed map satisfying the periodic-poi
 conditions: almost every member of one finite family is good
 (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`), and the good
 observations are open and dense in the \(C^2\) topology
-(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). With Kupka--Smale density
+(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). With this density
 they give Takens' theorem for generic pairs: the good pairs are open and dense in
 \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
 (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`). See
@@ -99,7 +101,7 @@ they give Takens' theorem for generic pairs: the good pairs are open and dense i
 
 `SardInfra` defines critical values and proves the equidimensional case (Jacobian area
 formula) and the low-dimensional case (Hausdorff dimension) for \(C^1\) maps. The general
-case, \(C^r\) with \(r \ge \dim E - \dim F + 1\), follows from Moreira's theorem, whose Lean
+case, \(C^r\) with \(r \ge \max\{1, \dim E - \dim F + 1\}\), follows from Moreira's theorem, whose Lean
 proof by Yury Kudryashov is ported in `TakensFormal/ForMathlib/SardMoreira/`. See
 [Sard's Theorem](sard-infrastructure.md). The genericity argument above does not use
 Sard's theorem: the avoidance lemma needs only the implicit function theorem and a

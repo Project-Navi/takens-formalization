@@ -2,7 +2,7 @@
 
 [`Verify.lean`](https://github.com/Project-Navi/takens-formalization/blob/main/TakensFormal/Verify.lean)
 contains one `#print axioms` line for each selected declaration: every headline result and
-every project declaration these pages cite (261 at present). CI requires exactly one record
+every project declaration these pages cite (264 at present). CI requires exactly one record
 per line, in order, and accepts only the three axioms below. This page explains what that
 check certifies and what it does not.
 
@@ -35,8 +35,10 @@ Quotient types, and with them `Finset`, `Multiset` and function extensionality, 
 - **No `sorry`.** An unfinished proof leaves `sorryAx` in the record, which CI rejects.
 - **No custom axioms.** No source file declares an `axiom`, and CI rejects any record that
   mentions one, including the axioms behind native evaluation.
-- **No assumption classes.** No typeclass or structure carries unproved mathematical
-  results as fields; CI rejects `...Infra` classes.
+- **No unproved infrastructure assumptions.** No typeclass or structure carries an unproved
+  result into a headline theorem; CI rejects `...Infra` classes. Prop-valued classes with
+  proved instances, such as `ClosedBallCoveringMeasure` in the Sard port, are ordinary
+  mathematics.
 - **Independent replay.** `leanchecker` re-checks every declaration of the library's import
   closure in a fresh kernel.
 

@@ -33,7 +33,8 @@ least separating window (`isLeast_separatingHorizon`).
 </div>
 
 \(H = 0\) iff there are no two distinct states, and a pair that is never distinguished
-forces \(H = \infty\). On a finite state space the supremum is attained by a pair
+forces \(H = \infty\). On a finite state space with at least two states the supremum is
+attained by a distinct pair
 (`exists_separatingHorizon_eq`), so \(H = \infty\) iff some distinct pair is never
 distinguished (`separatingHorizon_eq_top_iff`). In particular some window separates orbits
 iff every distinct pair is eventually distinguished (`exists_separatingWindow_iff`).
@@ -44,7 +45,8 @@ iff every distinct pair is eventually distinguished (`exists_separatingWindow_if
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(separatingHorizon_le_card_sub_one)</span>
 
-On \(N\) states a finite horizon is at most \(N - 1\). Equivalently, equal windows of length
+When a finite separating window exists, the least one uses at most \(N - 1\) observations on
+\(N \ge 1\) states; the empty state space has horizon zero. Equivalently, equal windows of length
 \(N - 1\) force equal observations at every time (`forall_iterate_eq_of_delayEmbedding_eq`).
 No injectivity of \(f\) or \(\alpha\) is assumed.
 </div>
@@ -54,10 +56,10 @@ window refines it, and once a refinement step changes nothing, no later step doe
 partition of \(N\) states can be strictly refined at most \(N - 1\) times, so the windows of
 length \(N - 1\) already determine all observations.
 
-The bound is attained. On the countdown chain \(i \mapsto i - 1\) on \(\{0, \dots, N-1\}\),
-with \(0\) fixed and observed by the indicator of \(0\), the states \(N-1\) and \(N-2\)
-first differ at time \(N - 2\), so exactly \(N - 1\) coordinates are needed
-(`separatingHorizon_countdown`).
+The bound is attained. For \(N \ge 2\), on the countdown chain \(i \mapsto i - 1\) on
+\(\{0, \dots, N-1\}\), with \(0\) fixed and observed by the indicator of \(0\), the states
+\(N-1\) and \(N-2\) first differ at time \(N - 2\), so exactly \(N - 1\) coordinates are needed
+(`separatingHorizon_countdown`); for \(N \le 1\) the horizon is zero.
 
 ## Deciding separability
 
