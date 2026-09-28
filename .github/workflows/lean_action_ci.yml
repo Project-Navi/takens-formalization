@@ -85,6 +85,10 @@ jobs:
           # shellcheck disable=SC2086
           lake build --wfail $modules
 
+      - name: Mathematical examples
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: lake env lean -DwarningAsError=true TakensFormal/Examples.lean
+
       - name: Lint
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: lake lint
