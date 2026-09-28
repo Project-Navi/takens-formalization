@@ -78,7 +78,7 @@ No `sorryAx` appears anywhere. See the [Axiom Dashboard](axiom-dashboard.md) for
 | `smoothDelayMap_continuous` | If $T$ and $h$ are continuous, then $\Psi_{T,h,n}$ is continuous | <span class="badge badge--axiom-free">Axiom-free</span> |
 | `smoothDelayMap_isClosedEmbedding` | If $X$ is compact and $\Psi_{T,h,n}$ is injective, then $\Psi_{T,h,n}$ is a closed embedding | <span class="badge badge--axiom-free">Axiom-free</span> |
 | `smoothDelayMap_isEmbedding` | If $X$ is compact and $\Psi_{T,h,n}$ is injective, then $\Psi_{T,h,n}$ is an embedding | <span class="badge badge--axiom-free">Axiom-free</span> |
-| `smoothDelayMap_rangeHomeomorph` | If $X$ is compact and $\Psi_{T,h,n}$ is injective, then $X \cong \operatorname{im}\Psi_{T,h,n}$ | <span class="badge badge--axiom-free">Axiom-free</span> |
+| `smoothDelayMapRangeHomeomorph` | If $X$ is compact and $\Psi_{T,h,n}$ is injective, then $X \cong \operatorname{im}\Psi_{T,h,n}$ | <span class="badge badge--axiom-free">Axiom-free</span> |
 
 ---
 

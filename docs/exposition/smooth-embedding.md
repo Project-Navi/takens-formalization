@@ -99,7 +99,7 @@ theorem smoothDelayMap_isEmbedding [CompactSpace X]
 
 <div class="theorem-block" markdown>
 <span class="badge badge--axiom-free">Axiom-free</span>
-<span class="theorem-name">(smoothDelayMap_rangeHomeomorph)</span>
+<span class="theorem-name">(smoothDelayMapRangeHomeomorph)</span>
 
 **Definition.** Under the same hypotheses, the range factorization of the smooth delay map is a homeomorphism
 
@@ -113,7 +113,7 @@ This is the terminal result of the embedding chain. The construction uses `Equiv
 <summary>Lean 4 statement --- <code>SmoothTakens.lean:89</code></summary>
 
 ```lean
-def smoothDelayMap_rangeHomeomorph [CompactSpace X]
+def smoothDelayMapRangeHomeomorph [CompactSpace X]
     {T : X → X} {h : X → ℝ} (hT : Continuous T) (hh : Continuous h)
     {n : ℕ} (hinj : Injective (smoothDelayMap T h n)) :
     X ≃ₜ range (smoothDelayMap T h n)

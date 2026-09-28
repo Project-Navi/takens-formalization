@@ -90,7 +90,7 @@ computational pipeline.
 `smoothDelayMap_isClosedEmbedding` (in `SmoothTakens.lean`) proves: if the state
 space is compact, the dynamics and observation are continuous, and the delay map
 is injective, then the delay map is a closed embedding. The companion
-`smoothDelayMap_rangeHomeomorph` strengthens this to a homeomorphism onto its
+`smoothDelayMapRangeHomeomorph` strengthens this to a homeomorphism onto its
 image --- the delay map is not just injective but topologically faithful.
 
 This is the result that justifies calling the delay-coordinate reconstruction a

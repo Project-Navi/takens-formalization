@@ -85,7 +85,7 @@ is deferred to a typeclass at gate 3.
 | Continuity | `smoothDelayMap_continuous` | `SmoothTakens` |
 | **Closed embedding** | **`smoothDelayMap_isClosedEmbedding`** | **`SmoothTakens`** |
 | Embedding | `smoothDelayMap_isEmbedding` | `SmoothTakens` |
-| Homeomorphism | `smoothDelayMap_rangeHomeomorph` | `SmoothTakens` |
+| Homeomorphism | `smoothDelayMapRangeHomeomorph` | `SmoothTakens` |
 
 ## Axiom boundary
 
