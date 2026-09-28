@@ -124,6 +124,9 @@ def test_doc_candidates() -> None:
     found = check_doc_names.candidates(text)
     expect("doc names: inline, fenced, #print and label names found",
            {"delayEmbedding", "Function.minimalPeriod", "foo_bar", "baz", "quxName"} <= found)
+    expect("doc names: prose labels are not names",
+           "high-dimensional" not in check_doc_names.candidates(
+               '<span class="theorem-name">(high-dimensional case)</span>'))
     expect("doc names: file names and commands skipped",
            "DelayWindow.lean" not in found and "lake build" not in found)
     to_resolve, skipped, failures = check_doc_names.classify(

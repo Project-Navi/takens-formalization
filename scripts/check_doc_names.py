@@ -62,7 +62,7 @@ def candidates(text: str) -> set[str]:
         span = span.strip()
         if IDENT.match(span) and not span.endswith(FILE_SUFFIXES):
             found.add(span)
-    found.update(THEOREM_LABEL.findall(text))
+    found.update(n for n in THEOREM_LABEL.findall(text) if IDENT.match(n))
     return found
 
 
