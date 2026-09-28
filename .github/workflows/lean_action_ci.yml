@@ -73,6 +73,7 @@ jobs:
       # Each check below reports even if an earlier independent check failed;
       # the job fails if any of them fails.
       - name: Source hygiene
+        if: ${{ !cancelled() }}
         run: python3 scripts/check_source.py
 
       - name: Build every tracked Lean module (warnings are errors)
