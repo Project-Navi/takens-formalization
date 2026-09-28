@@ -1,8 +1,8 @@
 # navi-SAD Bridge
 
-[navi-SAD](https://project-navi.github.io/navi-SAD/) builds delay-coordinate vectors and
+[navi-SAD](https://docs.projectnavi.ai/navi-SAD/) builds delay-coordinate vectors and
 ordinal patterns from measured time series (see its
-[Takens Embedding](https://project-navi.github.io/navi-SAD/theory/takens-embedding/) page).
+[Takens Embedding](https://docs.projectnavi.ai/navi-SAD/theory/takens-embedding/) page).
 This page states which theorems proved here concern those constructions, and what they do
 not establish.
 

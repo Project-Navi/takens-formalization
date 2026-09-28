@@ -5,7 +5,7 @@
 name = "takens-formalization"
 site_name = "Takens Formalization"
 description = "Lean 4 + Mathlib formalization of delay-coordinate reconstruction"
-site_url = "https://project-navi.github.io/takens-formalization"
+site_url = "https://docs.projectnavi.ai/takens-formalization"
 repo_url = "https://github.com/Project-Navi/takens-formalization"
 repo_name = "Project-Navi/takens-formalization"
 copyright = "Copyright 2026 Nelson Spence"
