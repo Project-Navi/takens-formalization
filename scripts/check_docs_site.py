@@ -29,7 +29,11 @@ EXPECTED_ASSETS = (
     "assets/proof-architecture.svg", "assets/logo.png", "assets/favicon.png",
     "stylesheets/navi.css", "javascripts/mathjax.js",
 )
-RETIRED_PATHS = ("debt.md", "docs/aristotle", "docs/internal", "superpowers", "CLAUDE.md")
+# Retired paths and names of retired companion projects must not reappear in the built site.
+RETIRED_PATHS = (
+    "debt.md", "docs/aristotle", "docs/internal", "superpowers", "CLAUDE.md",
+    "navi-SAD", "navi-sad", "navi-fractal",
+)
 SKIP_SCHEMES = ("mailto:", "javascript:", "data:", "tel:")
 HARD_FAIL_STATUS = {404, 410}
 

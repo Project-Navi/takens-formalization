@@ -66,6 +66,6 @@ for smooth data on a \(d\)-manifold. The same `delayEmbedding` is used there; se
 for a given observation on a finite state space, which windows work
 ([Coincidence Length](coincidence-length.md)).
 
-!!! tip "Connection to navi-SAD"
-    See [navi-SAD Bridge](../bridge/navi-sad.md) for what these results do and do not
-    establish about the instrument.
+!!! tip "Measured data"
+    See [Measured Data](measured-data.md) for what these results do and do not establish
+    about measured time series.

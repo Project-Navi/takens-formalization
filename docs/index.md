@@ -56,4 +56,4 @@ see [Open Problems](research/open-problems.md).
 | [Theorem Catalog](reference/theorems.md) | The selected declarations, by module |
 | [Axiom Dashboard](reference/axiom-dashboard.md) | What the axiom records certify |
 | [Roadmap](research/roadmap.md) | What comes next |
-| [navi-SAD Bridge](bridge/navi-sad.md) | What these proofs do and do not say about the instrument |
+| [Measured Data](exposition/measured-data.md) | What these proofs do and do not say about measured time series |
