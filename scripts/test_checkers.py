@@ -115,11 +115,29 @@ def test_source_checker() -> None:
     bad_diag = dict(mods_ok, **{"TakensFormal/B.lean": HEADER + "import TakensFormal.Verify\n"})
     expect("source: library importing diagnostic rejected",
            bool(check_source.check_imports(bad_diag)))
+    commented = dict(mods, **{"TakensFormal.lean": root + "/-\nimport TakensFormal.B\n-/\n"})
+    expect("source: commented root import does not count",
+           bool(check_source.check_imports(commented)))
+    line_comment = dict(mods, **{"TakensFormal.lean": root + "-- import TakensFormal.B\n"})
+    expect("source: line-commented root import does not count",
+           bool(check_source.check_imports(line_comment)))
+    expect("source: multi-module import line rejected",
+           bool(source_failures("import Mathlib.Data.Real.Basic TakensFormal.Verify\n")))
+    public_diag = dict(mods_ok, **{
+        "TakensFormal/B.lean": HEADER + "module\npublic import TakensFormal.Verify\n"})
+    expect("source: public import of diagnostic rejected",
+           bool(check_source.check_imports(public_diag)))
+    expect("source: header parsing stops at the first command",
+           check_source.parse_imports(HEADER + "import TakensFormal.A\nopen Nat\n")
+           == ["TakensFormal.A"])
     generic = dict(mods_ok, **{
         "TakensFormal/ForMathlib/G.lean": HEADER + "import TakensFormal.A\n",
         "TakensFormal.lean": root + "import TakensFormal.B\nimport TakensFormal.ForMathlib.G\n"})
     expect("source: generic module importing project module rejected",
            bool(check_source.check_imports(generic)))
+    expect("source: generic multi-module import line rejected", bool(check_source.check_file(
+        "TakensFormal/ForMathlib/G.lean",
+        HEADER + "import Mathlib.Data.Real.Basic TakensFormal.DelayWindow\n")))
 
 
 def test_doc_candidates() -> None:

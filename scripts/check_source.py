@@ -10,6 +10,7 @@ Checks, on every tracked `.lean` file:
   qualified (`Lean.ofReduceBool`, `set_option debug.skipKernelTC`);
 - no assumption class or structure named `...Infra`;
 - the copyright header, and no bare `import Mathlib`;
+- imports are read from the actual header (comments skipped, one module per `import`);
 - the root `TakensFormal.lean` imports every library module except the diagnostic ones,
   and no library module imports a diagnostic module;
 - generic modules (see `GENERIC_PREFIXES`) import only Mathlib and other generic modules.
@@ -54,7 +55,8 @@ AXIOM_DECL = re.compile(
     r"axiom\b"
 )
 INFRA_DECL = re.compile(r"(?m)^\s*(?:@\[[^\]]*\]\s*)?(?:class|structure)\s+\w*Infra\b")
-IMPORT = re.compile(r"(?m)^import\s+(\S+)\s*$")
+HEADER_MODIFIERS = ("public", "private", "meta")
+MODULE_NAME = re.compile(r"[A-Za-z_«][\w.'«»]*")
 
 
 def strip_comments_and_strings(src: str) -> str:
@@ -122,12 +124,52 @@ def tracked_lean_files() -> list[str]:
     return sorted(line for line in out.splitlines() if line)
 
 
+def parse_header(src: str) -> tuple[list[str], list[str]]:
+    """Return the modules imported by the header of `src`, and malformed header lines.
+
+    Comments and strings are removed first. The header is the leading sequence of `module`,
+    `prelude` and import commands. An import command is `import`, optionally preceded by
+    `public`, `private` or `meta` and followed by `all`, and names exactly one module, as in
+    Lean's grammar; further tokens on the same line are reported as malformed. Parsing stops
+    at the first line that is none of these.
+    """
+    imports: list[str] = []
+    malformed: list[str] = []
+    for line in strip_comments_and_strings(src).splitlines():
+        tokens = line.split()
+        if not tokens:
+            continue
+        if tokens in (["module"], ["prelude"]):
+            continue
+        j = 0
+        while j < len(tokens) and tokens[j] in HEADER_MODIFIERS:
+            j += 1
+        if j >= len(tokens) or tokens[j] != "import":
+            break
+        j += 1
+        if j < len(tokens) and tokens[j] == "all":
+            j += 1
+        if j < len(tokens) and MODULE_NAME.fullmatch(tokens[j]):
+            imports.append(tokens[j])
+            j += 1
+        if j != len(tokens):
+            malformed.append(line.strip())
+    return imports, malformed
+
+
+def parse_imports(src: str) -> list[str]:
+    """The modules imported by the header of `src` (see `parse_header`)."""
+    return parse_header(src)[0]
+
+
 def check_file(path: str, src: str) -> list[str]:
     failures = [f"{path}: forbidden token `{t}`" for t in forbidden_tokens(src)]
     header = next((h for p, h in PORTED_HEADERS.items() if path.startswith(p)), PROJECT_HEADER)
     if not src.startswith(header):
         failures.append(f"{path}: missing or altered copyright header")
-    if re.search(r"(?m)^import\s+Mathlib\s*$", src):
+    for line in parse_header(src)[1]:
+        failures.append(f"{path}: malformed import `{line}` (one module per import)")
+    if "Mathlib" in parse_imports(src):
         failures.append(f"{path}: bare `import Mathlib` (use granular imports)")
     return failures
 
@@ -136,12 +178,12 @@ def check_imports(sources: dict[str, str]) -> list[str]:
     failures = []
     modules = {module_name(p): src for p, src in sources.items()}
     library = {m for m in modules if m == ROOT_MODULE or m.startswith(ROOT_MODULE + ".")}
-    root_imports = set(IMPORT.findall(modules.get(ROOT_MODULE, "")))
+    root_imports = set(parse_imports(modules.get(ROOT_MODULE, "")))
     for m in sorted(library - DIAGNOSTIC_MODULES - {ROOT_MODULE}):
         if m not in root_imports:
             failures.append(f"{ROOT_MODULE}.lean does not import library module {m}")
     for m, src in modules.items():
-        imports = IMPORT.findall(src)
+        imports = parse_imports(src)
         if m not in DIAGNOSTIC_MODULES:
             for imp in imports:
                 if imp in DIAGNOSTIC_MODULES:
