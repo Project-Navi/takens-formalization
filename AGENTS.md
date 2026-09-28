@@ -48,8 +48,9 @@ make docs-check                                      # zensical build + link che
   and hidden Lean failures.
 - `scripts/check_doc_names.py` resolves every Lean name cited in the README and docs with
   Lean itself and requires cited project declarations to be selected in `Verify.lean`.
-- `scripts/check_source.py` rejects `sorry`, `admit`, `native_decide`, trust-extending
-  options, `axiom` declarations, `#exit`, `...Infra` classes, bare `import Mathlib`, missing
+- `scripts/check_source.py` rejects `sorry`, `admit`, native evaluation (`native_decide`,
+  `decide +native`), trust-extending names and options (also when qualified, as in
+  `Lean.ofReduceBool`), `axiom` declarations, `#exit`, `...Infra` classes, bare `import Mathlib`, missing
   headers, and wrong import directions (see *File layout*).
 - `scripts/test_checkers.py --lean` feeds the checkers small failing fixtures (including
   real Lean runs) and snapshots of accepted output. When you add or change a gate, add a

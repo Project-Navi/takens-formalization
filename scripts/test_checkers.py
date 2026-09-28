@@ -94,6 +94,11 @@ def test_source_checker() -> None:
         ("native_decide", "theorem t : 1 = 1 := by native_decide\n"),
         ("#exit", "theorem t : True := trivial\n#exit\n"),
         ("implemented_by", "@[implemented_by id] def f (n : Nat) : Nat := n\n"),
+        ("qualified skipKernelTC", "set_option debug.skipKernelTC true\n"),
+        ("qualified ofReduceBool", "theorem t : True := Lean.ofReduceBool\n"),
+        ("qualified trustCompiler", "theorem t : True := Lean.trustCompiler\n"),
+        ("decide +native", "theorem t : 1 = 1 := by decide +native\n"),
+        ("native := true", "theorem t : 1 = 1 := by decide (config := { native := true })\n"),
         ("Infra class", "class SardInfra : Prop where\n  sard : False\n"),
         ("Infra structure", "structure PDEInfra where\n  h : False\n"),
     ]:

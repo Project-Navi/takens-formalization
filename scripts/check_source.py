@@ -5,7 +5,9 @@ Checks, on every tracked `.lean` file:
 - no unfinished-proof or trust-extending token in code (comments and strings are skipped,
   so explanatory prose about `sorry` is allowed): `sorry`, `admit`, `sorryAx`,
   `native_decide`, `ofReduceBool`, `trustCompiler`, `implemented_by`, `extern`,
-  `unsafe`, `debug.skipKernelTC`, `#exit`, and `axiom` declarations;
+  `unsafe`, `debug.skipKernelTC`, native evaluation (`decide +native`, `native := true`),
+  `#exit`, and `axiom` declarations; the trust-extending names are also caught when
+  qualified (`Lean.ofReduceBool`, `set_option debug.skipKernelTC`);
 - no assumption class or structure named `...Infra`;
 - the copyright header, and no bare `import Mathlib`;
 - the root `TakensFormal.lean` imports every library module except the diagnostic ones,
@@ -43,6 +45,9 @@ FORBIDDEN_WORDS = (
     "sorry", "admit", "sorryAx", "native_decide", "ofReduceBool", "trustCompiler",
     "implemented_by", "extern", "unsafe", "skipKernelTC",
 )
+# Names usually written qualified, e.g. `Lean.ofReduceBool`: matched after a dot too.
+QUALIFIED_WORDS = ("ofReduceBool", "trustCompiler", "skipKernelTC")
+NATIVE_EVAL = re.compile(r"\bdecide\s*\+\s*native\b|\bnative\s*:=\s*true\b")
 FORBIDDEN_COMMANDS = ("#exit",)
 AXIOM_DECL = re.compile(
     r"(?m)^\s*(?:@\[[^\]]*\]\s*)?(?:(?:private|protected|noncomputable|partial|nonrec)\s+)*"
@@ -91,8 +96,11 @@ def forbidden_tokens(src: str) -> list[str]:
     code = strip_comments_and_strings(src)
     found = []
     for word in FORBIDDEN_WORDS:
-        if re.search(rf"(?<![\w.']){re.escape(word)}(?![\w'])", code):
+        before = r"(?<![\w'])" if word in QUALIFIED_WORDS else r"(?<![\w.'])"
+        if re.search(rf"{before}{re.escape(word)}(?![\w'])", code):
             found.append(word)
+    if NATIVE_EVAL.search(code):
+        found.append("native evaluation")
     for command in FORBIDDEN_COMMANDS:
         if re.search(rf"(?m)^\s*{re.escape(command)}\b", code):
             found.append(command)
