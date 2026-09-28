@@ -32,7 +32,13 @@ PROJECT_HEADER = (
     "Released under Apache 2.0 license as described in the file LICENSE.\n"
 )
 # Ported third-party files keep their own notice; map path prefix -> required header prefix.
-PORTED_HEADERS: dict[str, str] = {}
+PORTED_HEADERS: dict[str, str] = {
+    "TakensFormal/ForMathlib/SardMoreira/": (
+        "/-\n"
+        "Copyright (c) 2025 Yury G. Kudryashov. All rights reserved.\n"
+        "Released under Apache 2.0 license as described in the file LICENSE.\n"
+    ),
+}
 FORBIDDEN_WORDS = (
     "sorry", "admit", "sorryAx", "native_decide", "ofReduceBool", "trustCompiler",
     "implemented_by", "extern", "unsafe", "skipKernelTC",
