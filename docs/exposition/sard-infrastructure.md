@@ -253,13 +253,13 @@ theorem sard_equidim_general (f : E → F) (hf : ContDiff ℝ ⊤ f)
 ## The axiom boundary
 
 <div class="theorem-block" markdown>
-<span class="badge badge--deferred">Deferred</span>
-<span class="theorem-name">(sard_of_finrank_gt --- gate 3)</span>
+<span class="badge badge--deferred">Not yet proved</span>
+<span class="theorem-name">(high-dimensional case)</span>
 
-**Deferred.** The high-dimensional case (\(\dim E > \dim F\)) requires the Morse--Sard induction: stratification by vanishing order of derivatives, Taylor estimates, and Whitney-type covering arguments. This will be axiomatized as a `SardInfra` typeclass carrying the single axiom that \(\mu(\operatorname{CritVal}(f)) = 0\) when \(\dim E > \dim F\) and \(f\) is sufficiently smooth.
+**Not yet proved here.** The high-dimensional case (\(\dim E > \dim F\)) requires the Morse--Sard argument: stratification by vanishing order of derivatives, Taylor estimates, and covering arguments. It is not assumed: no typeclass field or axiom stands in for it.
 </div>
 
-The boundary is deliberate. The equidimensional and low-dimensional cases have clean proofs using existing Mathlib infrastructure. The high-dimensional case requires substantial new machinery that does not yet exist in Mathlib. Rather than axiomatizing the entire theorem, the formalization proves what it can and isolates the remaining obligation in a single, clearly scoped axiom.
+The equidimensional and low-dimensional cases have clean proofs using existing Mathlib infrastructure. The high-dimensional case needs substantially more machinery; until it is proved, no result here depends on it.
 
 ## References
 

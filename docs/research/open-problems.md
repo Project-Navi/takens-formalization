@@ -28,7 +28,7 @@ The iff theorem is the engine; the corollaries are the interface.
 
 **Starting point.** Read `DelayWindow.lean` (the iff theorem and
 `coincidenceLength` definition) and `TakensDiscrete.lean` (the empty skeleton).
-The `IteratePeriod.lean` bridge lemmas connecting to Mathlib's `PeriodicPts` API
+The `IteratePeriod.lean` bridge lemmas connecting to Mathlib's `Function.minimalPeriod` API
 will be useful for any corollary involving periodic orbits.
 
 ---
@@ -52,10 +52,9 @@ argument, and closes by induction on dimension. The regularity requirement
 C^{n-m+1} (where n = finrank E, m = finrank F) is sharp --- counterexamples
 exist at lower regularity.
 
-**Why it matters.** This is the only component needed to complete the `SardInfra`
-typeclass, which currently axiomizes `sard_of_finrank_gt` as a placeholder. Once
-proved, the typeclass can be replaced with a concrete instance, eliminating the
-last axiom boundary in the project.
+**Why it matters.** This is the only missing case of Sard's theorem here. It is
+not assumed: no typeclass or axiom stands in for it, so no result in this project
+depends on it yet.
 
 **Starting point.** `SardInfra.lean` contains the definitions (`criticalSet`,
 `criticalValues`) and the proved equidimensional case (`sard_equidim`,
@@ -98,7 +97,7 @@ characterization; with it, the theorem is a guarantee.
 injective -> closed embedding -> homeomorphism onto image) provides the
 topological half. The measure-theoretic half requires `SardInfra` plus
 transversality machinery that does not yet exist in Mathlib. The Lean/Mathlib
-manifold library (`Mathlib.Geometry.Manifold`) has smooth manifolds and tangent
+manifold library (`Mathlib/Geometry/Manifold`) has smooth manifolds and tangent
 bundles but not jet bundles or transversality.
 
 ---

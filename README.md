@@ -94,10 +94,9 @@ is deferred to a typeclass at gate 3.
 The `#print axioms` dashboard in `Verify.lean` confirms this.
 
 `SardInfra.lean` proves Sard's theorem for the equidimensional and
-low-dimensional cases. The `SardInfra` typeclass (axiomizing
-`sard_of_finrank_gt` for the high-dimensional Morse–Sard case) is deferred
-to gate 3. `SmoothTakens.lean` does not import `SardInfra` — its
-embedding chain is axiom-free.
+low-dimensional cases. The high-dimensional Morse–Sard case is not yet
+proved here; it is not assumed either (there is no assumption class).
+`SmoothTakens.lean` does not import `SardInfra`.
 
 ## File structure
 
@@ -117,7 +116,7 @@ embedding chain is axiom-free.
 | Declaration | File | Mathlib status |
 |-------------|------|----------------|
 | `ordinalPattern` + API | `OrdinalPattern` | No ordinal pattern map in Mathlib |
-| `delayEmbedding` + characterization | `DelayWindow` | No `Dynamics.delayEmbedding` in Mathlib |
+| `delayEmbedding` + characterization | `DelayWindow` | Mathlib has no delay-embedding map |
 
 ## Building
 

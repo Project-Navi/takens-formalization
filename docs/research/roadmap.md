@@ -18,8 +18,8 @@ The headline theorem `delayEmbedding_injective_iff_separatesOrbits` characterize
 when the delay embedding is injective. The companion theorems ---
 `exists_separatingWindow_iff` (separating windows exist iff orbits eventually
 disagree), `coincidenceLength` (the index of first disagreement), and the ordinal
-compression chain (`ordinalDelayMap` with pattern-count bounds `le_factorial` and
-`le_period`) --- give a complete discrete toolkit. All proved, no axioms beyond
+compression chain (`ordinalDelayMap` with pattern-count bounds
+`card_observedPatterns_le_factorial` and `card_observedPatterns_le_period`) --- give a complete discrete toolkit. All proved, no axioms beyond
 `propext`, `Classical.choice`, `Quot.sound`.
 
 **Route A (smooth)** has two layers. The embedding chain in `SmoothTakens.lean`
@@ -46,10 +46,8 @@ The remaining gap is the high-dimensional case: when finrank E > finrank F, the
 Morse--Sard inductive argument requires C^{n-m+1} regularity and induction on
 the vanishing order of derivatives at critical points.
 
-The plan is to axiomize *only* this one case as a typeclass field
-`sard_of_finrank_gt`, following the `PDEInfra` pattern from cd-formalization. The
-proved cases remain as concrete theorems. This keeps the axiom surface minimal
-and clearly delineated.
+This case is to be proved, not assumed: no typeclass field or axiom will stand
+in for it. The proved cases remain as concrete theorems.
 
 Designing the typeclass is the gating constraint --- getting the interface right
 (what hypotheses, what universe levels, what relationship to the proved cases)
@@ -93,13 +91,13 @@ work --- see [Open Problems](open-problems.md) for details.
 Two files are designed as upstream candidates:
 
 - **`OrdinalPattern.lean`** --- the Bandt--Pompe ordinal pattern extractor. A
-  natural addition to Mathlib, likely under `Combinatorics` or
-  `Dynamics.TimeSeries`. Five declarations: the `IsOrdinalPatternOf` predicate,
+  natural addition to Mathlib, likely under a combinatorics or
+  time-series namespace. Five declarations: the `IsOrdinalPatternOf` predicate,
   the `ordinalPattern` extraction function, existence/uniqueness, monotone
   invariance, and surjectivity.
 
 - **`DelayWindow.lean`** --- the delay coordinate map for finite dynamical
-  systems. Natural home under `Dynamics`. Core declarations: `delayEmbedding`,
+  systems. Natural home in Mathlib's dynamics library. Core declarations: `delayEmbedding`,
   `SeparatesOrbits`, the injectivity iff, continuity, `coincidenceLength`, and
   `exists_separatingWindow_iff`.
 
