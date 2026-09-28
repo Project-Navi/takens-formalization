@@ -1,65 +1,111 @@
 name: Lean CI
 
 on:
-  push:
   pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions: {}
 
 concurrency:
-  group: lean-ci-${{ github.head_ref || github.ref }}
+  group: lean-ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
   ELAN_HOME: /home/runner/.elan
 
 jobs:
-  # CONTRACT: org ruleset requires this exact check name 'build'
+  # CONTRACT: the org ruleset requires this exact check name: build
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
     permissions:
       contents: read
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          persist-credentials: false
 
-      - name: Install elan and toolchain
+      - name: Record the checked revision
+        env:
+          EVENT: ${{ github.event_name }}
+          GITHUB_SHA_CTX: ${{ github.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
         run: |
-          curl -sSf https://raw.githubusercontent.com/leanprover/elan/917c18d0ad52f649c2603dc8b973f5b9fa5f8f43/elan-init.sh | sh -s -- -y --default-toolchain none
+          set -euo pipefail
+          echo "event:          $EVENT"
+          echo "github.sha:     $GITHUB_SHA_CTX"
+          echo "pr head sha:    ${PR_HEAD:-n/a}"
+          echo "pr base sha:    ${PR_BASE:-n/a}"
+          echo "checked commit: $(git rev-parse HEAD)"
+          fingerprint="$(git ls-files '*.lean' lakefile.toml lake-manifest.json lean-toolchain \
+            | sort | xargs sha256sum | sha256sum | cut -d' ' -f1)"
+          echo "lean source fingerprint: $fingerprint"
+
+      - name: Install elan and the pinned toolchain
+        run: |
+          set -euo pipefail
+          curl -sSfL -o elan-init.sh \
+            https://raw.githubusercontent.com/leanprover/elan/917c18d0ad52f649c2603dc8b973f5b9fa5f8f43/elan-init.sh
+          echo "4bacca9502cb89736fe63d2685abc2947cfbf34dc87673504f1bb4c43eda9264  elan-init.sh" \
+            | sha256sum -c -
+          sh elan-init.sh -y --default-toolchain none
+          rm elan-init.sh
           echo "${ELAN_HOME}/bin" >> "${GITHUB_PATH}"
           export PATH="${ELAN_HOME}/bin:${PATH}"
-          elan --version
-          elan show
+          lean --version
+          lake --version
 
-      - name: Cache Lake build artifacts
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
-        with:
-          path: .lake
-          key: lake-${{ hashFiles('lean-toolchain', 'lakefile.toml', 'lake-manifest.json') }}
-          restore-keys: lake-
+      # Mathlib's own olean cache only; the project is rebuilt from this fresh checkout.
+      - name: Fetch the Mathlib build cache
+        id: cache
+        run: lake exe cache get
 
-      - name: Get Mathlib cache
-        run: lake exe cache get || true
+      - name: Confirm no prebuilt project outputs
+        id: fresh
+        run: test ! -e .lake/build
 
-      - name: Build (fail on sorry)
-        run: lake build --wfail
+      # Each check below reports even if an earlier independent check failed;
+      # the job fails if any of them fails.
+      - name: Source hygiene
+        if: ${{ !cancelled() }}
+        run: python3 scripts/check_source.py
 
-      - name: Lint (Mathlib environment linters)
+      - name: Build every tracked Lean module (warnings are errors)
+        id: build
+        if: ${{ !cancelled() && steps.cache.outcome == 'success' && steps.fresh.outcome == 'success' }}
+        run: |
+          set -euo pipefail
+          modules="$(python3 scripts/check_source.py --list-modules)"
+          echo "modules: $modules"
+          # shellcheck disable=SC2086
+          lake build --wfail $modules
+
+      - name: Mathematical examples
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: lake env lean -DwarningAsError=true TakensFormal/Examples.lean
+
+      - name: Lint
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: lake lint
 
-      - name: Verify axiom dashboard compiles
-        run: lake build TakensFormal.Verify
+      - name: Axiom records of the selected declarations
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: python3 scripts/check_axioms.py
 
-      - name: Check for sorry contamination
-        run: |
-          echo "Checking axiom dependencies..."
-          touch TakensFormal/Verify.lean
-          lake env lean TakensFormal/Verify.lean 2>&1 | tee verify_output.txt
-          # NOTE: At skeleton stage (no #print axioms), this grep finds nothing
-          # and passes vacuously. Becomes meaningful once definitions land.
-          if grep -q "sorryAx" verify_output.txt; then
-            echo "FATAL: sorryAx found in verified theorems!"
-            exit 1
-          fi
-          echo "No sorry contamination detected."
+      - name: Documented Lean names resolve
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: python3 scripts/check_doc_names.py
+
+      - name: Checker negative tests
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: python3 scripts/test_checkers.py --lean
+
+      - name: Fresh kernel replay
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: lake env leanchecker --fresh TakensFormal

@@ -28,3 +28,6 @@
 
 # Root-level browser-check screenshots (docs/assets/ remains tracked)
 /*.png
+
+# Python bytecode
+__pycache__/

@@ -1,90 +1,117 @@
 # Proof Architecture
 
-This formalization takes an unusual approach: rather than following a single proof
-strategy from hypothesis to conclusion, it develops two **independent proof routes**
-that cover different aspects of delay embedding theory using incompatible
-definitions.
+The formalization studies one object, the delay map
 
-## Why two routes?
+$$\Phi_k(x) \;=\; \bigl(h(x),\, h(Tx),\, \dots,\, h(T^{k-1}x)\bigr),$$
 
-Takens' 1981 theorem lives at the intersection of two mathematical worlds. The
-**discrete** side concerns finite dynamical systems, orbit combinatorics, and
-ordinal pattern extraction. The **smooth** side concerns compact manifolds,
-continuous maps, and topological embeddings. These require fundamentally different
-type signatures in Lean 4.
-
-- **Route B (Discrete)** defines `delayEmbedding` as a map
-  \(\mathrm{Fin}\,k \to \mathbb{R}\) via iterated function application on a
-  finite type. It proves the core injectivity characterization and extends it with
-  a novel coincidence length result that Takens did not prove.
-
-- **Route A (Smooth)** defines `smoothDelayMap` as a continuous map from a
-  topological space to \(\mathbb{R}^k\). It proves the embedding chain: compact +
-  injective implies closed embedding and homeomorphism onto image.
-
-These are not redundant --- they formalize different theorems with different
-hypotheses and conclusions. Route A never imports Route B files. Route B never
-imports `SardInfra`. The root aggregator (`TakensFormal.lean`) imports both, but
-no definitions cross the boundary.
+`delayEmbedding` in Lean, at three levels of structure: finite state spaces, where
+reconstruction is a combinatorial question; ordinal codes, which keep only the order of the
+window; and compact manifolds, where the classical question is whether \(\Phi_{2d+1}\) is an
+embedding. A self-contained account of Sard's theorem supports the smooth part.
 
 ## Dependency diagram
 
 ![Proof Architecture](../assets/proof-architecture.svg)
 
-The diagram shows the import structure across all 8 Lean source files.
-`TakensDiscrete.lean` (dashed) is a skeleton with zero definitions --- future
-finite-horizon corollaries will land here. `Verify.lean` (dotted) is a diagnostic
-target that prints axiom dependencies for all 42 declarations; it is not part of
-the library.
+Arrows are imports. `DelayWindow` defines the delay map once, for arbitrary types, and every
+smooth statement is about that same map (`smoothDelayMap_eq_delayEmbedding`). The
+general-purpose layer `TakensFormal/ForMathlib/` imports only Mathlib. The diagnostic
+modules `Verify` (axiom records) and `Examples` (worked checks) are built by CI but not
+imported by the library.
 
-A key structural feature: **`SmoothTakens.lean` does not import `SardInfra.lean`**.
-The entire embedding chain --- continuity, closed embedding, homeomorphism onto
-image --- is proved without invoking Sard's theorem. This means Route A's results
-are fully axiom-free, depending only on Lean's foundational axioms (`propext`,
-`Classical.choice`, `Quot.sound`). The Sard infrastructure exists to support the
-*future* genericity theorem, not the embedding chain itself.
+## Finite state spaces
 
-## What is new, what is formalized, what is infrastructure
+On a finite state space the delay map is injective exactly when the observation separates
+orbits (`delayEmbedding_injective_iff_separatesOrbits`). The coincidence length of two
+states, the first time their observations differ, determines the least window that
+separates all orbits, the separating horizon. When some window separates, the horizon on
+\(N \ge 1\) states is at most \(N-1\), and the countdown chain shows that this bound is
+attained. A decision procedure
+returns either the exact horizon or a pair of states that no window distinguishes, and is
+proved sound and complete. When the delay map is injective, the dynamics transported to its
+image is an explicit shift, conjugate to the original map. See
+[Delay Embedding](delay-embedding.md) and [Coincidence Length](coincidence-length.md).
 
-This formalization contains three categories of results:
+## Ordinal codes
 
-### Novel mathematics
+An ordinal code replaces the window by the permutation that sorts it. It is unchanged by
+strictly increasing transformations of the observation and is relabeled by the index
+reversal under strictly decreasing ones. The number of observed patterns, and the entropy
+of their empirical distribution, are bounded by \(d!\), the orbit length and the minimal
+period. The code cannot be injective on more than \(k!\) states, so exact reconstruction is
+a question about the delay map, not the code; what the code retains is described by its
+quotient. See [Ordinal Compression](ordinal-compression.md).
 
-The **coincidence length** and the iff characterization
-`exists_separatingWindow_iff` are new results that extend Takens' 1981 theorem.
-Takens proved that delay embedding is generically injective for smooth dynamical
-systems on compact manifolds. The coincidence length answers a different question:
-for *finite* dynamical systems with a possibly non-injective observation, *when*
-does the observation still separate orbits? The answer --- iff every coincidence
-between distinct orbits has bounded length --- is not in the literature.
+## Compact manifolds
 
-See [Beyond Takens: Coincidence Length](coincidence-length.md) for the full
-treatment.
+For \(C^r\) dynamics and observation, the delay map is \(C^r\), its differential is given
+by the delayed covectors \(Dh_{T^i x} \circ D(T^i)_x\), and on a compact manifold an
+injective immersion is a \(C^r\) embedding. The genericity argument is organized in layers:
 
-### Formalized results
+1. **Avoidance.** For a finite-dimensional family of maps with surjective derivative in the
+   parameter, almost every parameter avoids a set of lower dimension
+   (`ae_forall_ne_of_hasStrictFDerivAt`), because the bad parameters are the projection of
+   a level set covered by Lipschitz images of lower-dimensional pieces.
+2. **Generic families.** Applied to affine families \(\Psi_0 + \sum_i a_i \Psi_i\), this
+   gives generic immersion when \(2\dim X \le \dim Y\) and generic separation when
+   \(\dim X_1 + \dim X_2 < \dim Y\), under span conditions on the \(\Psi_i\).
+3. **Delay maps.** In extended charts (countably many, by second countability) the delay
+   map of \(h + \sum_i a_i \varphi_i\) is such an affine family, so the span conditions give
+   a \(C^2\) embedding for almost every \(a\)
+   (`ae_isContMDiffEmbedding_delayEmbedding_perturb`).
+4. **Span conditions.** If \(T\) is injective with injective differentials and has no
+   periodic points of period at most \(4d\), the span conditions follow from interpolation
+   properties of the family. Overlapping windows \(y = T^m x\) reduce to the triangular
+   system \(v_j - v_{j+m} = c_j\), solved explicitly.
+5. **An interpolating family.** A Whitney embedding \(e : M \to \mathbb{R}^n\) and powers
+   of finitely many moment functionals \(q \mapsto \sum_r t^r q_r\) interpolate values,
+   derivatives and covectors at any bounded number of points (Lagrange interpolation).
+6. **Short periodic orbits.** At a point of period \(p \le 2d\) the delayed covectors are
+   \(\omega \circ A^j\) for \(A = D(T^p)\) after a Krylov tiling of the indices, so an
+   observable \(A\) gives an immersion for one coefficient vector, hence for almost every one
+   (nonzero polynomials vanish on null sets). Pairs of periodic points are countably many
+   and separated one at a time.
+7. **The \(C^2\) topology.** The weak \(C^n\) topology on \(C^n\) maps is defined through
+   chart derivatives on compact windows (`JetTopology`). Injective immersions of a compact
+   manifold are stable under \(C^1\)-small perturbations, and the delay map depends
+   continuously on the observation (`EmbeddingStability`); a family perturbation tends to
+   the observation as the coefficients tend to zero. The \(C^n\) topology on
+   diffeomorphisms uses charts on both source and target (`WeakTopology`); closeness is
+   preserved by composition and iteration (`WeakComposition`), so the delay map is stable
+   under perturbations of the pair and the good pairs are open (`GenericPair`).
+8. **Bounded-period nondegeneracy and observability density** (Kupka--Smale-type). By
+   induction on the period, diffeomorphisms whose periodic
+   points of period at most \(4d\) are nondegenerate with observable differentials are dense
+   (`KupkaSmale`): old periodic orbits are protected by supporting perturbations away from
+   them (`NearStability`), and new ones are made good in chart patches by bump perturbations
+   (`ChartPerturbation`, `PatchPerturbation`), almost every perturbation being good by a
+   Fubini argument (`PeriodicNull`) and goodness persisting (`PatchStability`).
 
-The delay embedding injectivity characterization
-(`delayEmbedding_injective_iff_separatesOrbits`), the ordinal pattern theory
-(Bandt and Pompe 2002), and the smooth embedding chain (Takens 1981) are
-machine-checked formalizations of known results. The value is not novelty but
-**certainty**: every hypothesis is explicit, every step is verified, and the axiom
-boundary is transparent.
+Together these prove Takens' theorem for a fixed map satisfying the periodic-point
+conditions: almost every member of one finite family is good
+(`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`), and the good
+observations are open and dense in the \(C^2\) topology
+(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). With this density
+they give Takens' theorem for generic pairs: the good pairs are open and dense in
+\(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
+(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`). See
+[Smooth Embedding](smooth-embedding.md).
 
-### Infrastructure
+## Sard's theorem
 
-Sard's theorem infrastructure (`SardInfra.lean`) provides the critical set and
-critical values definitions, proves the equidimensional case via the Jacobian area
-formula, and proves the low-dimensional case via Hausdorff dimension bounds. The
-high-dimensional case (Morse--Sard induction) is deferred to gate 3. This
-infrastructure will eventually support the genericity theorem connecting Sard to
-delay embedding.
-
-See [Sard Infrastructure](sard-infrastructure.md) for the mathematical details.
+`SardInfra` defines critical values and proves the equidimensional case (Jacobian area
+formula) and the low-dimensional case (Hausdorff dimension) for \(C^1\) maps. The general
+case, \(C^r\) with \(r \ge \max\{1, \dim E - \dim F + 1\}\), follows from Moreira's theorem, whose Lean
+proof by Yury Kudryashov is ported in `TakensFormal/ForMathlib/SardMoreira/`. See
+[Sard's Theorem](sard-infrastructure.md). The genericity argument above does not use
+Sard's theorem: the avoidance lemma needs only the implicit function theorem and a
+dimension count.
 
 ## References
 
-- Takens, F. (1981). "Detecting strange attractors in turbulence." In *Dynamical
-  Systems and Turbulence, Warwick 1980*, Lecture Notes in Mathematics 898,
-  pp. 366--381. Springer.
-- Sauer, T., Yorke, J. A., and Casdagli, M. (1991). "Embedology." *Journal of
-  Statistical Physics* 65(3--4), pp. 579--616.
+- [Takens1981] F. Takens, *Detecting strange attractors in turbulence*, Lecture Notes in
+  Mathematics 898 (1981), 366--381.
+- [SauerYorkeCasdagli1991] T. Sauer, J. A. Yorke, M. Casdagli, *Embedology*, J. Stat. Phys.
+  65 (1991), 579--616.
+- [Moreira2001] C. G. T. de A. Moreira, *Hausdorff measures and the Morse-Sard theorem*,
+  Publ. Mat. 45 (2001), 149--162.

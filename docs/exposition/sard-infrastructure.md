@@ -1,267 +1,99 @@
-# Sard Infrastructure
+# Sard's Theorem
 
-Sard's theorem (Sard, 1942) states that the set of *critical values* of a smooth map \(f : M \to N\) between manifolds has measure zero in \(N\). It is a foundational result in differential topology, underpinning transversality theory, Morse theory, and --- for this project --- the genericity argument in the smooth Takens embedding theorem.
+Sard's theorem [Sard1942] says that the critical values of a sufficiently smooth map have
+measure zero. Here \(E\) and \(F\) are finite-dimensional real normed spaces,
+\(n = \dim E\), \(m = \dim F\), and "measure zero" means zero for every additive Haar
+measure on \(F\).
 
-This file builds the infrastructure for Sard's theorem in the setting of finite-dimensional real normed spaces. Three cases arise, distinguished by the relationship between \(\dim E\) and \(\dim F\):
+| Case | Regularity | Method | Declaration |
+|------|-----------|--------|-------------|
+| \(n = m\) | \(C^1\) | Jacobian area formula | `sard_equidim_general_of_contDiff` |
+| \(n < m\) | \(C^1\) | Hausdorff dimension | `sard_low_dim_of_contDiff` |
+| all \(n\), \(m\) | \(C^r\), \(r \ge \max\{1, n - m + 1\}\) | Moreira's theorem | `sard` |
 
-| Case | Condition | Strategy | Status |
-|------|-----------|----------|--------|
-| **Equidimensional** | \(\dim E = \dim F\) | Jacobian area formula | Proved |
-| **Low-dimensional** | \(\dim E < \dim F\) | Hausdorff dimension | Proved |
-| **High-dimensional** | \(\dim E > \dim F\) | Morse--Sard induction | Deferred (gate 3) |
+For \(n \le m\) the last row asks only \(r \ge 1\); the Lean statement writes the threshold
+as `finrank ℝ E - finrank ℝ F + 1 ≤ r` with truncated subtraction, which is the same
+condition. The threshold cannot be lowered in general: [Whitney1935] gives a \(C^1\)
+function on \(\mathbb{R}^2\) that is not constant on a connected set of critical points.
 
-## Definitions
+## Critical points
 
 <div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(criticalSet)</span>
 
-**Definition.** The *critical set* of \(f : E \to F\) is
-
-$$\operatorname{Crit}(f) \;=\; \bigl\{\, x \in E \;\big|\; Df(x) : E \to F \text{ is not surjective}\,\bigr\}.$$
-
+The *critical set* of \(f : E \to F\) is \(\{x \mid Df(x) \text{ is not surjective}\}\), and
+its image is the set of *critical values* (`criticalValues`).
 </div>
 
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:76</code></summary>
+For \(f : E \to E\) the critical set is the zero set of the Jacobian determinant
+(`criticalSet_eq_det_zero`), and it is closed when \(f\) is \(C^1\)
+(`isClosed_criticalSet`). A map into a zero-dimensional space has no critical points, since
+every linear map onto \(\{0\}\) is surjective (`criticalSet_eq_empty_of_finrank_eq_zero`).
 
-```lean
-def criticalSet (f : E → F) : Set E :=
-  {x | ¬Surjective (fderiv ℝ f x)}
-```
-</details>
+## Equal and lower dimension
 
 <div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(criticalValues)</span>
+<span class="theorem-name">(sard_equidim_of_contDiff)</span>
 
-**Definition.** The *critical values* of \(f\) are the image of the critical set: \(\operatorname{CritVal}(f) = f(\operatorname{Crit}(f))\).
+If \(f : E \to E\) is \(C^1\), its critical values have Haar measure zero.
 </div>
 
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:81</code></summary>
+The area formula bounds \(\mu(f(S))\) by \(\int_S |\det Df|\,d\mu\), which vanishes on the
+critical set. For \(\dim E = \dim F\), a continuous linear equivalence reduces
+\(f : E \to F\) to this case (`sard_equidim_general_of_contDiff`). For
+\(\dim E < \dim F\), a differentiable image has Hausdorff dimension at most \(\dim E\), so
+the whole image is Haar-null (`sard_low_dim_of_contDiff`). The original statements for
+analytic maps (`sard_equidim`, `sard_low_dim`, `sard_equidim_general`) are kept as
+corollaries.
 
-```lean
-def criticalValues (f : E → F) : Set F :=
-  f '' criticalSet f
-```
-</details>
-
-## Structural lemmas
+## All dimensions
 
 <div class="theorem-block" markdown>
 <span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(det_fderiv_eq_zero_of_not_surjective)</span>
+<span class="theorem-name">(sard)</span>
 
-**Lemma.** If \(L : E \to_L E\) is a continuous linear endomorphism that is not surjective, then \(\det L = 0\).
+**Sard's theorem.** If \(f : E \to F\) is \(C^r\) with \(r \ge \max\{1, \dim E - \dim F + 1\}\), then
+\(\mu(\operatorname{CritVal}(f)) = 0\) for every additive Haar measure \(\mu\) on \(F\).
 </div>
 
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:93</code></summary>
+Moreira's theorem [Moreira2001] bounds the size of the image of the points where the
+derivative has rank at most \(p\): for a \(C^{k+(\alpha)}\) map on an \(n\)-dimensional
+space, that image has zero \(s\)-dimensional Hausdorff measure for
+\(s = p + (n - p)/(k + \alpha)\)
+(`hausdorffMeasure_sardMoreiraBound_image_null_of_finrank_le`). For \(0 < m \le n\) take
+\(p = m - 1\), \(k = n - m + 1\) and \(\alpha = 0\): a critical point has rank at most
+\(m - 1\), and
 
-```lean
-lemma det_fderiv_eq_zero_of_not_surjective (L : E →L[ℝ] E)
-    (h : ¬Surjective L) : L.det = 0
-```
-</details>
+$$s = (m-1) + \frac{n - m + 1}{n - m + 1} = m$$
 
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(ContinuousLinearMap.surjective_iff_det_ne_zero)</span>
+(`coe_sardMoreiraBound_sub_add_one`). Zero \(m\)-dimensional Hausdorff measure in the
+\(m\)-dimensional space \(F\) is zero Haar measure. The cases \(m = 0\) and \(n < m\) are
+handled separately as above.
 
-**Theorem.** A continuous linear endomorphism \(L : E \to_L E\) on a finite-dimensional space is surjective iff \(\det L \ne 0\):
+For the charts of a manifold the local forms are the useful ones: if \(f\) is \(C^r\) at
+every point of a set \(s\), its critical values on \(s\) are null
+(`addHaar_image_inter_criticalSet_eq_zero`), and likewise on an open set
+(`addHaar_image_inter_criticalSet_eq_zero_of_contDiffOn`).
 
-$$L \text{ surjective} \;\iff\; \det L \ne 0.$$
+## Provenance of the port
 
-</div>
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:101</code></summary>
-
-```lean
-theorem ContinuousLinearMap.surjective_iff_det_ne_zero
-    (L : E →L[ℝ] E) : Surjective L ↔ L.det ≠ 0
-```
-</details>
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(criticalSet_eq_det_zero)</span>
-
-**Theorem.** The critical set coincides with the zero locus of the Jacobian determinant:
-\(\operatorname{Crit}(f) = \{x \mid \det Df(x) = 0\}\).
-</div>
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:117</code></summary>
-
-```lean
-theorem criticalSet_eq_det_zero (f : E → E) :
-    criticalSet f = {x | (fderiv ℝ f x).det = 0}
-```
-</details>
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(isClosed_criticalSet_of_contDiff)</span>
-
-**Theorem.** If \(f : E \to E\) is \(C^\infty\), then \(\operatorname{Crit}(f)\) is closed.
-</div>
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:123</code></summary>
-
-```lean
-theorem isClosed_criticalSet_of_contDiff (f : E → E)
-    (hf : ContDiff ℝ ⊤ f) : IsClosed (criticalSet f)
-```
-</details>
-
-## Equidimensional Sard
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(sard_equidim)</span>
-
-**Theorem (Sard, equidimensional).** Let \(E\) be a finite-dimensional real normed space with additive Haar measure \(\mu\). If \(f : E \to E\) is \(C^\infty\), then \(\mu(\operatorname{CritVal}(f)) = 0\).
-</div>
-
-The proof uses the Jacobian area formula: \(\mu(f(S)) \le \int_S |\det Df(x)|\,d\mu(x)\). On the critical set, \(\det Df(x) = 0\) identically, so the integral vanishes.
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:140</code></summary>
-
-```lean
-theorem sard_equidim (f : E → E) (hf : ContDiff ℝ ⊤ f)
-    (μ : Measure E) [μ.IsAddHaarMeasure] :
-    μ (criticalValues f) = 0
-```
-</details>
-
-## Low-dimensional Sard
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(sard_low_dim)</span>
-
-**Theorem (Sard, low-dimensional).** If \(\dim_{\mathbb{R}} E < \dim_{\mathbb{R}} F\) and \(f : E \to F\) is \(C^\infty\), then \(\mu(\operatorname{CritVal}(f)) = 0\). In fact, the *entire* image \(f(E)\) has measure zero.
-</div>
-
-Smooth maps do not increase Hausdorff dimension: \(\dim_H(f(E)) \le \dim_{\mathbb{R}} E < \dim_{\mathbb{R}} F\). The Haar measure is absolutely continuous with respect to Hausdorff measure at dimension \(\dim F\), giving \(\mu(f(E)) = 0\).
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:184</code></summary>
-
-```lean
-theorem sard_low_dim (f : E → F) (hf : ContDiff ℝ ⊤ f)
-    (hdim : finrank ℝ E < finrank ℝ F)
-    (μ : Measure F) [μ.IsAddHaarMeasure] :
-    μ (criticalValues f) = 0
-```
-</details>
-
-## General equidimensional Sard
-
-To handle \(f : E \to F\) with \(\dim E = \dim F\) (not just endomorphisms), we transport through a continuous linear equivalence.
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(exists_continuousLinearEquiv_of_finrank_eq)</span>
-
-**Theorem.** If \(\dim_{\mathbb{R}} E = \dim_{\mathbb{R}} F\), then there exists a continuous linear equivalence \(E \simeq_L F\).
-</div>
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:225</code></summary>
-
-```lean
-theorem exists_continuousLinearEquiv_of_finrank_eq
-    (h : finrank ℝ E = finrank ℝ F) : Nonempty (E ≃L[ℝ] F)
-```
-</details>
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(criticalSet_comp_equiv)</span>
-
-**Theorem.** Post-composition with an isomorphism preserves the critical set: \(\operatorname{Crit}(e \circ f) = \operatorname{Crit}(f)\).
-</div>
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:232</code></summary>
-
-```lean
-theorem criticalSet_comp_equiv (f : E → F) (e : F ≃L[ℝ] E) :
-    criticalSet (e ∘ f) = criticalSet f
-```
-</details>
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(ContinuousLinearEquiv.symm_preimage_eq_image)</span>
-
-**Theorem.** For a continuous linear equivalence \(e\) and a set \(S\), \(e^{-1}(S) = e(S)\).
-</div>
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:252</code></summary>
-
-```lean
-theorem ContinuousLinearEquiv.symm_preimage_eq_image
-    (e : E ≃L[ℝ] F) (S : Set E) :
-    e.symm ⁻¹' S = e '' S
-```
-</details>
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(map_continuousLinearEquiv_isAddHaarMeasure)</span>
-
-**Instance.** If \(\mu\) is an additive Haar measure on \(F\) and \(e : E \simeq_L F\), then the pushforward is an additive Haar measure on \(E\).
-</div>
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:261</code></summary>
-
-```lean
-instance map_continuousLinearEquiv_isAddHaarMeasure
-    (e : E ≃L[ℝ] F) (μ : Measure F) [μ.IsAddHaarMeasure] :
-    (Measure.map e.symm μ).IsAddHaarMeasure
-```
-</details>
-
-<div class="theorem-block" markdown>
-<span class="badge badge--proved">Proved</span>
-<span class="theorem-name">(sard_equidim_general)</span>
-
-**Theorem (Sard, equidimensional, general).** If \(\dim_{\mathbb{R}} E = \dim_{\mathbb{R}} F\) and \(f : E \to F\) is \(C^\infty\), then \(\mu(\operatorname{CritVal}(f)) = 0\).
-</div>
-
-The proof picks \(e : E \simeq_L F\), sets \(g = e^{-1} \circ f : E \to E\), applies `sard_equidim` to \(g\), and transfers back.
-
-<details>
-<summary>Lean 4 statement --- <code>SardInfra.lean:269</code></summary>
-
-```lean
-theorem sard_equidim_general (f : E → F) (hf : ContDiff ℝ ⊤ f)
-    (hdim : finrank ℝ E = finrank ℝ F)
-    (μ : Measure F) [μ.IsAddHaarMeasure] :
-    μ (criticalValues f) = 0
-```
-</details>
-
-## The axiom boundary
-
-<div class="theorem-block" markdown>
-<span class="badge badge--deferred">Deferred</span>
-<span class="theorem-name">(sard_of_finrank_gt --- gate 3)</span>
-
-**Deferred.** The high-dimensional case (\(\dim E > \dim F\)) requires the Morse--Sard induction: stratification by vanishing order of derivatives, Taylor estimates, and Whitney-type covering arguments. This will be axiomatized as a `SardInfra` typeclass carrying the single axiom that \(\mu(\operatorname{CritVal}(f)) = 0\) when \(\dim E > \dim F\) and \(f\) is sufficiently smooth.
-</div>
-
-The boundary is deliberate. The equidimensional and low-dimensional cases have clean proofs using existing Mathlib infrastructure. The high-dimensional case requires substantial new machinery that does not yet exist in Mathlib. Rather than axiomatizing the entire theorem, the formalization proves what it can and isolates the remaining obligation in a single, clearly scoped axiom.
+`TakensFormal/ForMathlib/SardMoreira/` contains the part of Yury Kudryashov's Lean project
+`urkud/SardMoreira` (commit `14bc8a1eeaedb14f9ae95e125c95a5eb4f47f8c5`, Apache 2.0) that the
+proof of Moreira's theorem needs, ported from the Lean release it was written for to the
+Mathlib pinned here. Each file keeps the upstream copyright line and records its source
+file and the changes in a `## Provenance` section. The changes are renamed Mathlib API,
+explicit arguments where elaboration changed, a compatibility option for definitional
+unfolding in three files, one lemma dropped as a duplicate of Mathlib's, and one simp
+attribute and one unused instance argument removed; no statement was weakened. `sard` and the chart-level wrappers in
+`Sard` are new here.
 
 ## References
 
-- Sard, A. (1942). "The measure of the critical values of differentiable maps." *Bull. Amer. Math. Soc.* 48(12), pp. 883--890.
-- Mathlib: `MeasureTheory.addHaar_image_le_lintegral_abs_det_fderiv` (Jacobian area formula), `ContDiffOn.dimH_image_le` (Hausdorff dimension bound).
+- [Sard1942] A. Sard, *The measure of the critical values of differentiable maps*, Bull.
+  Amer. Math. Soc. 48 (1942), 883--890.
+- [Moreira2001] C. G. T. de A. Moreira, *Hausdorff measures and the Morse-Sard theorem*,
+  Publ. Mat. 45 (2001), 149--162.
+- [Whitney1935] H. Whitney, *A function not constant on a connected set of critical points*,
+  Duke Math. J. 1 (1935), 514--517.
