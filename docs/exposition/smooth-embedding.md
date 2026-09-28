@@ -193,13 +193,14 @@ almost every such perturbation is good
 ## What is not here
 
 The conditions on \(T\) are those of Takens' generic diffeomorphisms, but their genericity
-is not formalized. Takens' theorem for generic pairs \((T, h)\) needs, in addition:
+is not formalized. The \(C^2\) topology on \(\mathrm{Diff}^2(M)\) is defined, and the good
+pairs are open in \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
+(`isOpen_setOf_isContMDiffEmbedding_delayEmbedding_pair`). Takens' theorem for generic
+pairs \((T, h)\) needs, in addition:
 
 - a Kupka--Smale-type theorem: for an open dense set of \(C^2\) diffeomorphisms, the
   periodic points of period at most \(4d\) are finitely many and those of period at most
   \(2d\) satisfy the observability condition;
-- the \(C^2\) topology on \(\mathrm{Diff}^2(M)\), with the delay map continuous in
-  \((T, h)\), so that the good pairs form an open set;
 - the assembly: an open set of pairs whose fibre over each map of a dense set is dense is
   dense.
 

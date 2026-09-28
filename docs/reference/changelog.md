@@ -7,6 +7,12 @@ commits.
 
 ### 2026-09
 
+- **Good pairs are open.** The \(C^n\) topology on \(C^n\) diffeomorphisms through chart
+  derivatives on source and target (`Diffeomorph.instTopologicalSpace`), first-order
+  closeness preserved by composition and iteration (`BiChartWindow.exists_near_iterate`),
+  and the openness of the pairs \((T, h)\) whose delay map is a \(C^2\) embedding in
+  \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
+  (`isOpen_setOf_isContMDiffEmbedding_delayEmbedding_pair`).
 - **Takens' theorem for a fixed map, in the \(C^2\) topology.** For an injective \(C^2\) map
   with injective differentials whose points of period at most \(4d\) are countably many and
   which is observable at points of period at most \(2d\), the observations whose delay map

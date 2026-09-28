@@ -35,19 +35,17 @@ is good (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodi
    \(D(T^p)_z\) are distinct, which gives (ii) through a cyclic vector of the transpose.
    This needs local perturbations of diffeomorphisms supported near an orbit, transversality
    of the graph of \(T^p\) to the diagonal, and an induction on the period.
-2. **The \(C^2\) topology on \(\mathrm{Diff}^2(M)\).** Charts on both source and target, a
-   proved description through derivatives, and the continuity of
-   \((T, h) \mapsto (x \mapsto (h(x), \dots, h(T^{2d}x)))\) into \(C^1\) maps; with the
-   stability of embeddings (`exists_forall_injective_of_near`) this makes the good pairs an
-   open set of \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\).
-3. **Assembly.** An open set of pairs whose fibre over each \(T\) in the dense set
+2. **Assembly.** An open set of pairs whose fibre over each \(T\) in the dense set
    \(\mathcal{D}\) is dense (the fixed-map theorem above) is dense, hence open dense and
    residual.
 
-Mathlib has smooth manifolds, the Whitney embedding of compact manifolds and the implicit
-function theorem, which the present proofs use, but no topology on spaces of \(C^r\) maps
-between manifolds; `TakensFormal/JetTopology.lean` provides one for maps into a normed
-space.
+**Formalized here, for pairs.** The \(C^n\) topology on \(C^n\) diffeomorphisms through
+chart derivatives on both source and target (`Diffeomorph.instTopologicalSpace`), closeness
+under composition and iteration (`BiChartWindow.exists_near_iterate`), and, with the
+stability of embeddings (`exists_forall_injective_of_near`), the openness of the good pairs
+in \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
+(`isOpen_setOf_isContMDiffEmbedding_delayEmbedding_pair`). Mathlib has no topology on
+spaces of \(C^r\) maps between manifolds; `JetTopology` and `WeakTopology` provide them.
 
 ---
 

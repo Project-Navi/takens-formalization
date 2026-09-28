@@ -31,13 +31,12 @@ a fresh kernel replay on every pull request.
 
 In order of dependence (details in [Open Problems](open-problems.md)):
 
-1. Genericity of the periodic-point conditions: for an open dense set of \(C^2\)
-   diffeomorphisms, finitely many periodic points of period at most \(4d\), with distinct
-   eigenvalues at those of period at most \(2d\) (a Kupka--Smale-type theorem).
-2. The \(C^2\) topology on \(\mathrm{Diff}^2(M)\), continuity of the delay map in the pair,
-   and openness of good pairs.
-3. The assembly: good pairs are open, and dense because their fibres over a dense set of
-   maps are dense.
+1. Genericity of the periodic-point conditions: for a dense set of \(C^2\)
+   diffeomorphisms, finitely many periodic points of period at most \(4d\), each
+   nondegenerate, with an observable differential at those of period at most \(2d\) (a
+   Kupka--Smale-type theorem).
+2. The assembly: good pairs are open (done: `WeakTopology`, `GenericPair`), and dense
+   because their fibres over a dense set of maps are dense.
 
 ---
 

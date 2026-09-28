@@ -74,7 +74,10 @@ injective immersion is a \(C^r\) embedding. The genericity argument is organized
    chart derivatives on compact windows (`JetTopology`). Injective immersions of a compact
    manifold are stable under \(C^1\)-small perturbations, and the delay map depends
    continuously on the observation (`EmbeddingStability`); a family perturbation tends to
-   the observation as the coefficients tend to zero.
+   the observation as the coefficients tend to zero. The \(C^n\) topology on
+   diffeomorphisms uses charts on both source and target (`WeakTopology`); closeness is
+   preserved by composition and iteration (`WeakComposition`), so the delay map is stable
+   under perturbations of the pair and the good pairs are open (`GenericPair`).
 
 Together these prove Takens' theorem for a fixed map satisfying the periodic-point
 conditions: almost every member of one finite family is good
@@ -82,7 +85,7 @@ conditions: almost every member of one finite family is good
 observations are open and dense in the \(C^2\) topology
 (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). The generic-pair theorem
 needs, in addition, the genericity of those conditions among \(C^2\) diffeomorphisms (a
-Kupka--Smale-type theorem) and the \(C^2\) topology on pairs. See
+Kupka--Smale-type theorem). See
 [Smooth Embedding](smooth-embedding.md) and [Open Problems](../research/open-problems.md).
 
 ## Sard's theorem

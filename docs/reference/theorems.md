@@ -366,6 +366,29 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 | `dense_setOf_isContMDiffEmbedding_delayEmbedding` | Under the periodic conditions on \(T\), with \(2d+1\) coordinates they are dense |
 | `isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding` | **Takens' theorem for a fixed map in the \(C^2\) topology:** open and dense |
 
+### WeakTopology
+
+| Declaration | Statement |
+|---|---|
+| `BiChartWindow` | A compact set of coordinates in the extended chart at a source point, with a target chart |
+| `BiChartWindow.Near` | First-order closeness of chart expressions on a window |
+| `Diffeomorph.instTopologicalSpace` | The \(C^n\) topology on \(C^n\) diffeomorphisms, through charts on source and target |
+| `Diffeomorph.eventually_near` | For \(n \ge 1\), first-order closeness on finitely many windows is a neighbourhood condition |
+| `Diffeomorph.tendsto_nhds_of_tendstoUniformlyOn` | Uniform convergence of the jets on every window gives convergence of diffeomorphisms |
+
+### WeakComposition
+
+| Declaration | Statement |
+|---|---|
+| `BiChartWindow.exists_near_comp` | Composition preserves first-order closeness on a window |
+| `BiChartWindow.exists_near_iterate` | So does iteration, for each number of iterates |
+
+### GenericPair
+
+| Declaration | Statement |
+|---|---|
+| `isOpen_setOf_isContMDiffEmbedding_delayEmbedding_pair` | **Good pairs are open:** the pairs \((T, h)\) whose delay map with \(k\) coordinates is a \(C^2\) embedding form an open set of \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\) |
+
 ### CircleDelay
 
 | Declaration | Statement |

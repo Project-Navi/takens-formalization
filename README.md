@@ -35,10 +35,10 @@ A Lean 4 and Mathlib formalization of delay-coordinate reconstruction
   decreasing transformations, pattern-count and entropy bounds, and what the code retains.
 
 Takens' theorem for generic pairs `(T, h)` in `Diff²(M) × C²(M, ℝ)` is **not yet
-formalized here**. The conditions on `T` above are the periodic-point conditions of Takens'
-generic diffeomorphisms; what remains is that they hold for an open dense set of `C²`
-diffeomorphisms (a Kupka–Smale-type theorem), the `C²` topology on `Diff²(M)`, and the
-openness of good pairs in the product. See
+formalized here**. The `C²` topology on `Diff²(M)` is defined and the good pairs are proved
+open in the product; what remains is that the conditions on `T` above, the periodic-point
+conditions of Takens' generic diffeomorphisms, hold for a dense set of `C²`
+diffeomorphisms (a Kupka–Smale-type theorem). See
 [Open Problems](https://project-navi.github.io/takens-formalization/research/open-problems/).
 
 ## Verification
