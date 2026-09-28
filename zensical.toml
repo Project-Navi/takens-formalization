@@ -30,6 +30,7 @@ nav = [
     {"Ordinal Compression" = "exposition/ordinal-compression.md"},
     {"Smooth Embedding" = "exposition/smooth-embedding.md"},
     {"Sard's Theorem" = "exposition/sard-infrastructure.md"},
+    {"Measured Data" = "exposition/measured-data.md"},
   ]},
   {"Research" = [
     {"Open Problems" = "research/open-problems.md"},
@@ -40,9 +41,6 @@ nav = [
     {"Axiom Dashboard" = "reference/axiom-dashboard.md"},
     {"Glossary" = "reference/glossary.md"},
     {"Changelog" = "reference/changelog.md"},
-  ]},
-  {"Bridge" = [
-    {"navi-SAD Bridge" = "bridge/navi-sad.md"},
   ]},
 ]
 

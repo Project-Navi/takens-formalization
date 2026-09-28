@@ -1,10 +1,8 @@
-# navi-SAD Bridge
+# Measured Data
 
-[navi-SAD](https://docs.projectnavi.ai/navi-SAD/) builds delay-coordinate vectors and
-ordinal patterns from measured time series (see its
-[Takens Embedding](https://docs.projectnavi.ai/navi-SAD/theory/takens-embedding/) page).
-This page states which theorems proved here concern those constructions, and what they do
-not establish.
+Delay-coordinate vectors and ordinal patterns are routinely built from measured time
+series. This page states which theorems proved here concern those constructions, and what
+they do not establish.
 
 All results below are exact statements about mathematical models. No theorem here verifies
 that a particular sensor, data set, neural network or residual stream satisfies their
