@@ -274,6 +274,7 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 
 | Declaration | Statement |
 |---|---|
+| `injective_fderiv_comp_extChartAt_symm` | An immersion has injective chart derivatives |
 | `perturbObservation` | The observation \(h + \sum_i a_i \varphi_i\) |
 | `delayEmbedding_perturbObservation` | Its delay map is affine in \(a\) |
 | `contMDiff_perturbObservation` | It is \(C^n\) for \(C^n\) data |
@@ -348,7 +349,6 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 | Declaration | Statement |
 |---|---|
 | `ContinuousLinearMap.exists_mul_norm_le_norm_of_injective` | An injective linear map on a finite-dimensional space is bounded below |
-| `injective_fderiv_comp_extChartAt_symm` | An immersion has injective chart derivatives |
 | `exists_closedBall_forall_injOn` | Local stability of immersions on a closed chart ball |
 | `exists_forall_injective_of_near` | **Stability of embeddings:** an injective \(C^1\) immersion of a compact manifold has a \(C^1\) neighbourhood of injective immersions |
 | `fderiv_comp_comp_extChartAt_symm` | Chain rule for the chart expression of \(k \circ S\) |
