@@ -1,125 +1,137 @@
-# Smooth Embedding Chain
+# Smooth Embedding
 
-Route A of the formalization addresses the *smooth* side of Takens' delay embedding theorem (Takens, 1981): given a dynamical system \(T : X \to X\) and an observation function \(h : X \to \mathbb{R}\), the delay coordinate map
+Let \(M\) be a manifold modelled on a \(d\)-dimensional real space, \(T : M \to M\) the
+dynamics and \(h : M \to \mathbb{R}\) the observation. Takens' theorem [Takens1981] concerns
+the delay map \(\Phi_{2d+1}(x) = (h(x), h(Tx), \dots, h(T^{2d}x))\). This page follows the
+formal argument from the topological embedding chain to generic observations.
 
-$$\Phi_{T,h,n} : X \longrightarrow \mathbb{R}^n, \qquad x \longmapsto \bigl(h(x),\, h(Tx),\, \dots,\, h(T^{n-1}x)\bigr)$$
-
-is a topological embedding under appropriate hypotheses. This page documents the **embedding chain**: the sequence of results that, starting from the bare definition, establishes continuity, then promotes injectivity on a compact space to a closed embedding, and finally constructs a homeomorphism onto the image.
-
-The most notable structural feature of this file is that **it is entirely axiom-free**. `SmoothTakens.lean` does not import `SardInfra` or any axiomatized infrastructure. Every result on this page is a closed proof within Lean 4 + Mathlib, with no `sorry` and no custom axioms. The genericity half of the smooth Takens theorem (showing that the "good" observation functions are generic) will eventually depend on Sard's theorem; the embedding half documented here stands on its own.
-
-## Definition
+## The embedding chain
 
 <div class="theorem-block" markdown>
-<span class="badge badge--axiom-free">Axiom-free</span>
-<span class="theorem-name">(smoothDelayMap)</span>
-
-**Definition.** Let \(X\) be a topological space, \(T : X \to X\) a self-map, \(h : X \to \mathbb{R}\) an observation function, and \(n \in \mathbb{N}\). The *smooth delay map* is
-
-$$\operatorname{smoothDelayMap}(T, h, n)(x) \;=\; \bigl(i \mapsto h(T^i(x))\bigr) \;\in\; \mathbb{R}^n.$$
-
-</div>
-
-<details>
-<summary>Lean 4 statement --- <code>SmoothTakens.lean:56</code></summary>
-
-```lean
-def smoothDelayMap (T : X → X) (h : X → ℝ) (n : ℕ) : X → (Fin n → ℝ) :=
-  fun x i => h (T^[i] x)
-```
-</details>
-
-## Continuity
-
-<div class="theorem-block" markdown>
-<span class="badge badge--axiom-free">Axiom-free</span>
-<span class="theorem-name">(smoothDelayMap_continuous)</span>
-
-**Theorem.** If \(T : X \to X\) and \(h : X \to \mathbb{R}\) are continuous, then \(\operatorname{smoothDelayMap}(T, h, n)\) is continuous for every \(n\).
-</div>
-
-The proof applies `continuous_pi`: it suffices to show each coordinate \(i \mapsto h \circ T^i\) is continuous. This follows because \(T^i\) is continuous (by induction on the iterate) and \(h\) is continuous.
-
-<details>
-<summary>Lean 4 statement --- <code>SmoothTakens.lean:61</code></summary>
-
-```lean
-theorem smoothDelayMap_continuous
-    {T : X → X} {h : X → ℝ} (hT : Continuous T) (hh : Continuous h)
-    {n : ℕ} :
-    Continuous (smoothDelayMap T h n)
-```
-</details>
-
-## Closed embedding
-
-<div class="theorem-block" markdown>
-<span class="badge badge--axiom-free">Axiom-free</span>
+<span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(smoothDelayMap_isClosedEmbedding)</span>
 
-**Theorem.** If \(X\) is compact, \(T\) and \(h\) are continuous, and \(\operatorname{smoothDelayMap}(T, h, n)\) is injective, then it is a closed embedding into \(\mathbb{R}^n\).
+If \(X\) is compact, \(T\) and \(h\) are continuous and the delay map is injective, then it
+is a closed embedding, and a homeomorphism onto its image
+(`smoothDelayMapRangeHomeomorph`).
 </div>
 
-This is the key step. The codomain \(\operatorname{Fin}\, n \to \mathbb{R}\) is Hausdorff (it is a real topological vector space), and the domain is compact. A continuous injection from a compact space to a Hausdorff space is automatically a closed embedding.
+A continuous injection from a compact space to a Hausdorff space is a closed embedding.
+`smoothDelayMap` is kept as a name for compatibility; it is `delayEmbedding`
+(`smoothDelayMap_eq_delayEmbedding`).
 
-<details>
-<summary>Lean 4 statement --- <code>SmoothTakens.lean:73</code></summary>
+## The differential
 
-```lean
-theorem smoothDelayMap_isClosedEmbedding [CompactSpace X]
-    {T : X → X} {h : X → ℝ} (hT : Continuous T) (hh : Continuous h)
-    {n : ℕ} (hinj : Injective (smoothDelayMap T h n)) :
-    IsClosedEmbedding (smoothDelayMap T h n)
-```
-</details>
+For \(C^r\) data the delay map is \(C^r\) (`contMDiff_delayEmbedding`). Its differential has
+coordinates given by the *delayed covectors*
 
-## Embedding
+$$\ell_i(x) = Dh_{T^i x} \circ D(T^i)_x : T_x M \to \mathbb{R}, \qquad i < k$$
+
+(`delayCovector`, `mfderiv_delayEmbedding_apply`).
 
 <div class="theorem-block" markdown>
-<span class="badge badge--axiom-free">Axiom-free</span>
-<span class="theorem-name">(smoothDelayMap_isEmbedding)</span>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(injective_mfderiv_delayEmbedding_iff_span)</span>
 
-**Theorem.** Under the same hypotheses (compact domain, continuous \(T\) and \(h\), injective delay map), \(\operatorname{smoothDelayMap}(T, h, n)\) is a topological embedding.
+The delay map is an immersion at \(x\) iff the delayed covectors \(\ell_0(x), \dots,
+\ell_{k-1}(x)\) span the cotangent space.
 </div>
 
-This is an immediate corollary: every closed embedding is an embedding.
+Consequently an immersion needs \(k \ge d\) (`finrank_le_of_injective_mfderiv_delayEmbedding`),
+and for \(T = \mathrm{id}\) in dimension \(d \ge 2\) every covector equals \(Dh_x\), so no
+observation and no number of delays gives an immersion
+(`not_injective_mfderiv_delayEmbedding_id`). This is why the classical theorem is about
+generic *pairs* \((T, h)\) and not about generic \(h\) for an arbitrary fixed \(T\).
 
-<details>
-<summary>Lean 4 statement --- <code>SmoothTakens.lean:81</code></summary>
+An `IsContMDiffEmbedding` is a \(C^r\) map with injective differentials that is a topological
+embedding. On a compact manifold an injective immersion is one
+(`isContMDiffEmbedding_of_injective`); the quarter turn of the circle observed by its first
+coordinate is a worked example, embedded by any \(k \ge 2\) delays
+(`isContMDiffEmbedding_delayEmbedding_quarterTurn_iff`).
 
-```lean
-theorem smoothDelayMap_isEmbedding [CompactSpace X]
-    {T : X → X} {h : X → ℝ} (hT : Continuous T) (hh : Continuous h)
-    {n : ℕ} (hinj : Injective (smoothDelayMap T h n)) :
-    IsEmbedding (smoothDelayMap T h n)
-```
-</details>
+## Generic observations in a finite family
 
-## Homeomorphism onto image
+Perturb the observation inside a finite family \(\varphi_1, \dots, \varphi_N\):
+\(h_a = h + \sum_i a_i \varphi_i\) (`perturbObservation`). Its delay map is affine in \(a\).
 
 <div class="theorem-block" markdown>
-<span class="badge badge--axiom-free">Axiom-free</span>
-<span class="theorem-name">(smoothDelayMapRangeHomeomorph)</span>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(ae_isContMDiffEmbedding_delayEmbedding_perturb)</span>
 
-**Definition.** Under the same hypotheses, the range factorization of the smooth delay map is a homeomorphism
-
-$$X \;\cong_{\mathrm{top}}\; \operatorname{range}\bigl(\operatorname{smoothDelayMap}(T, h, n)\bigr).$$
-
+Let \(M\) be compact and \(T\), \(h\), \(\varphi_i\) be \(C^2\), and \(k > 2d\). Suppose that
+along every nonzero tangent vector the differentials of the delay maps of the \(\varphi_i\)
+span \(\mathbb{R}^k\), and that at any two distinct points the differences of their delay
+vectors span \(\mathbb{R}^k\). Then for almost every \(a\) the delay map of \(h_a\) is a
+\(C^2\) embedding.
 </div>
 
-This is the terminal result of the embedding chain. The construction uses `Equiv.ofInjective` to build a bijection onto the range, then lifts it to a homeomorphism via the inducing property of the closed embedding. The result is a concrete `Homeomorph` (`\cong_\top`), not merely an abstract existence statement.
+The proof works in extended charts, countably many by second countability. In a chart the
+delay map of \(h_a\) is an affine family whose derivative in \(a\) is onto by the span
+conditions. For immersion, the bad pairs (point, unit direction) form a set of dimension
+\(2d - 1 < k\); for injectivity, the bad pairs of points form a set of dimension
+\(2d < k\). In both cases the bad parameters are the projection of a level set of too small
+dimension, which is Haar-null (`ae_forall_ne_of_hasStrictFDerivAt`); no appeal to Sard's
+theorem is needed.
 
-<details>
-<summary>Lean 4 statement --- <code>SmoothTakens.lean:89</code></summary>
+## Where the span conditions come from
 
-```lean
-def smoothDelayMapRangeHomeomorph [CompactSpace X]
-    {T : X → X} {h : X → ℝ} (hT : Continuous T) (hh : Continuous h)
-    {n : ℕ} (hinj : Injective (smoothDelayMap T h n)) :
-    X ≃ₜ range (smoothDelayMap T h n)
-```
-</details>
+A family *interpolates values* at \(N\) points if any values at any \(n \le N\) distinct
+points are attained by a combination of it (`InterpolatesValues`), and *interpolates
+derivatives* similarly for directional derivatives (`InterpolatesDerivatives`).
+
+- **Separation** (`surjective_sum_smul_sub_delayEmbedding`). Let \(T\) be injective without
+  periodic points of period at most \(2k - 2\). If the windows of \(x\) and \(y\) are
+  disjoint, the \(2k\) points are distinct and the coordinates can be prescribed
+  independently. Otherwise \(y = T^m x\) (or the reverse) with \(0 < m < k\), and the
+  coordinates of the difference are \(v_j - v_{j+m}\) for the values \(v\) along one orbit
+  segment; this triangular system has the explicit solution `telescope_sub`.
+- **Immersion** (`surjective_sum_smul_mvfderiv_delayEmbedding`). If \(x, \dots, T^{k-1}x\)
+  are distinct and the differentials of \(T\) are injective, the vectors
+  \(D(T^i)_x v\) are nonzero at distinct points, and the family prescribes the derivatives
+  of the \(\varphi_i\) along them independently.
+
+An explicit family on a compact smooth manifold comes from a Whitney embedding
+\(e : M \to \mathbb{R}^n\) (Mathlib's `exists_embedding_euclidean_of_compact`) and the moment
+functionals \(\ell_t(q) = \sum_r t^r q_r\): for \(q \ne 0\), \(t \mapsto \ell_t(q)\) is a
+nonzero polynomial of degree less than \(n\), so finitely many values of \(t\) suffice to
+avoid any given finite set of nonzero vectors (`exists_forall_momentFunctional_ne_zero`).
+The functions \(x \mapsto \ell_t(e(x))^s\) then interpolate values and derivatives by
+Lagrange interpolation (`interpolatesValues_momentFamily`,
+`interpolatesDerivatives_momentFamily`).
+
+<div class="theorem-block" markdown>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding)</span>
+
+**Takens' theorem for maps without short periodic orbits.** On a compact smooth
+\(d\)-manifold there are finitely many smooth functions \(\varphi_q\) such that, for every
+injective \(C^2\) map \(T\) with injective differentials and no periodic points of period
+at most \(4d\), and every \(C^2\) observation \(h\), the delay map of
+\(h + \sum_q a_q \varphi_q\) with \(2d + 1\) coordinates is a \(C^2\) embedding for
+Lebesgue-almost every \(a\), in particular for some \(a\) of arbitrarily small norm
+(`exists_family_forall_exists_isContMDiffEmbedding_delayEmbedding`).
+</div>
 
 ## What is not here
 
-The *genericity* half of Takens' theorem --- that the set of observation functions \(h\) making the delay map injective is *generic* (residual in the \(C^2\) topology) --- requires Sard's theorem and parametric transversality. That argument will eventually import `SardInfra` (see [Sard Infrastructure](sard-infrastructure.md)). The embedding chain documented here is the half that does not need measure theory, and it is complete.
+The statement above is an almost-every statement in one finite-dimensional family, for a
+fixed map with no periodic points of period at most \(4d\). Takens' theorem for generic
+pairs needs, in addition:
+
+- periodic points of period at most \(2d\), where every delay coordinate repeats and the
+  span conditions fail for every family; for generic \(T\) such points are finitely many,
+  with simple eigenvalues, and need a separate local argument;
+- the genericity of those conditions on \(T\) in the space of \(C^2\) diffeomorphisms;
+- the \(C^2\) topology on pairs, openness of the embedding condition, and the
+  Baire-category step from "almost every member of a family" to a residual set.
+
+See [Open Problems](../research/open-problems.md).
+
+## References
+
+- [Takens1981] F. Takens, *Detecting strange attractors in turbulence*, Lecture Notes in
+  Mathematics 898 (1981), 366--381.
+- [SauerYorkeCasdagli1991] T. Sauer, J. A. Yorke, M. Casdagli, *Embedology*, J. Stat. Phys.
+  65 (1991), 579--616.
+- [Huke2006] J. P. Huke, *Embedding nonlinear dynamical systems: a guide to Takens'
+  theorem*, MIMS EPrint 2006.26.

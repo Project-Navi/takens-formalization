@@ -4,7 +4,7 @@
 [project]
 name = "takens-formalization"
 site_name = "Takens Formalization"
-description = "Lean 4 + Mathlib formalization of delay embedding theory"
+description = "Lean 4 + Mathlib formalization of delay-coordinate reconstruction"
 site_url = "https://project-navi.github.io/takens-formalization"
 repo_url = "https://github.com/Project-Navi/takens-formalization"
 repo_name = "Project-Navi/takens-formalization"
@@ -25,11 +25,11 @@ nav = [
   ]},
   {"Exposition" = [
     {"Proof Architecture" = "exposition/proof-architecture.md"},
-    {"Beyond Takens: Coincidence Length" = "exposition/coincidence-length.md"},
+    {"Coincidence Length" = "exposition/coincidence-length.md"},
     {"Delay Embedding & Orbit Separation" = "exposition/delay-embedding.md"},
     {"Ordinal Compression" = "exposition/ordinal-compression.md"},
-    {"Smooth Embedding Chain" = "exposition/smooth-embedding.md"},
-    {"Sard Infrastructure" = "exposition/sard-infrastructure.md"},
+    {"Smooth Embedding" = "exposition/smooth-embedding.md"},
+    {"Sard's Theorem" = "exposition/sard-infrastructure.md"},
   ]},
   {"Research" = [
     {"Open Problems" = "research/open-problems.md"},
@@ -42,7 +42,7 @@ nav = [
     {"Changelog" = "reference/changelog.md"},
   ]},
   {"Bridge" = [
-    {"Formal Backing for navi-SAD" = "bridge/navi-sad.md"},
+    {"navi-SAD Bridge" = "bridge/navi-sad.md"},
   ]},
 ]
 

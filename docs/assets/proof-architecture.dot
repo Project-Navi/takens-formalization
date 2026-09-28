@@ -1,13 +1,14 @@
 digraph proof_architecture {
   rankdir=TB
   bgcolor="transparent"
+  newrank=true
   node [fontname="DM Sans" fontsize=11 style=filled fillcolor="#1a1a1a"
         fontcolor="#e8e4de" color="#2a2a2a" shape=box margin="0.15,0.08"
         penwidth=1.5]
   edge [color="#7eb8a8" arrowsize=0.6 penwidth=1.2]
 
-  subgraph cluster_routeB {
-    label="Route B: Discrete"
+  subgraph cluster_finite {
+    label="Finite state spaces and ordinal codes"
     labeljust=l
     fontname="Fraunces"
     fontsize=14
@@ -16,18 +17,19 @@ digraph proof_architecture {
     style=dashed
     margin=16
 
-    OrdinalPattern [label="OrdinalPattern.lean\n5 declarations"]
-    DelayWindow [label="DelayWindow.lean\n8 declarations\n(includes coincidenceLength)"
+    DelayWindow [label="DelayWindow\ndelay map, orbit separation,\ncoincidence length, horizon"
                  color="#7eb8a8"]
-    IteratePeriod [label="IteratePeriod.lean\n4 declarations"]
-    OrdinalTakens [label="OrdinalTakens.lean\n7 declarations"]
-    TakensDiscrete [label="TakensDiscrete.lean\n(skeleton — 0 declarations)"
-                    style="filled,dashed" fillcolor="#1a1a1a"
-                    fontcolor="#d4a574" color="#d4a574"]
+    IteratePeriod [label="IteratePeriod\nperiod bridge"]
+    TakensDiscrete [label="TakensDiscrete\nsharp bound N - 1,\ndecision procedure"]
+    Reconstruction [label="Reconstruction\ndynamics on the image"]
+    OrdinalPattern [label="OrdinalPattern\nordinal patterns"]
+    OrdinalTakens [label="OrdinalTakens\nordinal delay map,\npattern counts"]
+    OrdinalEntropy [label="OrdinalEntropy\npattern entropy"]
+    OrdinalQuotient [label="OrdinalQuotient\nwhat the code retains"]
   }
 
-  subgraph cluster_routeA {
-    label="Route A: Smooth"
+  subgraph cluster_sard {
+    label="Sard's theorem"
     labeljust=l
     fontname="Fraunces"
     fontsize=14
@@ -36,29 +38,54 @@ digraph proof_architecture {
     style=dashed
     margin=16
 
-    SmoothTakens [label="SmoothTakens.lean\n5 declarations\n(axiom-free — no SardInfra import)"]
-    SardInfra [label="SardInfra.lean\n13 declarations\n(axiom boundary)"
-               color="#d4a574"]
+    SardInfra [label="SardInfra\ncritical values; C¹ equal-\nand low-dimensional cases"]
+    SardMoreira [label="ForMathlib/SardMoreira\nMoreira's theorem\n(ported, 19 files)"
+                 color="#d4a574" fontcolor="#d4a574"]
+    Sard [label="Sard\nall dimensions, C^r,\nr ≥ dim E - dim F + 1"
+          color="#7eb8a8"]
   }
 
-  subgraph cluster_diag {
-    label="Diagnostic"
+  subgraph cluster_smooth {
+    label="Delay maps on manifolds"
     labeljust=l
     fontname="Fraunces"
     fontsize=14
-    fontcolor="#9a958e"
+    fontcolor="#7eb8a8"
     color="#2a2a2a"
-    style=dotted
+    style=dashed
     margin=16
 
-    Verify [label="Verify.lean\n(diagnostic only — not in library)"
-            style="filled,dotted" fillcolor="#1a1a1a"
-            fontcolor="#9a958e" color="#9a958e"]
+    SmoothTakens [label="SmoothTakens\ncompact embedding chain"]
+    SmoothDelay [label="SmoothDelay\ndifferential, immersion,\nC^r embeddings"]
+    CircleDelay [label="CircleDelay\nquarter-turn example"]
+    Avoidance [label="ForMathlib/Avoidance\nparametric avoidance"]
+    GenericFamily [label="ForMathlib/GenericFamily\ngeneric immersion\nand separation"]
+    DelayPerturbation [label="DelayPerturbation\ngeneric observations\nin a finite family"]
+    DelaySpan [label="DelaySpan\nspan conditions,\noverlapping windows"]
+    InterpolatingFamily [label="InterpolatingFamily\nfixed-map Takens theorem\n(no periods ≤ 4d)"
+                         color="#7eb8a8"]
   }
 
-  // Route B imports
-  DelayWindow -> IteratePeriod [label="imports"]
-  DelayWindow -> OrdinalTakens [label="imports"]
-  OrdinalPattern -> OrdinalTakens [label="imports"]
-  IteratePeriod -> TakensDiscrete [label="imports"]
+  DelayWindow -> IteratePeriod
+  DelayWindow -> TakensDiscrete
+  DelayWindow -> Reconstruction
+  DelayWindow -> OrdinalTakens
+  OrdinalPattern -> OrdinalTakens
+  OrdinalTakens -> OrdinalEntropy
+  OrdinalTakens -> OrdinalQuotient
+
+  SardInfra -> Sard
+  SardMoreira -> Sard
+
+  DelayWindow -> SmoothTakens
+  DelayWindow -> SmoothDelay
+  SmoothDelay -> CircleDelay
+  SmoothDelay -> DelayPerturbation
+  Avoidance -> GenericFamily
+  GenericFamily -> DelayPerturbation
+  DelayPerturbation -> DelaySpan
+  DelaySpan -> InterpolatingFamily
+
+  { rank=same; IteratePeriod; TakensDiscrete; Reconstruction; OrdinalTakens; SmoothTakens;
+    SmoothDelay; GenericFamily; Sard }
 }

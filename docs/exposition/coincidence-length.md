@@ -1,108 +1,83 @@
-# Beyond Takens: Coincidence Length
+# Coincidence Length and the Separating Horizon
 
-In his landmark 1981 paper, Takens proved that for a compact manifold \(M\) of dimension \(m\), the delay coordinate map
-
-$$\Phi_{(\varphi, y)}(x) = \bigl(y(x),\; y(\varphi(x)),\; \ldots,\; y(\varphi^{2m}(x))\bigr)$$
-
-is an embedding for **generic** pairs \((\varphi, y)\) in the \(C^2\) topology --- that is, for a residual set (in the sense of Baire category) of diffeomorphisms \(\varphi : M \to M\) and observations \(y : M \to \mathbb{R}\).
-
-This is a powerful existence result: it guarantees that *almost every* smooth observation function reconstructs the state space faithfully, provided the window length exceeds \(2m\). But it says nothing about what happens when the observation is **not** generic. Given a *specific* observation \(\alpha : X \to \mathbb{R}\) --- possibly non-injective, possibly coarse, possibly arising from a physical sensor with limited resolution --- can it still separate states via delay coordinates? If so, how long must the window be?
-
-Takens' theorem is silent on this question. The coincidence length fills the gap.
+For a *given* observation on a finite state space, which delay windows separate orbits, and
+what is the shortest one? The coincidence length answers both questions exactly.
 
 ## Coincidence length
 
-Given a dynamical system \(f : X \to X\) and an observation \(\alpha : X \to \mathbb{R}\), two distinct states \(x \neq y\) may produce identical observations for several iterates before finally disagreeing. The **coincidence length** measures exactly how long two orbits look identical through the lens of \(\alpha\).
-
 <div class="theorem-block" markdown>
-<span class="badge badge--novel">Novel</span>
+<span class="badge badge--proved">Proved</span>
 <span class="theorem-name">(coincidenceLength)</span>
 
-**Definition.** Let \(f : X \to X\) and \(\alpha : X \to \mathbb{R}\). The *coincidence length* of two states \(x, y \in X\) is
-
-$$\mathrm{coinc}(x, y) \;=\; \begin{cases} \min\bigl\{\, i \in \mathbb{N} \;\big|\; \alpha(f^i(x)) \neq \alpha(f^i(y)) \,\bigr\} & \text{if such } i \text{ exists,} \\[4pt] \infty & \text{otherwise.} \end{cases}$$
-
-The coincidence length takes values in \(\mathbb{N}_\infty = \mathbb{N} \cup \{\infty\}\). It is finite for a pair \((x, y)\) precisely when the observation \(\alpha\) eventually distinguishes the orbits of \(x\) and \(y\).
+The *coincidence length* \(c(x, y) \in \mathbb{N}_\infty\) is the first index \(i\) with
+\(\alpha(f^i x) \ne \alpha(f^i y)\), or \(\infty\) if the observations always agree.
 </div>
 
-<details>
-<summary>Lean 4 statement --- <code>DelayWindow.lean:150</code></summary>
+Two windows of length \(k\) agree exactly when \(k \le c(x, y)\)
+(`delayEmbedding_eq_iff_le_coincidenceLength`). The coincidence length is symmetric, is
+\(\infty\) on the diagonal, is \(0\) iff the first observations differ, and satisfies the
+one-step recursion \(c(x, y) = c(fx, fy) + 1\) when \(\alpha(x) = \alpha(y)\)
+(`coincidenceLength_of_eq`). Hence \(\alpha\) separates orbits at window \(k\) iff
+\(c(x, y) < k\) for every pair of distinct states
+(`separatesOrbits_iff_forall_coincidenceLength_lt`).
 
-```lean
-noncomputable def coincidenceLength (f : X → X) (α : X → ℝ)
-    (x y : X) : ℕ∞ :=
-  open Classical in
-  if h : ∃ i : ℕ, α (f^[i] x) ≠ α (f^[i] y) then ↑(Nat.find h) else ⊤
-```
-
-</details>
-
-Observe that \(\mathrm{coinc}(x, y) = 0\) means \(\alpha\) itself already distinguishes \(x\) from \(y\) (without any iteration). If \(\mathrm{coinc}(x, y) = n\), then the observation sequences agree on their first \(n\) terms but differ at step \(n\): the pair is "invisible" to any delay window of length \(\leq n\), but a window of length \(n + 1\) separates them.
-
-The case \(\mathrm{coinc}(x, y) = \infty\) is the pathological one: the observation \(\alpha\) *never* distinguishes \(x\) from \(y\), no matter how long we observe. No delay window of any finite length can separate such a pair.
-
-## The separating window theorem
-
-The coincidence length leads directly to a sharp characterization of when a non-injective observation can nevertheless produce an injective delay embedding.
-
-Recall that the delay embedding of window length \(k\) is defined as
-
-$$\Phi_k(x) = \bigl(\alpha(x),\; \alpha(f(x)),\; \ldots,\; \alpha(f^{k-1}(x))\bigr) \in \mathbb{R}^k,$$
-
-and we say \(\alpha\) **separates \(f\)-orbits of length \(k\)** if \(\Phi_k\) is injective: whenever \(\alpha(f^i(x)) = \alpha(f^i(y))\) for all \(0 \leq i < k\), then \(x = y\).
+## The separating horizon
 
 <div class="theorem-block" markdown>
-<span class="badge badge--novel">Novel</span>
-<span class="theorem-name">(exists_separatingWindow_iff)</span>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(separatesOrbits_iff_separatingHorizon_le)</span>
 
-**Theorem.** Let \(X\) be a finite type, \(f : X \to X\), and \(\alpha : X \to \mathbb{R}\). Then the following are equivalent:
-
-1. There exists a window length \(k \in \mathbb{N}\) such that \(\alpha\) separates \(f\)-orbits of length \(k\).
-2. For every pair of distinct states \(x \neq y\), there exists \(i \in \mathbb{N}\) such that \(\alpha(f^i(x)) \neq \alpha(f^i(y))\).
-
-Equivalently, in terms of the coincidence length:
-
-$$\bigl(\exists\, k.\; \Phi_k \text{ is injective}\bigr) \;\iff\; \bigl(\forall\, x \neq y.\; \mathrm{coinc}(x, y) < \infty\bigr).$$
-
-Moreover, when these conditions hold, the witness \(k\) is constructed explicitly as
-
-$$k \;=\; 1 + \max_{x, y \in X}\, \mathrm{coinc}(x, y),$$
-
-the supremum of all pairwise coincidence lengths, plus one.
+Let \(H = \sup_{x \ne y} (c(x, y) + 1) \in \mathbb{N}_\infty\) (`separatingHorizon`). Then a
+window of length \(k\) separates orbits iff \(k \ge H\). When \(H\) is finite it is the
+least separating window (`isLeast_separatingHorizon`).
 </div>
 
-<details>
-<summary>Lean 4 statement --- <code>DelayWindow.lean:159</code></summary>
+\(H = 0\) iff there are no two distinct states, and a pair that is never distinguished
+forces \(H = \infty\). On a finite state space the supremum is attained by a pair
+(`exists_separatingHorizon_eq`), so \(H = \infty\) iff some distinct pair is never
+distinguished (`separatingHorizon_eq_top_iff`). In particular some window separates orbits
+iff every distinct pair is eventually distinguished (`exists_separatingWindow_iff`).
 
-```lean
-theorem exists_separatingWindow_iff (f : X → X) (α : X → ℝ)
-    (hfin : Fintype X) :
-    (∃ k, SeparatesOrbits f α k) ↔
-      ∀ x y, x ≠ y → ∃ i : ℕ, α (f^[i] x) ≠ α (f^[i] y)
-```
+## A sharp bound
 
-</details>
+<div class="theorem-block" markdown>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(separatingHorizon_le_card_sub_one)</span>
 
-The proof of the reverse direction (2 implies 1) uses finiteness of \(X\) in an essential way: the choice function provides, for each distinct pair \((x, y)\), a witness index \(i_{x,y}\) at which their observations diverge. Because \(X\) is finite, the double supremum \(\sup_{x \in X} \sup_{y \in X} i_{x,y}\) is a well-defined natural number, and the window length \(k = 1 + \sup_{x,y} i_{x,y}\) suffices to separate all pairs simultaneously.
+On \(N\) states a finite horizon is at most \(N - 1\). Equivalently, equal windows of length
+\(N - 1\) force equal observations at every time (`forall_iterate_eq_of_delayEmbedding_eq`).
+No injectivity of \(f\) or \(\alpha\) is assumed.
+</div>
 
-## Mathematical significance
+The proof tracks the partition of states by their windows of length \(j\). Each longer
+window refines it, and once a refinement step changes nothing, no later step does. A
+partition of \(N\) states can be strictly refined at most \(N - 1\) times, so the windows of
+length \(N - 1\) already determine all observations.
 
-**Filling a structural gap.** Takens' theorem is a *genericity* result: it tells us that most observations work, but nothing about which specific ones do. The separating window theorem provides a *pointwise* criterion. Given a concrete observation \(\alpha\) --- one that may fail to be injective, may fail to be smooth, may not belong to any residual set --- the theorem gives a necessary and sufficient condition for it to admit a separating delay window, and constructs the minimal sufficient window length when one exists.
+The bound is attained. On the countdown chain \(i \mapsto i - 1\) on \(\{0, \dots, N-1\}\),
+with \(0\) fixed and observed by the indicator of \(0\), the states \(N-1\) and \(N-2\)
+first differ at time \(N - 2\), so exactly \(N - 1\) coordinates are needed
+(`separatingHorizon_countdown`).
 
-**The role of finiteness.** The theorem requires \(X\) to be finite. This is not a limitation but a feature: finite state spaces are the natural setting for symbolic dynamics, computational models, and any system analyzed from discrete time-series data. On infinite state spaces the supremum over pairs may not exist, and indeed the equivalence fails without some compactness or finiteness hypothesis.
+## Deciding separability
 
-**A computable obstruction.** The condition \(\mathrm{coinc}(x, y) = \infty\) identifies precisely the obstruction to delay-coordinate reconstruction: a pair of states that are *observationally indistinguishable* under \(\alpha\) at every time step. When \(X\) is finite, checking the right-hand side is decidable --- one can enumerate all distinct pairs and verify eventual disagreement. This makes the theorem not just a classification result but a *diagnostic tool* for assessing whether a given observation function is adequate for state reconstruction.
+For states \(\mathrm{Fin}\,n\) and observations in a type with decidable equality,
+`horizonSearch` scans the windows of length \(k < n\) and returns
+either the first separating length or a distinct pair with equal windows of length
+\(n - 1\), which by the sharp bound is never distinguished. Both answers are proved sound
+and complete: the search returns `separating k` iff the horizon is \(k\)
+(`horizonSearch_eq_separating_iff`), and a pair iff the horizon is infinite
+(`exists_horizonSearch_eq_indistinguishable_iff`). Real-valued data needs a representation
+with decidable equality, such as rationals; equality of reals is not decided.
 
-**Connection to the main injectivity theorem.** The separating window theorem sits naturally alongside `delayEmbedding_injective_iff_separatesOrbits`, which establishes
+## Scope
 
-$$\Phi_k \text{ is injective} \;\iff\; \operatorname{SeparatesOrbits}(f, \alpha, k).$$
-
-Together, these two theorems give a complete picture: the injectivity--separation equivalence characterizes *what it means* for a given window to work, while the separating window theorem characterizes *whether any window can work at all* and how large it must be.
-
----
+These are statements about exact observations of a finite model. A finite sample of a
+continuous system is not a finite state space, and nothing here bounds the number of
+measurements needed for noisy data.
 
 ### Cross-links
 
-- [Delay Embedding & Orbit Separation](delay-embedding.md) --- the `delayEmbedding` definition and `delayEmbedding_injective_iff_separatesOrbits`
-- [Ordinal Compression](ordinal-compression.md) --- the `ordinalDelayMap` and pattern-count bounds built on the delay embedding
-- [Theorem Catalog](../reference/theorems.md) --- full declaration inventory
+- [Delay Embedding & Orbit Separation](delay-embedding.md)
+- [Ordinal Compression](ordinal-compression.md)
+- [Theorem Catalog](../reference/theorems.md)

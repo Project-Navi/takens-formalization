@@ -5,51 +5,39 @@ Build and verify the formalization locally.
 ## Prerequisites
 
 - [elan](https://github.com/leanprover/elan) (Lean version manager)
-- Git
+- Git, Python 3 and GNU Make
 
 ## Clone and build
 
 ```bash
 git clone https://github.com/Project-Navi/takens-formalization.git
 cd takens-formalization
-```
-
-Fetch the Mathlib precompiled cache (saves significant build time):
-
-```bash
-lake exe cache get
-```
-
-Build with warnings-as-errors --- this is the primary check that enforces zero
-sorry:
-
-```bash
-lake build --wfail
+lake exe cache get      # Mathlib's precompiled oleans; never build Mathlib
+make build              # every tracked module, warnings are errors
 ```
 
 ## Verify
 
-Run the Mathlib linter suite:
-
 ```bash
-lake lint
+make lint               # Mathlib's environment linters
+make audit              # source hygiene: no sorry, axiom or assumption class
+make verify             # axiom records, documented names, fresh kernel replay
+make test-checkers      # negative tests of the checkers
+lake env lean -DwarningAsError=true TakensFormal/Examples.lean   # worked examples
 ```
 
-Build the axiom dashboard (diagnostic target, not part of the library):
+`make verify` runs `scripts/check_axioms.py`, which accepts a declaration only if it depends
+on nothing beyond `propext`, `Classical.choice` and `Quot.sound`; see the
+[Axiom Dashboard](../reference/axiom-dashboard.md).
+
+## Documentation
 
 ```bash
-lake build TakensFormal.Verify
-```
-
-Confirm no `sorryAx` in any declaration:
-
-```bash
-lake env lean TakensFormal/Verify.lean 2>&1 | grep -c sorryAx
-# Expected output: 0
+make docs-check         # build the site and check its links and fragments
+make docs-serve         # serve it locally
 ```
 
 ## Toolchain
 
-This project uses Lean 4.28.0 and Mathlib v4.28.0. The toolchain is pinned in
-`lean-toolchain` and the Mathlib revision in `lakefile.toml`. No local Mathlib
-fork --- the `rev` field is treated as an audit gate.
+Lean 4.34.1 and Mathlib v4.34.1, pinned in `lean-toolchain`, `lakefile.toml` and
+`lake-manifest.json`. `AGENTS.md` records the conventions and the checks CI runs.
