@@ -16,8 +16,10 @@ API notes below were checked against that pin; re-check them after a bump.
 - **Every module compiles.** `lake build` builds only what the root imports, so a file
   nobody imports is never checked and can rot silently. CI builds every tracked module,
   and the source check requires the root `TakensFormal.lean` to import every library module.
-- **No assumption classes.** This repository has no typeclass or structure whose fields are
-  unproved mathematical results, and CI rejects `...Infra` classes. Never complete a proof
+- **No unproved infrastructure assumptions.** No typeclass or structure carries an unproved
+  result into a headline theorem, and CI rejects `...Infra` classes. A Prop-valued class is
+  fine when every instance the results use is proved, as for `ClosedBallCoveringMeasure` in
+  the Sard port (Besicovitch and doubling-measure instances). Never complete a proof
   by adding an unproved hypothesis, field, or equivalent assumption. A clean axiom report
   does not discharge theorem hypotheses: report the complete signature.
 - **No vacuous assumptions.** Never encode an open problem or a missing proof as `True`,
