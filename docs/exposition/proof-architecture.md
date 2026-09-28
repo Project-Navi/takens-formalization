@@ -78,15 +78,22 @@ injective immersion is a \(C^r\) embedding. The genericity argument is organized
    diffeomorphisms uses charts on both source and target (`WeakTopology`); closeness is
    preserved by composition and iteration (`WeakComposition`), so the delay map is stable
    under perturbations of the pair and the good pairs are open (`GenericPair`).
+8. **Kupka--Smale density.** By induction on the period, diffeomorphisms whose periodic
+   points of period at most \(4d\) are nondegenerate with observable differentials are dense
+   (`KupkaSmale`): old periodic orbits are protected by supporting perturbations away from
+   them (`NearStability`), and new ones are made good in chart patches by bump perturbations
+   (`ChartPerturbation`, `PatchPerturbation`), almost every perturbation being good by a
+   Fubini argument (`PeriodicNull`) and goodness persisting (`PatchStability`).
 
 Together these prove Takens' theorem for a fixed map satisfying the periodic-point
 conditions: almost every member of one finite family is good
 (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`), and the good
 observations are open and dense in the \(C^2\) topology
-(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). The generic-pair theorem
-needs, in addition, the genericity of those conditions among \(C^2\) diffeomorphisms (a
-Kupka--Smale-type theorem). See
-[Smooth Embedding](smooth-embedding.md) and [Open Problems](../research/open-problems.md).
+(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). With Kupka--Smale density
+they give Takens' theorem for generic pairs: the good pairs are open and dense in
+\(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
+(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`). See
+[Smooth Embedding](smooth-embedding.md).
 
 ## Sard's theorem
 

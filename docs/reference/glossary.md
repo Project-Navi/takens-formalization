@@ -44,7 +44,8 @@ map (`delayCovector`). See [Smooth Embedding](../exposition/smooth-embedding.md)
 : A pair \((T, h)\) in a residual (comeagre) subset of
 \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\) with the \(C^2\) topology. Residuality is a
 Baire-category notion and does not mean probability one. Takens' theorem for generic pairs
-is not yet formalized here. See [Open Problems](../research/open-problems.md).
+is formalized here with an open dense set, hence a residual one
+(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`).
 
 **immersion**
 : A map whose differential is injective at every point. For a delay map this holds at

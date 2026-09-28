@@ -9,37 +9,28 @@ A Lean 4 and Mathlib formalization of delay-coordinate reconstruction
 
 ## What is proved
 
-- **Takens' theorem for a fixed map, in the `C²` topology.** On a compact smooth
-  `d`-manifold, let `T` be an injective `C²` map with injective differentials whose points of
-  period at most `4d` are countably many, and which satisfies an observability condition at
-  points of period at most `2d` (it holds when the differential of `T^p` there has distinct
-  eigenvalues). Then the `C²` observations `h` whose delay map with `2d + 1` coordinates is a
-  `C²` embedding form an open dense subset of `C²(M, ℝ)`
-  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). The topology is the weak
-  `C²` topology defined through chart derivatives on compact windows, which on a compact
+- **Takens' theorem for generic pairs.** On a compact smooth `d`-manifold `M` without
+  boundary, the pairs `(T, h)` of a `C²` diffeomorphism and a `C²` observation whose delay
+  map with `2d + 1` coordinates is a `C²` embedding form an open dense subset of
+  `Diff²(M) × C²(M, ℝ)`
+  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`). Each factor carries
+  the `C²` topology defined through chart derivatives on compact windows, which on a compact
   manifold is the Whitney topology.
-- **Almost every member of a finite family.** One finite family of smooth functions works for
-  all such `T` and every `C²` observation `h`: the delay map of `h + ∑ q, a q • φ q` is a `C²`
-  embedding for Lebesgue-almost every coefficient vector `a`
-  (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`).
-- **Stability of embeddings.** An injective immersion of a compact manifold stays one under
-  `C¹`-small perturbations (`exists_forall_injective_of_near`).
+- **Kupka–Smale density.** The `C²` diffeomorphisms whose points of period at most `4d` are
+  nondegenerate, with observable differentials, are dense (`dense_setOf_goodUpTo`).
+- **Takens' theorem for a fixed map.** For an injective `C²` map with injective
+  differentials, countably many points of period at most `4d` and an observability condition
+  at points of period at most `2d`, the good observations are open and dense
+  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`), and Lebesgue-almost every
+  member of one finite family of perturbations is good.
 - **Sard's theorem at finite regularity.** For `f : E → F` of class `C^r` with
-  `r ≥ dim E - dim F + 1`, the critical values are Haar-null (`sard`), with local and
-  open-set versions, via a port of Moreira's theorem.
-- **Smooth delay maps.** Regularity, the differential and an immersion criterion; a compact
-  injective immersion is a `C^r` embedding; the identity never immerses in dimension `≥ 2`.
-- **Finite state spaces.** The exact separating horizon, the sharp bound `N - 1` (attained),
-  a sound and complete decision procedure, and reconstruction of the dynamics on the image.
-- **Ordinal codes.** Ordinal patterns, their behavior under strictly increasing and strictly
-  decreasing transformations, pattern-count and entropy bounds, and what the code retains.
+  `r ≥ dim E - dim F + 1`, the critical values are Haar-null (`sard`), via a port of
+  Moreira's theorem.
+- **Finite state spaces and ordinal codes.** The exact separating horizon, the sharp bound
+  `N - 1` (attained), a sound and complete decision procedure, reconstruction of the dynamics
+  on the image; ordinal patterns, their invariances, pattern-count and entropy bounds.
 
-Takens' theorem for generic pairs `(T, h)` in `Diff²(M) × C²(M, ℝ)` is **not yet
-formalized here**. The `C²` topology on `Diff²(M)` is defined and the good pairs are proved
-open in the product; what remains is that the conditions on `T` above, the periodic-point
-conditions of Takens' generic diffeomorphisms, hold for a dense set of `C²`
-diffeomorphisms (a Kupka–Smale-type theorem). See
-[Open Problems](https://project-navi.github.io/takens-formalization/research/open-problems/).
+The Sauer–Yorke–Casdagli extension to fractal sets and prevalence is not formalized here.
 
 ## Verification
 

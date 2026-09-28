@@ -3,7 +3,7 @@
 Let \(M\) be a manifold modelled on a \(d\)-dimensional real space, \(T : M \to M\) the
 dynamics and \(h : M \to \mathbb{R}\) the observation. Takens' theorem [Takens1981] concerns
 the delay map \(\Phi_{2d+1}(x) = (h(x), h(Tx), \dots, h(T^{2d}x))\). This page follows the
-formal argument from the topological embedding chain to generic observations.
+formal argument from the topological embedding chain to generic pairs.
 
 ## The embedding chain
 
@@ -190,21 +190,47 @@ Openness holds for every \(C^2\) map \(T\) and any number of coordinates
 almost every such perturbation is good
 (`dense_setOf_isContMDiffEmbedding_delayEmbedding`).
 
-## What is not here
+## Generic pairs
 
-The conditions on \(T\) are those of Takens' generic diffeomorphisms, but their genericity
-is not formalized. The \(C^2\) topology on \(\mathrm{Diff}^2(M)\) is defined, and the good
-pairs are open in \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
-(`isOpen_setOf_isContMDiffEmbedding_delayEmbedding_pair`). Takens' theorem for generic
-pairs \((T, h)\) needs, in addition:
+The conditions on \(T\) above are those of Takens' generic diffeomorphisms. Write
+\(\mathrm{GoodUpTo}(T, P)\) when at every point of minimal period \(p \le P\) the
+differential \(A = D(T^p)\) is *good*: \(A^m - 1\) is invertible for \(m \le 4d\) and
+\(A\) is observable (`GoodMat`). Goodness up to period \(4d\) gives both conditions
+(`GoodUpTo.countable_periodic`, `GoodUpTo.observable`): a nondegenerate fixed point is
+isolated, and on a compact manifold isolated fixed points are finitely many.
 
-- a Kupka--Smale-type theorem: for an open dense set of \(C^2\) diffeomorphisms, the
-  periodic points of period at most \(4d\) are finitely many and those of period at most
-  \(2d\) satisfy the observability condition;
-- the assembly: an open set of pairs whose fibre over each map of a dense set is dense is
-  dense.
+**Kupka--Smale density** (`dense_setOf_goodUpTo`) is proved by induction on the period.
+Let \(T\) be good up to \(P - 1\). Its points of smaller period are finitely many and
+isolated among the fixed points of \(T^P\); every perturbation is supported off a
+neighbourhood \(O\) of them, so it keeps their orbits, periods and differentials, and a
+\(C^0\) margin prevents new points of smaller period. The remaining fixed points of \(T^P\)
+have minimal period \(P\) and are covered by finitely many chart patches, each small
+enough that the orbit leaves it for \(P - 1\) steps. On a patch, the \(P\)-th iterate of
+\(S_\theta \circ T\), with \(S_\theta\) a bump perturbation \(u \mapsto u + a + L(u - c)\)
+near the centre, is \(S_\theta \circ T^P\). A fixed point \(u\) with linear part \(L\)
+determines \(a\), so the parameters with a bad fixed point are the image, under a
+differentiable map between spaces of equal dimension, of the pairs \((u, L)\) with
+\((1 + L)\, D(T^P)_u\) not good; that set is null by Fubini, since almost every \(L\) makes
+\((1 + L) A\) good for invertible \(A\) (`ae_forall_goodMat_perturb_comp`). Almost every
+small \(\theta\) therefore works on the patch (`exists_patch`), goodness on a patch persists
+under \(C^1\)-small perturbations (`Diffeomorph.eventually_patchGood`), and the patches are
+treated one after the other.
 
-See [Open Problems](../research/open-problems.md).
+<div class="theorem-block" markdown>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair)</span>
+
+**Takens' theorem for generic pairs, in the \(C^2\) topology.** Let \(M\) be a compact
+smooth \(d\)-manifold without boundary. The pairs \((T, h)\) of a \(C^2\) diffeomorphism and
+a \(C^2\) observation whose delay map with \(2d + 1\) coordinates is a \(C^2\) embedding form
+an open dense subset of \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\).
+</div>
+
+Openness is the stability of embeddings under perturbations of the pair
+(`isOpen_setOf_isContMDiffEmbedding_delayEmbedding_pair`). For density, a nonempty open set
+of pairs contains a product \(u \times v\) of open sets; \(u\) contains a diffeomorphism
+good up to period \(4d\), and for it the good observations are dense, so \(v\) contains one
+(`dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`).
 
 ## References
 

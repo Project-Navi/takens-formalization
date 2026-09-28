@@ -7,6 +7,14 @@ commits.
 
 ### 2026-09
 
+- **Takens' theorem for generic pairs.** On a compact smooth \(d\)-manifold, the pairs
+  \((T, h)\) of a \(C^2\) diffeomorphism and a \(C^2\) observation whose delay map with
+  \(2d + 1\) coordinates is a \(C^2\) embedding are open and dense in
+  \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
+  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`). The new ingredient is
+  Kupka--Smale density of the periodic-point conditions (`dense_setOf_goodUpTo`), by
+  induction on the period with bump perturbations in chart patches and a Fubini argument
+  for almost every perturbation (`ae_forall_goodMat_perturb_comp`).
 - **Good pairs are open.** The \(C^n\) topology on \(C^n\) diffeomorphisms through chart
   derivatives on source and target (`Diffeomorph.instTopologicalSpace`), first-order
   closeness preserved by composition and iteration (`BiChartWindow.exists_near_iterate`),

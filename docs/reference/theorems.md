@@ -389,6 +389,58 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 |---|---|
 | `isOpen_setOf_isContMDiffEmbedding_delayEmbedding_pair` | **Good pairs are open:** the pairs \((T, h)\) whose delay map with \(k\) coordinates is a \(C^2\) embedding form an open set of \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\) |
 
+## Kupka--Smale density and generic pairs
+
+### PeriodicGood
+
+| Declaration | Statement |
+|---|---|
+| `GoodUpTo` | At every point of minimal period at most \(P\), the differential of \(T^p\) is good up to order \(4d\) |
+| `mfderiv_iterate_mul_of_isPeriodicPt` | At a fixed point of \(T^p\), \(D(T^{qp}) = D(T^p)^q\) |
+| `eventually_ne_self_of_det_ne_zero` | A nondegenerate fixed point is isolated |
+| `finite_fixedPoints_of_forall_det_ne_zero` | On a compact manifold, nondegenerate fixed points are finitely many |
+| `GoodUpTo.countable_periodic` | Goodness up to \(4d\) gives countably many points of period at most \(4d\) |
+| `GoodUpTo.observable` | Goodness up to \(2d\) gives observability at points of period at most \(2d\) |
+| `goodMat_mfderivEnd_iff` | Goodness of the differential at a fixed point can be read in any chart |
+
+### PeriodicNull
+
+| Declaration | Statement |
+|---|---|
+| `measure_prod_setOf_not_goodMat_eq_zero` | Fubini: the pairs \((u, L)\) with \((1 + L)\, DW_u\) not good form a null set |
+| `ae_forall_goodMat_perturb_comp` | **Local null lemma:** for almost every bump parameter, every fixed point of \(S_\theta \circ W\) in the core is good |
+
+### ChartPerturbation
+
+| Declaration | Statement |
+|---|---|
+| `chartPerturb` | A bump perturbation in the chart at a point, the identity elsewhere |
+| `chartPerturbDiffeo` | It is a \(C^2\) diffeomorphism for small parameters |
+| `tendsto_trans_chartPerturbDiffeo` | \(S_\theta \circ T \to T\) in the \(C^2\) topology as \(\theta \to 0\) |
+
+### NearStability and PatchStability
+
+| Declaration | Statement |
+|---|---|
+| `Diffeomorph.continuous_toContinuousMap` | The \(C^n\) topology on diffeomorphisms is finer than the compact-open topology |
+| `Diffeomorph.eventually_forall_iterate_ne_self` | Having no fixed point of an iterate on a compact set is an open condition |
+| `Diffeomorph.eventually_patchGood` | Goodness of the fixed points of \(T^P\) on a chart patch is an open condition |
+
+### PatchPerturbation and KupkaSmale
+
+| Declaration | Statement |
+|---|---|
+| `exists_patch` | Near a point of minimal period \(P\), a patch on which small perturbations make every fixed point of \(T^P\) good |
+| `exists_goodUpTo_mem_nhds_of_goodUpTo_pred` | The inductive step from period \(P - 1\) to \(P\) |
+| `dense_setOf_goodUpTo` | **Kupka--Smale density:** diffeomorphisms good up to period \(4d\) are dense |
+
+### GenericPairTakens
+
+| Declaration | Statement |
+|---|---|
+| `dense_setOf_isContMDiffEmbedding_delayEmbedding_pair` | Good pairs are dense |
+| `isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair` | **Takens' theorem for generic pairs:** good pairs are open and dense in \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\) |
+
 ### CircleDelay
 
 | Declaration | Statement |

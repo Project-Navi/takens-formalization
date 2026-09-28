@@ -20,23 +20,14 @@ Where the formalization stands and what comes next.
   (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`) and as an open
   dense set of observations in the \(C^2\) topology
   (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`).
+- **Takens' theorem for generic pairs.** The \(C^2\) topology on \(\mathrm{Diff}^2(M)\),
+  Kupka--Smale density of the periodic-point conditions (`dense_setOf_goodUpTo`), and the
+  good pairs open and dense in \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\)
+  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`).
 
 Every selected declaration depends only on `propext`, `Classical.choice` and `Quot.sound`,
 and CI checks this, the build with warnings as errors, the linter, the documented names and
 a fresh kernel replay on every pull request.
-
----
-
-## Next: Takens' theorem for generic pairs
-
-In order of dependence (details in [Open Problems](open-problems.md)):
-
-1. Genericity of the periodic-point conditions: for a dense set of \(C^2\)
-   diffeomorphisms, finitely many periodic points of period at most \(4d\), each
-   nondegenerate, with an observable differential at those of period at most \(2d\) (a
-   Kupka--Smale-type theorem).
-2. The assembly: good pairs are open (done: `WeakTopology`, `GenericPair`), and dense
-   because their fibres over a dense set of maps are dense.
 
 ---
 

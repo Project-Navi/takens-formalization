@@ -71,6 +71,27 @@ digraph proof_architecture {
                         color="#7eb8a8"]
   }
 
+  subgraph cluster_pairs {
+    label="Generic pairs"
+    labeljust=l
+    fontname="Fraunces"
+    fontsize=14
+    fontcolor="#7eb8a8"
+    color="#2a2a2a"
+    style=dashed
+    margin=16
+
+    WeakTopology [label="WeakTopology, WeakComposition\nC^n topology on\ndiffeomorphisms"]
+    GenericPair [label="GenericPair\ngood pairs are open"]
+    PeriodicGood [label="PeriodicGood, ForMathlib/GoodMatrix\ngood periodic points give\nthe periodic conditions"]
+    PeriodicNull [label="ForMathlib/PeriodicNull\nlocal null lemma (Fubini)"]
+    ChartPerturbation [label="ChartPerturbation\nbump perturbations\nin a chart"]
+    PatchStability [label="NearStability, PatchStability\nC⁰ margins, persistence"]
+    KupkaSmale [label="PatchPerturbation, KupkaSmale\nKupka–Smale density"]
+    GenericPairTakens [label="GenericPairTakens\nTakens' theorem\nfor generic pairs"
+                       color="#7eb8a8"]
+  }
+
   DelayWindow -> IteratePeriod
   DelayWindow -> TakensDiscrete
   DelayWindow -> Reconstruction
@@ -96,6 +117,19 @@ digraph proof_architecture {
   JetTopology -> EmbeddingStability
   EmbeddingStability -> GenericObservation
   InterpolatingFamily -> GenericObservation
+  EmbeddingStability -> GenericPair
+  WeakTopology -> GenericPair
+  WeakTopology -> ChartPerturbation
+  WeakTopology -> PatchStability
+  DelayPeriodic -> PeriodicGood
+  PeriodicGood -> PatchStability
+  PeriodicGood -> ChartPerturbation
+  PeriodicNull -> KupkaSmale
+  ChartPerturbation -> KupkaSmale
+  PatchStability -> KupkaSmale
+  KupkaSmale -> GenericPairTakens
+  GenericPair -> GenericPairTakens
+  GenericObservation -> GenericPairTakens
 
   { rank=same; IteratePeriod; TakensDiscrete; Reconstruction; OrdinalTakens; SmoothTakens;
     SmoothDelay; GenericFamily; Sard }

@@ -25,8 +25,9 @@ hypotheses, and none addresses noise, finite precision or statistical estimation
   period at most \(2d\)), the observations giving a \(C^2\) embedding with \(2d + 1\) delays
   form an open dense set in the \(C^2\) topology
   (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). This does not say that a
-  given observation works, nor that a given map satisfies the conditions, and Takens'
-  theorem for generic pairs is not yet formalized here.
+  given observation works, nor that a given map satisfies the conditions. Takens' theorem
+  for generic pairs (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding_pair`) says
+  that good pairs are open and dense; it does not certify a particular pair either.
 
 ## Ordinal patterns and permutation entropy
 

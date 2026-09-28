@@ -24,6 +24,8 @@ The delay map of dynamics \(T : X \to X\) and an observation \(h : X \to \mathbb
 
 | Area | Result | Module |
 |------|--------|--------|
+| Manifolds | **Takens' theorem for generic pairs:** on a compact \(d\)-manifold, the pairs \((T, h)\) of a \(C^2\) diffeomorphism and a \(C^2\) observation whose delay map with \(2d+1\) coordinates is a \(C^2\) embedding form an open dense subset of \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\) | `GenericPairTakens` |
+| Manifolds | Kupka--Smale density: the \(C^2\) diffeomorphisms whose points of period \(\le 4d\) are nondegenerate, with observable differentials, are dense | `KupkaSmale`, `PatchPerturbation`, `PeriodicNull` |
 | Manifolds | For an injective \(C^2\) map \(T\) with injective differentials whose points of period \(\le 4d\) are countably many and which is observable at points of period \(\le 2d\), the \(C^2\) observations whose delay map with \(2d+1\) coordinates is a \(C^2\) embedding form an open dense set in the \(C^2\) topology | `GenericObservation` |
 | Manifolds | One finite family of smooth functions \(\varphi_q\) such that, for every such \(T\) and every \(C^2\) observation \(h\), the delay map of \(h + \sum_q a_q \varphi_q\) is a \(C^2\) embedding for Lebesgue-almost every \(a\) | `InterpolatingFamily`, `DelayPeriodic` |
 | Manifolds | The weak \(C^n\) topology on \(C^n\) maps through chart derivatives; injective immersions of a compact manifold are stable under \(C^1\)-small perturbations | `JetTopology`, `EmbeddingStability` |
@@ -35,12 +37,8 @@ The delay map of dynamics \(T : X \to X\) and an observation \(h : X \to \mathbb
 | Finite | Reconstruction of the dynamics on the delay image, a homeomorphism for compact spaces | `Reconstruction` |
 | Ordinal | Ordinal patterns, invariance under strictly increasing and relabeling under strictly decreasing transformations, pattern counts and entropy bounds, what the code retains | `OrdinalTakens`, `OrdinalEntropy`, `OrdinalQuotient` |
 
-**Not yet formalized here:** Takens' theorem for generic pairs \((T, h)\) in
-\(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\). The conditions on \(T\) above are the
-periodic-point conditions of Takens' generic maps. The \(C^2\) topology on
-\(\mathrm{Diff}^2(M)\) is defined and the good pairs are open; their density, through the
-genericity of those conditions (a Kupka--Smale-type theorem), remains; see
-[Open Problems](research/open-problems.md).
+Not formalized here: the Sauer--Yorke--Casdagli extension to fractal sets and prevalence;
+see [Open Problems](research/open-problems.md).
 
 ---
 
