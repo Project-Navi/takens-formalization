@@ -46,7 +46,7 @@ a fresh kernel replay (see `AGENTS.md`).
 lake exe cache get && make build lint verify
 ```
 
-Documentation: <https://project-navi.github.io/takens-formalization/>.
+Documentation: <https://docs.projectnavi.ai/takens-formalization/>.
 
 ## Credit
 
