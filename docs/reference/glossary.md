@@ -51,14 +51,21 @@ is not yet formalized here. See [Open Problems](../research/open-problems.md).
 \(x\) iff the delayed covectors span the cotangent space.
 
 **interpolating family**
-: A finite family of functions whose combinations take any prescribed values, or
-directional derivatives, at any bounded number of distinct points (`InterpolatesValues`,
-`InterpolatesDerivatives`). See [Smooth Embedding](../exposition/smooth-embedding.md).
+: A finite family of functions whose combinations take any prescribed values, directional
+derivatives or covectors at any bounded number of distinct points (`InterpolatesValues`,
+`InterpolatesDerivatives`, `InterpolatesCovectors`). See
+[Smooth Embedding](../exposition/smooth-embedding.md).
 
 **Moreira's theorem**
 : A sharpening of Sard's theorem that bounds the Hausdorff measure of the image of the
 points of low rank of a \(C^{k+(\alpha)}\) map [Moreira2001]; ported here from a Lean proof
 by Yury Kudryashov. See [Sard's Theorem](../exposition/sard-infrastructure.md).
+
+**observability condition**
+: At a point \(z\) of minimal period \(p\) with \(A = D(T^p)_z\), some covector \(\omega\)
+detects every nonzero vector through \(\omega \circ A^q\), \(q < d\). It holds when \(A\)
+has distinct eigenvalues, and it is one of the periodic-point conditions of the fixed-map
+theorem. See [Smooth Embedding](../exposition/smooth-embedding.md).
 
 **observation**
 : The function \(h\) (or \(\alpha\)) applied to each state before delays are taken.
@@ -90,6 +97,12 @@ family must span \(\mathbb{R}^k\).
 : `StrictMono` and `StrictAnti`. Ordinal codes are unchanged by strictly increasing
 transformations of the observation and relabeled by index reversal under strictly
 decreasing ones; merely monotone transformations can create ties.
+
+**weak \(C^n\) topology**
+: The topology on \(C^n\) maps in which a neighbourhood of \(f\) is given by uniform
+closeness of chart derivatives of order at most \(n\) on finitely many compact sets of chart
+coordinates (`ContMDiffMap.instTopologicalSpace`). On a compact manifold it is the Whitney
+\(C^n\) topology. See [Smooth Embedding](../exposition/smooth-embedding.md).
 
 **tie-free window**
 : A delay window with pairwise distinct entries (`WindowDistinct`), needed for an ordinal

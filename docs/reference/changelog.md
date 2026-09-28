@@ -7,6 +7,15 @@ commits.
 
 ### 2026-09
 
+- **Takens' theorem for a fixed map, in the \(C^2\) topology.** For an injective \(C^2\) map
+  with injective differentials whose points of period at most \(4d\) are countably many and
+  which is observable at points of period at most \(2d\), the observations whose delay map
+  with \(2d+1\) coordinates is a \(C^2\) embedding form an open dense set
+  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). This rests on the weak
+  \(C^n\) topology on \(C^n\) maps through chart derivatives (`JetTopology`), the stability
+  of injective immersions of compact manifolds (`exists_forall_injective_of_near`), and the
+  treatment of short periodic orbits by a Krylov tiling of the delayed covectors and the
+  null zero sets of nonzero polynomials (`DelayPeriodic`, `MvPolynomial.ae_eval_ne_zero`).
 - **Delay embeddings for maps without short periodic orbits.** On a compact smooth
   \(d\)-manifold, one finite family of smooth functions works for every injective \(C^2\)
   map with injective differentials and no periodic points of period at most \(4d\): for

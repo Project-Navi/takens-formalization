@@ -14,42 +14,40 @@ an open dense subset of \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\), with t
 topology, the delay map \(x \mapsto (h(x), h(Tx), \dots, h(T^{2d}x))\) is a \(C^2\)
 embedding [Takens1981].
 
-**Formalized here.** For a fixed injective \(C^2\) map \(T\) with injective differentials
-and no periodic points of period at most \(4d\), one finite family of smooth functions
-makes the delay map of \(h + \sum_q a_q \varphi_q\) a \(C^2\) embedding for almost every
-\(a\), for every \(C^2\) observation \(h\)
-(`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding`). The ingredients (generic
-immersion and separation in finite families, the overlapping-window combinatorics, an
-interpolating family) are in place; see [Smooth Embedding](../exposition/smooth-embedding.md).
+**Formalized here.** For a fixed map, the full statement in the \(C^2\) topology. Let \(T\)
+be an injective \(C^2\) map with injective differentials such that (i) its points of period
+at most \(4d\) form a countable set and (ii) at every point \(z\) of minimal period
+\(p \le 2d\) some covector \(\omega\) detects every nonzero vector through
+\(\omega \circ D(T^{qp})_z\), \(q < d\). Then the \(C^2\) observations whose delay map with
+\(2d + 1\) coordinates is a \(C^2\) embedding form an open dense subset of
+\(C^2(M, \mathbb{R})\) (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`), for
+the weak \(C^2\) topology defined through chart derivatives on compact windows
+(`ContMDiffMap.instTopologicalSpace`). Almost every perturbation in one fixed finite family
+is good (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`). See
+[Smooth Embedding](../exposition/smooth-embedding.md).
 
 **Remaining obligations.**
 
-1. **Periodic points of period at most \(2d\).** At such points the delay coordinates
-   repeat, and the span conditions fail for every family (a fixed point has all
-   coordinates equal to \(h(x)\)). The classical argument assumes, for generic \(T\), that
-   these points are finitely many and that \(DT^p\) has simple eigenvalues there; then a
-   generic observation is an immersion at them (an observability, or Krylov, condition on
-   the covector \(Dh\)) and separates them from other points. This needs the linear
-   algebra of cyclic vectors, a local injectivity argument near the periodic orbits, and a
-   version of the avoidance lemma for sets of pairs of positive codimension.
-2. **Periods between \(2d + 1\) and \(4d\).** The present separation argument uses \(2k\)
-   interpolation points, which is why it excludes periods up to \(4d\). Takens' hypothesis
-   excludes only the short periods above; for periods \(p\) with \(2d < p \le 4d\) the
-   overlapping windows of a periodic orbit give a cyclic system, and those pairs must be
-   treated by a dimension count, using that such orbits are finitely many for generic
-   \(T\).
-3. **Genericity of \(T\).** The conditions of items 1 and 2 hold for an open dense set of
-   \(C^2\) diffeomorphisms (a Kupka--Smale-type theorem for periodic points of bounded
-   period).
-4. **Topology and assembly.** The \(C^2\) topology on \(\mathrm{Diff}^2(M)\) and
-   \(C^2(M, \mathbb{R})\), with a proved description through charts and derivatives;
-   openness of the set of embeddings on a compact manifold; continuity of
-   \((T, h) \mapsto\) delay map; and the step from "almost every member of a finite
-   family" to a dense (and, with openness, residual) set.
+1. **Genericity of \(T\) (Kupka--Smale type).** An open dense set \(\mathcal{D}\) of \(C^2\)
+   diffeomorphisms of \(M\) satisfies (i) and (ii): for \(T \in \mathcal{D}\), the periodic
+   points of period at most \(4d\) are finitely many (nondegenerate: \(1\) is not an
+   eigenvalue of \(D(T^p)_z\)), and at those of period at most \(2d\) the eigenvalues of
+   \(D(T^p)_z\) are distinct, which gives (ii) through a cyclic vector of the transpose.
+   This needs local perturbations of diffeomorphisms supported near an orbit, transversality
+   of the graph of \(T^p\) to the diagonal, and an induction on the period.
+2. **The \(C^2\) topology on \(\mathrm{Diff}^2(M)\).** Charts on both source and target, a
+   proved description through derivatives, and the continuity of
+   \((T, h) \mapsto (x \mapsto (h(x), \dots, h(T^{2d}x)))\) into \(C^1\) maps; with the
+   stability of embeddings (`exists_forall_injective_of_near`) this makes the good pairs an
+   open set of \(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\).
+3. **Assembly.** An open set of pairs whose fibre over each \(T\) in the dense set
+   \(\mathcal{D}\) is dense (the fixed-map theorem above) is dense, hence open dense and
+   residual.
 
 Mathlib has smooth manifolds, the Whitney embedding of compact manifolds and the implicit
 function theorem, which the present proofs use, but no topology on spaces of \(C^r\) maps
-between manifolds.
+between manifolds; `TakensFormal/JetTopology.lean` provides one for maps into a normed
+space.
 
 ---
 

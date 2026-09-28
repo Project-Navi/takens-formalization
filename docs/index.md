@@ -24,7 +24,9 @@ The delay map of dynamics \(T : X \to X\) and an observation \(h : X \to \mathbb
 
 | Area | Result | Module |
 |------|--------|--------|
-| Manifolds | On a compact smooth \(d\)-manifold there are finitely many smooth functions \(\varphi_q\) such that for every injective \(C^2\) map \(T\) with injective differentials and no periodic points of period \(\le 4d\), and every \(C^2\) observation \(h\), the delay map of \(h + \sum_q a_q \varphi_q\) with \(2d+1\) coordinates is a \(C^2\) embedding for Lebesgue-almost every \(a\) | `InterpolatingFamily` |
+| Manifolds | For an injective \(C^2\) map \(T\) with injective differentials whose points of period \(\le 4d\) are countably many and which is observable at points of period \(\le 2d\), the \(C^2\) observations whose delay map with \(2d+1\) coordinates is a \(C^2\) embedding form an open dense set in the \(C^2\) topology | `GenericObservation` |
+| Manifolds | One finite family of smooth functions \(\varphi_q\) such that, for every such \(T\) and every \(C^2\) observation \(h\), the delay map of \(h + \sum_q a_q \varphi_q\) is a \(C^2\) embedding for Lebesgue-almost every \(a\) | `InterpolatingFamily`, `DelayPeriodic` |
+| Manifolds | The weak \(C^n\) topology on \(C^n\) maps through chart derivatives; injective immersions of a compact manifold are stable under \(C^1\)-small perturbations | `JetTopology`, `EmbeddingStability` |
 | Manifolds | Differential of the delay map, immersion criterion, compact injective immersions are embeddings; the identity never immerses in dimension \(\ge 2\) | `SmoothDelay` |
 | Measure | Sard's theorem for \(C^r\) maps between finite-dimensional spaces, \(r \ge \dim E - \dim F + 1\), with local and open-set versions | `Sard` |
 | Measure | Almost every member of a finite-dimensional affine family avoids a lower-dimensional set, is an immersion, or separates points | `GenericFamily` |
@@ -32,9 +34,11 @@ The delay map of dynamics \(T : X \to X\) and an observation \(h : X \to \mathbb
 | Finite | Reconstruction of the dynamics on the delay image, a homeomorphism for compact spaces | `Reconstruction` |
 | Ordinal | Ordinal patterns, invariance under strictly increasing and relabeling under strictly decreasing transformations, pattern counts and entropy bounds, what the code retains | `OrdinalTakens`, `OrdinalEntropy`, `OrdinalQuotient` |
 
-**Not yet formalized here:** Takens' theorem for generic pairs \((T, h)\) in the \(C^2\)
-topology. Periodic points of period at most \(2d\), the genericity of \(T\), and the
-Baire-category assembly remain; see [Open Problems](research/open-problems.md).
+**Not yet formalized here:** Takens' theorem for generic pairs \((T, h)\) in
+\(\mathrm{Diff}^2(M) \times C^2(M, \mathbb{R})\). The conditions on \(T\) above are the
+periodic-point conditions of Takens' generic maps; their genericity (a Kupka--Smale-type
+theorem), the \(C^2\) topology on \(\mathrm{Diff}^2(M)\) and the openness of good pairs
+remain; see [Open Problems](research/open-problems.md).
 
 ---
 

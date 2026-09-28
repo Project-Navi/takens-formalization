@@ -2,7 +2,7 @@
 
 [`Verify.lean`](https://github.com/Project-Navi/takens-formalization/blob/main/TakensFormal/Verify.lean)
 contains one `#print axioms` line for each selected declaration: every headline result and
-every project declaration these pages cite (189 at present). CI requires exactly one record
+every project declaration these pages cite (229 at present). CI requires exactly one record
 per line, in order, and accepts only the three axioms below. This page explains what that
 check certifies and what it does not.
 

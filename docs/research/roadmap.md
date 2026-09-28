@@ -14,9 +14,12 @@ Where the formalization stands and what comes next.
   \(r \ge \dim E - \dim F + 1\), with local and open-set versions (`sard`).
 - **Smooth delay maps.** Regularity, the differential, the immersion criterion, and the
   embedding criterion on compact manifolds.
-- **Genericity.** Generic immersion and separation in finite families, and Takens' theorem
-  for a fixed map without periodic points of period at most \(4d\)
-  (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding`).
+- **Genericity for a fixed map.** Generic immersion and separation in finite families;
+  Takens' theorem for a fixed map satisfying the periodic-point conditions, both for almost
+  every member of a finite family
+  (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`) and as an open
+  dense set of observations in the \(C^2\) topology
+  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`).
 
 Every selected declaration depends only on `propext`, `Classical.choice` and `Quot.sound`,
 and CI checks this, the build with warnings as errors, the linter, the documented names and
@@ -28,14 +31,13 @@ a fresh kernel replay on every pull request.
 
 In order of dependence (details in [Open Problems](open-problems.md)):
 
-1. Periodic points of period at most \(2d\): observability at periodic points with simple
-   eigenvalues, local injectivity near them, and avoidance for pairs of positive
-   codimension.
-2. Periods between \(2d + 1\) and \(4d\), by a dimension count over finitely many
-   periodic orbits.
-3. Genericity of the periodic-point conditions for \(C^2\) diffeomorphisms.
-4. The \(C^2\) topology on pairs, openness of embeddings, continuity of the delay map in
-   the pair, and the Baire-category assembly.
+1. Genericity of the periodic-point conditions: for an open dense set of \(C^2\)
+   diffeomorphisms, finitely many periodic points of period at most \(4d\), with distinct
+   eigenvalues at those of period at most \(2d\) (a Kupka--Smale-type theorem).
+2. The \(C^2\) topology on \(\mathrm{Diff}^2(M)\), continuity of the delay map in the pair,
+   and openness of good pairs.
+3. The assembly: good pairs are open, and dense because their fibres over a dense set of
+   maps are dense.
 
 ---
 

@@ -20,11 +20,13 @@ hypotheses, and none addresses noise, finite precision or statistical estimation
   horizon, at most \(N - 1\) on \(N\) states (`separatingHorizon_le_card_sub_one`), and it
   can be computed exactly from exact finite data (`horizonSearch_eq_separating_iff`). A
   finite sample of a continuous system is not a finite state space.
-- **Smooth models.** For a compact manifold and a map without periodic points of period at
-  most \(4d\), almost every perturbation of an observation in a fixed finite family gives a
-  \(C^2\) embedding with \(2d + 1\) delays
-  (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding`). This does not say that a
-  given observation works, and Takens' theorem for generic pairs is not yet formalized here.
+- **Smooth models.** For a compact manifold and a map satisfying the periodic-point
+  conditions (countably many points of period at most \(4d\), observability at points of
+  period at most \(2d\)), the observations giving a \(C^2\) embedding with \(2d + 1\) delays
+  form an open dense set in the \(C^2\) topology
+  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). This does not say that a
+  given observation works, nor that a given map satisfies the conditions, and Takens'
+  theorem for generic pairs is not yet formalized here.
 
 ## Ordinal patterns and permutation entropy
 

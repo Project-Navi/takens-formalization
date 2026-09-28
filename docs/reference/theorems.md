@@ -227,6 +227,15 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 | `ae_forall_injective_fderiv_add_sum` | Generic immersion for \(\Psi_0 + \sum_i a_i \Psi_i\) under a span condition |
 | `ae_forall_add_sum_ne_add_sum` | Generic separation for finite families under a span condition |
 
+### PolynomialNull
+
+| Declaration | Statement |
+|---|---|
+| `MvPolynomial.ae_eval_ne_zero` | A nonzero real polynomial in finitely many variables is nonzero almost everywhere, for any additive Haar measure |
+| `ae_add_sum_mul_ne_zero` | An affine function of the coefficients that is nonzero somewhere is nonzero almost everywhere |
+| `ae_injective_add_sum` | In an affine family of linear maps between finite-dimensional spaces, if one member is injective then almost every member is |
+| `ae_injective_add_sum_clm` | The same for continuous linear maps |
+
 ---
 
 ## Smooth delay maps
@@ -283,6 +292,20 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 | `surjective_sum_smul_sub_delayEmbedding` | Separation span condition for injective \(T\) without periodic points of period \(\le 2k-2\) |
 | `surjective_sum_smul_mvfderiv_delayEmbedding` | Immersion span condition when \(x, \dots, T^{k-1}x\) are distinct and \(DT\) is injective |
 | `ae_isContMDiffEmbedding_delayEmbedding_perturb_of_interpolates` | Fixed \(T\) without periodic points of period \(\le 4d\): a.e. perturbation in an interpolating family has a \(C^2\) delay embedding with \(2d+1\) coordinates |
+| `InterpolatesValues.exists_eq_on` | Values on a finite set of at most \(N\) points are attained by a combination |
+| `surjective_sum_smul_sub_delayEmbedding_of_aperiodic` | Separation span condition for \(x \ne y\) when \(x\) alone has no period \(\le 2k - 2\) |
+| `InterpolatesCovectors` | Any covectors at \(n \le N\) distinct points are the differentials of a combination |
+
+### DelayPeriodic
+
+| Declaration | Statement |
+|---|---|
+| `mfderiv_iterate_add_apply` | Chain rule \(D(T^{m+n})_x = D(T^m)_{T^n x} \circ D(T^n)_x\) |
+| `mvfderiv_perturbObservation_apply` | The differential of \(h + \sum_i a_i \varphi_i\) |
+| `exists_injective_mfderiv_delayEmbedding_perturb_of_periodic` | At a point of minimal period \(p \le 2d\) with an observing covector, some perturbation makes the delay map with \(2d+1\) coordinates an immersion there |
+| `ae_injective_mfderiv_delayEmbedding_perturb_of_exists` | If one perturbation is an immersion at \(z\), almost every perturbation is |
+| `ae_delayEmbedding_perturb_ne_of_ne` | A family interpolating values at two points separates them for almost every perturbation |
+| `ae_isContMDiffEmbedding_delayEmbedding_perturb_of_periodic` | Fixed \(T\) with countably many points of period \(\le 4d\) and observability at periods \(\le 2d\): a.e. perturbation in an interpolating family has a \(C^2\) delay embedding with \(2d+1\) coordinates |
 
 ### InterpolatingFamily
 
@@ -296,6 +319,52 @@ map (`delayEmbedding f α k`); \(d = \dim M\) on a manifold \(M\).
 | `ae_isContMDiffEmbedding_delayEmbedding_momentFamily` | Fixed-map theorem with this explicit family |
 | `exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding` | On a compact smooth manifold, one finite smooth family works for every injective \(C^2\) map with injective differentials and no periodic points of period \(\le 4d\), and every \(C^2\) observation |
 | `exists_family_forall_exists_isContMDiffEmbedding_delayEmbedding` | The same with coefficient vectors of arbitrarily small norm |
+| `exists_finset_forall_momentFunctional_ne_zero` | Among \(L \ge \lvert V\rvert D + m\) moment functionals, \(m\) vanish on no vector of \(V\) |
+| `interpolatesCovectors_momentFamily` | For an injective \(C^1\) immersion \(e\), the family interpolates covectors at \(N\) points |
+| `ae_isContMDiffEmbedding_delayEmbedding_momentFamily_of_periodic` | The periodic fixed-map theorem with this explicit family |
+| `exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic` | One finite smooth family works for every \(T\) satisfying the periodic conditions and every \(C^2\) observation |
+| `exists_family_forall_exists_isContMDiffEmbedding_delayEmbedding_of_periodic` | The same with coefficient vectors of arbitrarily small norm |
+
+---
+
+## The \(C^2\) topology and generic observations
+
+### JetTopology
+
+| Declaration | Statement |
+|---|---|
+| `ChartWindow` | A compact set of coordinates in the extended chart at a point |
+| `ChartWindow.jet` | The \(k\)-th derivative of a chart expression at the points of a window |
+| `ChartWindow.dist_jet_zero` | Jets of order \(0\) compare values |
+| `ChartWindow.dist_jet_one` | Jets of order \(1\) compare first derivatives |
+| `ContMDiffMap.instTopologicalSpace` | The weak \(C^n\) topology on \(C^n\) maps into a normed space |
+| `ContMDiffMap.continuous_jet` | Jets of order \(\le n\) depend continuously on the map |
+| `ContMDiffMap.eventually_forall_dist_jet_lt` | Uniform closeness of jets on a window is a neighbourhood condition |
+| `ContMDiffMap.eventually_forall_dist_jet_lt_of_one_le` | The same for values and first derivatives on finitely many windows |
+| `ContMDiffMap.continuous_of_continuous_jet` | A map into \(C^n\) maps is continuous if its jets are |
+
+### EmbeddingStability
+
+| Declaration | Statement |
+|---|---|
+| `ContinuousLinearMap.exists_mul_norm_le_norm_of_injective` | An injective linear map on a finite-dimensional space is bounded below |
+| `injective_fderiv_comp_extChartAt_symm` | An immersion has injective chart derivatives |
+| `exists_closedBall_forall_injOn` | Local stability of immersions on a closed chart ball |
+| `exists_forall_injective_of_near` | **Stability of embeddings:** an injective \(C^1\) immersion of a compact manifold has a \(C^1\) neighbourhood of injective immersions |
+| `fderiv_comp_comp_extChartAt_symm` | Chain rule for the chart expression of \(k \circ S\) |
+| `exists_window_forall_near_comp` | Precomposition with a \(C^1\) map, near a point |
+| `exists_forall_near_comp` | Precomposition with a \(C^1\) map preserves \(C^1\)-closeness on a window |
+
+### GenericObservation
+
+| Declaration | Statement |
+|---|---|
+| `ContMDiffMap.perturb` | The \(C^n\) observation \(h + \sum_i a_i \varphi_i\) |
+| `ContMDiffMap.jet_perturb` | Its jets are the corresponding combinations |
+| `ContMDiffMap.continuous_perturb` | It depends continuously on \(a\) in the weak \(C^n\) topology |
+| `isOpen_setOf_isContMDiffEmbedding_delayEmbedding` | For a \(C^2\) map \(T\), the observations with a \(C^2\) embedding delay map form an open set |
+| `dense_setOf_isContMDiffEmbedding_delayEmbedding` | Under the periodic conditions on \(T\), with \(2d+1\) coordinates they are dense |
+| `isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding` | **Takens' theorem for a fixed map in the \(C^2\) topology:** open and dense |
 
 ### CircleDelay
 

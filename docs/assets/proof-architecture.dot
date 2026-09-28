@@ -62,8 +62,13 @@ digraph proof_architecture {
     GenericFamily [label="ForMathlib/GenericFamily\ngeneric immersion\nand separation"]
     DelayPerturbation [label="DelayPerturbation\ngeneric observations\nin a finite family"]
     DelaySpan [label="DelaySpan\nspan conditions,\noverlapping windows"]
-    InterpolatingFamily [label="InterpolatingFamily\nfixed-map Takens theorem\n(no periods ≤ 4d)"
-                         color="#7eb8a8"]
+    PolynomialNull [label="ForMathlib/PolynomialNull\nnull zero sets,\ninjective members"]
+    DelayPeriodic [label="DelayPeriodic\nshort periodic orbits"]
+    InterpolatingFamily [label="InterpolatingFamily\nfixed-map Takens theorem,\nalmost every member"]
+    JetTopology [label="JetTopology\nweak C^n topology\nthrough chart jets"]
+    EmbeddingStability [label="EmbeddingStability\nstability of embeddings"]
+    GenericObservation [label="GenericObservation\nfixed-map Takens theorem,\nopen dense in C²"
+                        color="#7eb8a8"]
   }
 
   DelayWindow -> IteratePeriod
@@ -84,7 +89,13 @@ digraph proof_architecture {
   Avoidance -> GenericFamily
   GenericFamily -> DelayPerturbation
   DelayPerturbation -> DelaySpan
-  DelaySpan -> InterpolatingFamily
+  DelaySpan -> DelayPeriodic
+  PolynomialNull -> DelayPeriodic
+  DelayPeriodic -> InterpolatingFamily
+  DelayPerturbation -> EmbeddingStability
+  JetTopology -> EmbeddingStability
+  EmbeddingStability -> GenericObservation
+  InterpolatingFamily -> GenericObservation
 
   { rank=same; IteratePeriod; TakensDiscrete; Reconstruction; OrdinalTakens; SmoothTakens;
     SmoothDelay; GenericFamily; Sard }

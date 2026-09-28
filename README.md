@@ -9,12 +9,21 @@ A Lean 4 and Mathlib formalization of delay-coordinate reconstruction
 
 ## What is proved
 
-- **Delay embeddings for maps without short periodic orbits.** On a compact smooth
-  `d`-manifold there are finitely many smooth functions `φ q` such that, for every injective
-  `C²` map `T` with injective differentials and no periodic points of period at most `4d`,
-  and every `C²` observation `h`, the delay map of `h + ∑ q, a q • φ q` with `2d + 1`
-  coordinates is a `C²` embedding for Lebesgue-almost every coefficient vector `a`
-  (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding`).
+- **Takens' theorem for a fixed map, in the `C²` topology.** On a compact smooth
+  `d`-manifold, let `T` be an injective `C²` map with injective differentials whose points of
+  period at most `4d` are countably many, and which satisfies an observability condition at
+  points of period at most `2d` (it holds when the differential of `T^p` there has distinct
+  eigenvalues). Then the `C²` observations `h` whose delay map with `2d + 1` coordinates is a
+  `C²` embedding form an open dense subset of `C²(M, ℝ)`
+  (`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). The topology is the weak
+  `C²` topology defined through chart derivatives on compact windows, which on a compact
+  manifold is the Whitney topology.
+- **Almost every member of a finite family.** One finite family of smooth functions works for
+  all such `T` and every `C²` observation `h`: the delay map of `h + ∑ q, a q • φ q` is a `C²`
+  embedding for Lebesgue-almost every coefficient vector `a`
+  (`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`).
+- **Stability of embeddings.** An injective immersion of a compact manifold stays one under
+  `C¹`-small perturbations (`exists_forall_injective_of_near`).
 - **Sard's theorem at finite regularity.** For `f : E → F` of class `C^r` with
   `r ≥ dim E - dim F + 1`, the critical values are Haar-null (`sard`), with local and
   open-set versions, via a port of Moreira's theorem.
@@ -25,10 +34,12 @@ A Lean 4 and Mathlib formalization of delay-coordinate reconstruction
 - **Ordinal codes.** Ordinal patterns, their behavior under strictly increasing and strictly
   decreasing transformations, pattern-count and entropy bounds, and what the code retains.
 
-Takens' theorem for generic pairs `(T, h)` in the `C²` topology is **not yet formalized
-here**: periodic points of small period, the genericity of `T`, and the Baire-category
-assembly remain. The result above is an almost-every statement in a finite family, not a
-residual set.
+Takens' theorem for generic pairs `(T, h)` in `Diff²(M) × C²(M, ℝ)` is **not yet
+formalized here**. The conditions on `T` above are the periodic-point conditions of Takens'
+generic diffeomorphisms; what remains is that they hold for an open dense set of `C²`
+diffeomorphisms (a Kupka–Smale-type theorem), the `C²` topology on `Diff²(M)`, and the
+openness of good pairs in the product. See
+[Open Problems](https://project-navi.github.io/takens-formalization/research/open-problems/).
 
 ## Verification
 

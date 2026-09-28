@@ -63,15 +63,27 @@ injective immersion is a \(C^r\) embedding. The genericity argument is organized
    properties of the family. Overlapping windows \(y = T^m x\) reduce to the triangular
    system \(v_j - v_{j+m} = c_j\), solved explicitly.
 5. **An interpolating family.** A Whitney embedding \(e : M \to \mathbb{R}^n\) and powers
-   of finitely many moment functionals \(q \mapsto \sum_r t^r q_r\) interpolate values and
-   derivatives at any bounded number of points (Lagrange interpolation).
+   of finitely many moment functionals \(q \mapsto \sum_r t^r q_r\) interpolate values,
+   derivatives and covectors at any bounded number of points (Lagrange interpolation).
+6. **Short periodic orbits.** At a point of period \(p \le 2d\) the delayed covectors are
+   \(\omega \circ A^j\) for \(A = D(T^p)\) after a Krylov tiling of the indices, so an
+   observable \(A\) gives an immersion for one coefficient vector, hence for almost every one
+   (nonzero polynomials vanish on null sets). Pairs of periodic points are countably many
+   and separated one at a time.
+7. **The \(C^2\) topology.** The weak \(C^n\) topology on \(C^n\) maps is defined through
+   chart derivatives on compact windows (`JetTopology`). Injective immersions of a compact
+   manifold are stable under \(C^1\)-small perturbations, and the delay map depends
+   continuously on the observation (`EmbeddingStability`); a family perturbation tends to
+   the observation as the coefficients tend to zero.
 
-Together these prove Takens' theorem for a fixed map without short periodic orbits
-(`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding`). The generic-pair theorem
-needs more: periodic points of period at most \(2d\) (where the span conditions fail for
-every family), the genericity of \(T\), and the \(C^2\) topology with a Baire-category
-assembly. See [Smooth Embedding](smooth-embedding.md) and
-[Open Problems](../research/open-problems.md).
+Together these prove Takens' theorem for a fixed map satisfying the periodic-point
+conditions: almost every member of one finite family is good
+(`exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic`), and the good
+observations are open and dense in the \(C^2\) topology
+(`isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding`). The generic-pair theorem
+needs, in addition, the genericity of those conditions among \(C^2\) diffeomorphisms (a
+Kupka--Smale-type theorem) and the \(C^2\) topology on pairs. See
+[Smooth Embedding](smooth-embedding.md) and [Open Problems](../research/open-problems.md).
 
 ## Sard's theorem
 

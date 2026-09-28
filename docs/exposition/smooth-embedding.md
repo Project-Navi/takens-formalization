@@ -112,18 +112,96 @@ Lebesgue-almost every \(a\), in particular for some \(a\) of arbitrarily small n
 (`exists_family_forall_exists_isContMDiffEmbedding_delayEmbedding`).
 </div>
 
+## Short periodic orbits
+
+Takens' generic maps have periodic points of small period, where every delay coordinate
+repeats. Two conditions on \(T\) replace the absence of such points:
+
+- the points of period at most \(4d\) form a countable set (for generic \(T\), a finite one);
+- at a point \(z\) of minimal period \(p \le 2d\), with \(A = D(T^p)_z\), some covector
+  \(\omega\) detects every nonzero vector through \(\omega \circ A^q\), \(q < d\). This
+  observability condition holds when \(A\) has \(d\) distinct eigenvalues.
+
+<div class="theorem-block" markdown>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(exists_family_forall_ae_isContMDiffEmbedding_delayEmbedding_of_periodic)</span>
+
+**Takens' theorem for a fixed map, in a finite family.** On a compact smooth
+\(d\)-manifold there are finitely many smooth functions \(\varphi_q\) such that, for every
+injective \(C^2\) map \(T\) with injective differentials satisfying the two conditions, and
+every \(C^2\) observation \(h\), the delay map of \(h + \sum_q a_q \varphi_q\) with \(2d + 1\)
+coordinates is a \(C^2\) embedding for Lebesgue-almost every \(a\).
+</div>
+
+The proof (`ae_isContMDiffEmbedding_delayEmbedding_perturb_of_periodic`) splits points and
+pairs of points.
+
+- **Immersion at a periodic point** (`exists_injective_mfderiv_delayEmbedding_perturb_of_periodic`).
+  Let \(z\) have minimal period \(p \le 2d\) and \(Q = \lfloor 2d/p \rfloor\), so that
+  \(d \le pQ \le 2d\). The family also interpolates covectors
+  (`interpolatesCovectors_momentFamily`), so the differential of the observation at
+  \(T^r z\), \(r < p\), can be prescribed to make the delayed covector of index \(r + qp\)
+  equal to \(\omega \circ A^{rQ + q}\). The exponents \(rQ + q\) cover \(0, \dots, d - 1\), so
+  the differential of the delay map is injective at \(z\) for one coefficient vector.
+  Injectivity is a polynomial condition in the coefficients, and a nonzero polynomial
+  vanishes only on a null set (`MvPolynomial.ae_eval_ne_zero`); so it holds for almost every
+  coefficient vector (`ae_injective_add_sum`).
+- **Immersion elsewhere and separation involving an aperiodic point** use the span
+  conditions of the previous section (`surjective_sum_smul_sub_delayEmbedding_of_aperiodic`).
+- **Pairs of periodic points** are countably many, and each is separated for almost every
+  coefficient vector by the first coordinate alone (`ae_delayEmbedding_perturb_ne_of_ne`).
+
+## The \(C^2\) topology and open dense observations
+
+The space \(C^n(M, F)\) of \(C^n\) maps into a normed space carries the weak \(C^n\)
+topology (`ContMDiffMap.instTopologicalSpace`): a basic neighbourhood of \(f\) consists of
+the maps whose chart derivatives of order at most \(n\) are uniformly \(\varepsilon\)-close
+to those of \(f\) on finitely many compact sets of chart coordinates
+(`ContMDiffMap.eventually_forall_dist_jet_lt`). On a compact manifold this is the Whitney
+\(C^n\) topology [Hirsch1976].
+
+<div class="theorem-block" markdown>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(exists_forall_injective_of_near)</span>
+
+**Stability of embeddings.** An injective \(C^1\) immersion of a compact manifold into a
+normed space has a \(C^1\) neighbourhood of injective immersions.
+</div>
+
+Near each point the chart derivative is bounded below, and a map whose chart derivative is
+close on a closed ball is injective there, with injective derivatives, by the mean value
+inequality (`exists_closedBall_forall_injOn`). Finitely many balls cover \(M\); the pairs of
+points not in a common ball form a compact set on which the map separates points by some
+\(\delta > 0\). Precomposition with a fixed \(C^1\) map preserves \(C^1\)-closeness
+(`exists_forall_near_comp`), so the delay map depends continuously on the observation.
+
+<div class="theorem-block" markdown>
+<span class="badge badge--proved">Proved</span>
+<span class="theorem-name">(isOpen_and_dense_setOf_isContMDiffEmbedding_delayEmbedding)</span>
+
+**Takens' theorem for a fixed map, in the \(C^2\) topology.** For \(T\) as above, the \(C^2\)
+observations whose delay map with \(2d + 1\) coordinates is a \(C^2\) embedding form an open
+dense subset of \(C^2(M, \mathbb{R})\).
+</div>
+
+Openness holds for every \(C^2\) map \(T\) and any number of coordinates
+(`isOpen_setOf_isContMDiffEmbedding_delayEmbedding`). Density comes from the finite family:
+\(h + \sum_q a_q \varphi_q \to h\) as \(a \to 0\) (`ContMDiffMap.continuous_perturb`), and
+almost every such perturbation is good
+(`dense_setOf_isContMDiffEmbedding_delayEmbedding`).
+
 ## What is not here
 
-The statement above is an almost-every statement in one finite-dimensional family, for a
-fixed map with no periodic points of period at most \(4d\). Takens' theorem for generic
-pairs needs, in addition:
+The conditions on \(T\) are those of Takens' generic diffeomorphisms, but their genericity
+is not formalized. Takens' theorem for generic pairs \((T, h)\) needs, in addition:
 
-- periodic points of period at most \(2d\), where every delay coordinate repeats and the
-  span conditions fail for every family; for generic \(T\) such points are finitely many,
-  with simple eigenvalues, and need a separate local argument;
-- the genericity of those conditions on \(T\) in the space of \(C^2\) diffeomorphisms;
-- the \(C^2\) topology on pairs, openness of the embedding condition, and the
-  Baire-category step from "almost every member of a family" to a residual set.
+- a Kupka--Smale-type theorem: for an open dense set of \(C^2\) diffeomorphisms, the
+  periodic points of period at most \(4d\) are finitely many and those of period at most
+  \(2d\) satisfy the observability condition;
+- the \(C^2\) topology on \(\mathrm{Diff}^2(M)\), with the delay map continuous in
+  \((T, h)\), so that the good pairs form an open set;
+- the assembly: an open set of pairs whose fibre over each map of a dense set is dense is
+  dense.
 
 See [Open Problems](../research/open-problems.md).
 
@@ -135,3 +213,5 @@ See [Open Problems](../research/open-problems.md).
   65 (1991), 579--616.
 - [Huke2006] J. P. Huke, *Embedding nonlinear dynamical systems: a guide to Takens'
   theorem*, MIMS EPrint 2006.26.
+- [Hirsch1976] M. W. Hirsch, *Differential Topology*, Graduate Texts in Mathematics 33,
+  Springer (1976).
